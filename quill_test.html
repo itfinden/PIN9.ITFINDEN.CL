@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor Trix Completo</title>
+    <!-- Incluir Trix Editor -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
+    <style>
+        trix-editor {
+            min-height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form action="procesar.php" method="post">
+            <div>
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" style="width: 100%; padding: 8px; margin-bottom: 15px;">
+            </div>
+            
+            <div>
+                <label for="contenido">Contenido:</label>
+                <!-- Input oculto que almacenará el contenido HTML -->
+                <input id="x" type="hidden" name="contenido">
+                <!-- Editor Trix con todas las herramientas -->
+                <trix-editor input="x" placeholder="Escribe tu contenido aquí..."></trix-editor>
+            </div>
+            
+            <button type="submit" style="margin-top: 15px; padding: 10px 20px; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Guardar Contenido
+            </button>
+        </form>
+    </div>
+</body>
+</html>

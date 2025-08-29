@@ -1,0 +1,90 @@
+# Archivos del sistema
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Archivos de configuración local
+config/local.php
+.env
+.env.local
+.env.production
+
+# Archivos de log
+*.log
+error_log
+logs/
+
+# Archivos temporales
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Archivos de cache
+cache/
+tmp/
+temp/
+
+# Archivos de sesión
+sessions/
+
+# Archivos de uploads (si no quieres versionar archivos subidos)
+uploads/
+public/uploads/
+
+# Archivos de backup
+*.bak
+*.backup
+*.sql
+backup_database/
+backups/
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de dependencias (si usas Composer)
+vendor/
+composer.lock
+
+# Archivos de Node.js (si usas npm/yarn)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Archivos de SSL (certificados privados)
+SSL/*.key
+SSL/*.crt
+SSL/*.pem
+
+# Archivos de configuración de servidor
+.htaccess.local
+nginx.conf.local
+
+# Archivos de base de datos
+*.sql
+*.sqlite
+*.db
+
+# Archivos de configuración de FTP
+ftpsync.settings
+
+# Archivos de test
+test_*.php
+*_test.php
+tests/
+
+# Archivos de debug
+debug_*.php
+*_debug.php
+
+# Archivos de migración temporal
+migrate_*.php
+*_migrate.php

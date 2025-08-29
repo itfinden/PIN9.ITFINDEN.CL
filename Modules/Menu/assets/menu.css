@@ -1,0 +1,46 @@
+/* Slidepanel lateral no invasivo */
+.sp-fab{position:fixed;bottom:20px;left:20px;z-index:1040;width:52px;height:52px;border-radius:50%;border:none;background:#0b5ed7;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.15);cursor:pointer}
+.sp-fab:focus{outline:none}
+
+.sp-panel{position:fixed;top:0;bottom:0;left:-320px;width:320px;background:#fff;border-right:1px solid #e9ecef;box-shadow:6px 0 24px rgba(0,0,0,.08);z-index:1035;transition:left .3s ease;display:flex;flex-direction:column}
+.sp-panel.sp-open{left:0}
+.sp-header{padding:14px 16px;border-bottom:1px solid #f1f3f5;display:flex;align-items:center;justify-content:space-between}
+.sp-title{margin:0;font-size:16px;font-weight:600}
+.sp-close{background:transparent;border:none;font-size:18px;color:#6c757d;cursor:pointer}
+.sp-content{padding:10px 0;overflow:auto;background:inherit}
+.sp-section-title{padding:10px 16px;font-size:12px;text-transform:uppercase;color:#6c757d;letter-spacing:.04em}
+.sp-item{display:flex;align-items:center;padding:10px 16px;color:#212529;text-decoration:none}
+.sp-item{background:transparent}
+.sp-item i{width:20px;margin-right:10px;color:#0b5ed7}
+.sp-item:hover{background:#f8f9fa}
+
+@media (max-width: 420px){
+  .sp-panel{width:100%;right:-100%}
+}
+
+/* Dark mode support (driven by theme-switcher on body/html) */
+body[data-theme="dark"] .sp-panel,
+html[data-theme="dark"] .sp-panel{background:#1f2125 !important;border-right-color:#2b3036 !important;color:#e5e7eb !important;box-shadow:6px 0 24px rgba(0,0,0,.4) !important}
+body[data-theme="dark"] .sp-header,
+html[data-theme="dark"] .sp-header{border-bottom-color:#2b3036 !important}
+body[data-theme="dark"] .sp-title,
+html[data-theme="dark"] .sp-title{color:#e5e7eb !important}
+body[data-theme="dark"] .sp-close,
+html[data-theme="dark"] .sp-close{color:#cbd5e1 !important}
+body[data-theme="dark"] .sp-section-title,
+html[data-theme="dark"] .sp-section-title{color:#9aa4b2 !important}
+body[data-theme="dark"] .sp-item,
+html[data-theme="dark"] .sp-item{color:#e5e7eb !important}
+body[data-theme="dark"] .sp-item:hover,
+html[data-theme="dark"] .sp-item:hover{background:#2a2f36 !important}
+body[data-theme="dark"] .sp-fab,
+html[data-theme="dark"] .sp-fab{background:#2563eb !important;color:#fff !important}
+
+/* Ensure content area adopts dark background */
+body[data-theme="dark"] #sp-panel .sp-content,
+html[data-theme="dark"] #sp-panel .sp-content{background:#1f2125 !important}
+
+/* Ensure items don't paint white backgrounds in dark mode */
+body[data-theme="dark"] #sp-panel .sp-item,
+html[data-theme="dark"] #sp-panel .sp-item{background:transparent !important}
+

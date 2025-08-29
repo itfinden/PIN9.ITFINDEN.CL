@@ -1,0 +1,103 @@
+{
+  "general": {
+    "welcome": "Bienvenido a nuestra aplicación",
+    "greeting": "Hola, {name}",
+    "home": "HOME",
+    "lang": "LANG",
+    "select_language": "SELECT_LANGUAGE"
+  },
+  "auth": {
+    "login_title": "Inicio de Sesion",
+    "login": "Inicio Sesion",
+    "logout": "Salir",
+    "login_button": "LOGIN",
+    "no_account": "Registrate",
+    "sign_up": "REGISTRATE",
+    "username": "USUARIO",
+    "password": "CLAVE"
+  },
+  "navigation": {
+    "dashboard": "DASHBOARD",
+    "calendar": "CALENDARIO",
+    "projects": "PROYECTOS",
+    "tickets": "TICKETS",
+    "today": "HOY"
+  },
+  "calendar": {
+    "data_update": "Datos actualizados correctamente",
+    "save_error": "Hubo un problema al guardar, por favor inténtalo de nuevo!",
+    "happening_today": "HAPPENING_TODAY",
+    "starting_events": "STARTING_EVENTS",
+    "ending_events": "ENDING_EVENTS"
+  },
+  "projects": {
+    "title": "Proyectos de {USER}",
+    "new_task": "NUEVA TAREA",
+    "task": "TASK",
+    "to_do": "TO_DO",
+    "in_progress": "IN_PROGRESS",
+    "complete": "COMPLETE"
+  },
+  "services": {
+    "title": "Titulo Servicio",
+    "name": "Nombre Servicio",
+    "type": "Tipo de Servicio",
+    "description": "Descripción",
+    "duration": "Duración",
+    "unit": "Unidad",
+    "price": "Precio",
+    "status": "Estado",
+    "new_service": "New Service",
+    "edit_service": "Editar Servicio",
+    "delete_service": "Borrar Servicio",
+    "save_service": "Grabar Servicio",
+    "manage_services": "Manage Services"
+  },
+  "pricing": {
+    "title": "Planes y Precios",
+    "basic": "Básico",
+    "premium": "Premium",
+    "enterprise": "Enterprise",
+    "basic_price": "$0",
+    "premium_price": "$49.990",
+    "enterprise_price": "A convenir",
+    "per_month": "/mes",
+    "start_free": "Comenzar gratis",
+    "request_premium": "Solicitar Premium",
+    "contact_sales": "Contactar Ventas",
+    "basic_features": [
+      "Hasta 10 usuarios",
+      "Proyectos y tareas ilimitados",
+      "Soporte por email",
+      "Kanban y calendario"
+    ],
+    "premium_features": [
+      "Hasta 100 usuarios",
+      "Proyectos y tareas ilimitados",
+      "Soporte prioritario",
+      "Integraciones avanzadas",
+      "Reportes y métricas"
+    ],
+    "enterprise_features": [
+      "Usuarios ilimitados",
+      "Soporte dedicado 24/7",
+      "Integraciones personalizadas",
+      "Onboarding y capacitación",
+      "Funcionalidades a medida"
+    ]
+  },
+  "buttons": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar"
+  },
+  "errors": {
+    "required": "El campo {field} es obligatorio",
+    "email": "Por favor ingresa un email válido"
+  },
+  "products": {
+    "title": "Nuestros Productos",
+    "count": "{count} productos disponibles",
+    "empty": "No se encontraron productos"
+  }
+}

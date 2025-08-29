@@ -1,0 +1,244 @@
+/* ===== ESTILOS ESPECÍFICOS PARA EDIT_TICKET.PHP ===== */
+
+.edit-ticket-page {
+    min-height: 100vh;
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ticket-form-container {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 35px var(--shadow-light);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) var(--transition-ease);
+    width: 100%;
+    max-width: 1200px;
+}
+
+.edit-ticket-page .ticket-form-container {
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 15px 35px var(--shadow-light) !important;
+}
+
+[data-theme="dark"] .edit-ticket-page .ticket-form-container {
+    background: #2d2d2d !important;
+    border-color: #495057 !important;
+}
+
+[data-theme="light"] .edit-ticket-page .ticket-form-container {
+    background: #ffffff !important;
+    border-color: #dee2e6 !important;
+}
+
+.form-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    color: var(--text-primary);
+    transition: color var(--transition-speed) var(--transition-ease);
+}
+
+.form-section {
+    background: var(--bg-secondary);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) var(--transition-ease);
+    box-shadow: 0 4px 8px var(--shadow-light);
+}
+
+.form-section:hover {
+    box-shadow: 0 6px 12px var(--shadow-medium);
+}
+
+[data-theme="dark"] .form-section {
+    background: #404040 !important;
+    border-color: #495057 !important;
+}
+
+[data-theme="light"] .form-section {
+    background: #f8f9fa !important;
+    border-color: #dee2e6 !important;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color var(--transition-speed) var(--transition-ease);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    transition: color var(--transition-speed) var(--transition-ease);
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+    padding: 12px 15px;
+    transition: all var(--transition-speed) var(--transition-ease);
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--info-color) 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 15px 40px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all var(--transition-speed) var(--transition-ease);
+    color: var(--text-light);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px var(--shadow-medium);
+    color: var(--text-light);
+}
+
+.urgent-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--danger-color);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.urgent-toggle input[type="checkbox"] {
+    transform: scale(1.5);
+}
+
+.urgent-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: color var(--transition-speed) var(--transition-ease);
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+    padding: 15px 20px;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, var(--success-color) 0%, var(--success-color) 100%);
+    color: var(--text-light);
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, var(--danger-color) 0%, var(--danger-color) 100%);
+    color: var(--text-light);
+}
+
+/* Estilos para Summernote */
+.note-editor.note-frame {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.note-editor.note-frame .note-editing-area {
+    background-color: var(--bg-card);
+}
+
+.note-editor.note-frame .note-editing-area .note-editable {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.note-toolbar {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+.note-btn {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.note-btn:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* Estilos para los botones */
+.btn {
+    border-radius: 10px;
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-medium);
+}
+
+/* Estilos para los selects */
+select.form-control {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+/* Estilos para textarea */
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .edit-ticket-page {
+        padding: 10px 0;
+    }
+    
+    .ticket-form-container {
+        padding: 20px;
+    }
+    
+    .form-title {
+        font-size: 2rem;
+    }
+    
+    .form-section {
+        padding: 20px;
+    }
+}

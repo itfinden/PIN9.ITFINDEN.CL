@@ -1,0 +1,109 @@
+/* Estilos específicos para edit_ticket.php con alta especificidad */
+.edit-ticket-page .ticket-form-container {
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 15px 35px var(--shadow-light) !important;
+}
+
+[data-theme="dark"] .edit-ticket-page .ticket-form-container {
+    background: #2d2d2d !important;
+    border-color: #495057 !important;
+}
+
+[data-theme="light"] .edit-ticket-page .ticket-form-container {
+    background: #ffffff !important;
+    border-color: #dee2e6 !important;
+}
+
+/* Estilos adicionales para asegurar que el tema se aplique */
+[data-theme="dark"] .form-section {
+    background: #404040 !important;
+    border-color: #495057 !important;
+}
+
+[data-theme="light"] .form-section {
+    background: #f8f9fa !important;
+    border-color: #dee2e6 !important;
+}
+
+[data-theme="dark"] .form-control {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+    border-color: #495057 !important;
+}
+
+[data-theme="light"] .form-control {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+    border-color: #dee2e6 !important;
+}
+
+/* Estilos para el color del texto según el tema */
+[data-theme="dark"] .form-title {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .form-title {
+    color: #212529 !important;
+}
+
+[data-theme="dark"] .section-title {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .section-title {
+    color: #212529 !important;
+}
+
+[data-theme="dark"] .form-label {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .form-label {
+    color: #212529 !important;
+}
+
+[data-theme="dark"] .urgent-label {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .urgent-label {
+    color: #212529 !important;
+}
+
+[data-theme="dark"] .note-editor.note-frame .note-editing-area .note-editable {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .note-editor.note-frame .note-editing-area .note-editable {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+}
+
+[data-theme="dark"] .note-toolbar {
+    background-color: #404040 !important;
+    border-color: #495057 !important;
+}
+
+[data-theme="light"] .note-toolbar {
+    background-color: #f8f9fa !important;
+    border-color: #dee2e6 !important;
+}
+
+[data-theme="dark"] .note-btn {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .note-btn {
+    color: #212529 !important;
+}
+
+[data-theme="dark"] select.form-control option {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] select.form-control option {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+}

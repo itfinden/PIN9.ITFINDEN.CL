@@ -1,0 +1,454 @@
+/* ===== ESTILOS PARA VIEW_TICKET.PHP ===== */
+
+.ticket-view-page {
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+.ticket-container {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 35px var(--shadow-light);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.ticket-header {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.ticket-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.ticket-number {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.ticket-meta {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.ticket-badge {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ticket-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.info-card {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.info-title {
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.ticket-description {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.description-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.description-content {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.comments-section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-card {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px var(--shadow-light);
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.comment-date {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.comment-content {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.comment-internal {
+    background: var(--bg-secondary);
+    border-color: var(--warning-color);
+}
+
+.comment-form {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.status-form {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid var(--info-color);
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.btn-action {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--info-color) 100%);
+    border: none;
+    border-radius: 20px;
+    padding: 10px 25px;
+    font-weight: 500;
+    transition: all var(--transition-speed) var(--transition-ease);
+    color: var(--text-light);
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--shadow-medium);
+    color: var(--text-light);
+}
+
+.urgent-badge {
+    background: linear-gradient(135deg, var(--danger-color) 0%, var(--warning-color) 100%);
+    color: var(--text-light);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+    padding: 15px 20px;
+}
+
+/* ===== ESTILOS PARA EDIT_TICKET.PHP ===== */
+
+
+
+.form-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--info-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 30px;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.form-section {
+    background: var(--bg-secondary);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) var(--transition-ease);
+    box-shadow: 0 4px 8px var(--shadow-light);
+}
+
+.form-section:hover {
+    box-shadow: 0 6px 12px var(--shadow-medium);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+    padding: 12px 15px;
+    transition: all var(--transition-speed) var(--transition-ease);
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--info-color) 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 15px 40px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all var(--transition-speed) var(--transition-ease);
+    color: var(--text-light);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px var(--shadow-medium);
+    color: var(--text-light);
+}
+
+.urgent-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--danger-color);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.urgent-toggle input[type="checkbox"] {
+    transform: scale(1.5);
+}
+
+.urgent-label {
+    font-weight: 600;
+    color: var(--danger-color);
+}
+
+/* Estilos para Summernote en edit_ticket.php */
+.note-editor.note-frame {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.note-editor.note-frame .note-editing-area {
+    background-color: var(--bg-card);
+}
+
+.note-editor.note-frame .note-editing-area .note-editable {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.note-toolbar {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+.note-btn {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.note-btn:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* Estilos para los botones */
+.btn {
+    border-radius: 10px;
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-medium);
+}
+
+/* Estilos para los selects */
+select.form-control {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+/* Estilos para textarea */
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ticket-title {
+        font-size: 1.5rem;
+    }
+    
+    .ticket-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .ticket-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .edit-ticket-page {
+        padding: 10px 0;
+    }
+    
+    .ticket-form-container {
+        padding: 20px;
+    }
+    
+    .form-title {
+        font-size: 2rem;
+    }
+    
+    .form-section {
+        padding: 20px;
+    }
+}
+
+/* Estilos globales para formularios y temas */
+[data-theme="dark"] .form-control {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+    border-color: #495057 !important;
+}
+[data-theme="light"] .form-control {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+    border-color: #dee2e6 !important;
+}
+[data-theme="dark"] .form-label,
+[data-theme="dark"] .form-title,
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .urgent-label {
+    color: #ffffff !important;
+}
+[data-theme="light"] .form-label,
+[data-theme="light"] .form-title,
+[data-theme="light"] .section-title,
+[data-theme="light"] .urgent-label {
+    color: #212529 !important;
+}
+[data-theme="dark"] select.form-control option {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+}
+[data-theme="light"] select.form-control option {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+}
+/* Summernote editor global styles */
+[data-theme="dark"] .note-editor.note-frame .note-editing-area .note-editable {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+}
+[data-theme="light"] .note-editor.note-frame .note-editing-area .note-editable {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+}
+[data-theme="dark"] .note-toolbar {
+    background-color: #404040 !important;
+    border-color: #495057 !important;
+}
+[data-theme="light"] .note-toolbar {
+    background-color: #f8f9fa !important;
+    border-color: #dee2e6 !important;
+}
+[data-theme="dark"] .note-btn {
+    color: #ffffff !important;
+}
+[data-theme="light"] .note-btn {
+    color: #212529 !important;
+}

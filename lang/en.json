@@ -1,0 +1,103 @@
+{
+  "general": {
+    "welcome": "Welcome to our application",
+    "greeting": "Hello, {name}",
+    "home": "HOME",
+    "lang": "LANG",
+    "select_language": "SELECT_LANGUAGE"
+  },
+  "auth": {
+    "login_title": "Login",
+    "login": "Login",
+    "logout": "Logout",
+    "login_button": "LOGIN",
+    "no_account": "Sign up",
+    "sign_up": "SIGN UP",
+    "username": "USERNAME",
+    "password": "PASSWORD"
+  },
+  "navigation": {
+    "dashboard": "DASHBOARD",
+    "calendar": "CALENDAR",
+    "projects": "PROJECTS",
+    "tickets": "TICKETS",
+    "today": "TODAY"
+  },
+  "calendar": {
+    "data_update": "Data updated successfully",
+    "save_error": "There was a problem while saving, please try again!",
+    "happening_today": "HAPPENING_TODAY",
+    "starting_events": "STARTING_EVENTS",
+    "ending_events": "ENDING_EVENTS"
+  },
+  "projects": {
+    "title": "Projects of {USER}",
+    "new_task": "NEW TASK",
+    "task": "TASK",
+    "to_do": "TO_DO",
+    "in_progress": "IN_PROGRESS",
+    "complete": "COMPLETE"
+  },
+  "services": {
+    "title": "Service Title",
+    "name": "Service Name",
+    "type": "Service Type",
+    "description": "Description",
+    "duration": "Duration",
+    "unit": "Unit",
+    "price": "Price",
+    "status": "Status",
+    "new_service": "New Service",
+    "edit_service": "Edit Service",
+    "delete_service": "Delete Service",
+    "save_service": "Save Service",
+    "manage_services": "Manage Services"
+  },
+  "pricing": {
+    "title": "Plans and Pricing",
+    "basic": "Basic",
+    "premium": "Premium",
+    "enterprise": "Enterprise",
+    "basic_price": "$0",
+    "premium_price": "$49.99",
+    "enterprise_price": "Contact us",
+    "per_month": "/month",
+    "start_free": "Start free",
+    "request_premium": "Request Premium",
+    "contact_sales": "Contact Sales",
+    "basic_features": [
+      "Up to 10 users",
+      "Unlimited projects and tasks",
+      "Email support",
+      "Kanban and calendar"
+    ],
+    "premium_features": [
+      "Up to 100 users",
+      "Unlimited projects and tasks",
+      "Priority support",
+      "Advanced integrations",
+      "Reports and metrics"
+    ],
+    "enterprise_features": [
+      "Unlimited users",
+      "24/7 dedicated support",
+      "Custom integrations",
+      "Onboarding and training",
+      "Custom features"
+    ]
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "errors": {
+    "required": "The {field} field is required",
+    "email": "Please enter a valid email"
+  },
+  "products": {
+    "title": "Our Products",
+    "count": "{count} products available",
+    "empty": "No products found"
+  }
+}
