@@ -229,50 +229,40 @@
             
             <!-- Acciones rápidas -->
             <div class="quick-actions">
-                <?php if (can_access_module($id_user, 'today')): ?>
-                <a href="<?= getModuleUrl('today') ?>" class="quick-btn">
+                <a href="today.php" class="quick-btn">
                     <i class="fas fa-calendar-day"></i>
                     Hoy
                 </a>
-                <?php endif; ?>
                 
-                <?php if (can_access_module($id_user, 'projects')): ?>
-                <a href="<?= getModuleUrl('projects') ?>" class="quick-btn">
+                <a href="projects.php" class="quick-btn">
                     <i class="fas fa-project-diagram"></i>
                     Proyectos
                 </a>
-                <?php endif; ?>
                 
-                <?php if (can_access_module($id_user, 'tickets')): ?>
-                <a href="<?= getModuleUrl('tickets') ?>" class="quick-btn">
+                <a href="tickets.php" class="quick-btn">
                     <i class="fas fa-ticket-alt"></i>
                     Tickets
                 </a>
-                <?php endif; ?>
                 
-                <?php if (can_access_module($id_user, 'calendar')): ?>
-                <a href="<?= getModuleUrl('calendar') ?>" class="quick-btn">
+                <a href="calendar.php" class="quick-btn">
                     <i class="fas fa-calendar-alt"></i>
                     Calendario
                 </a>
-                <?php endif; ?>
                 
-                <?php if (can_access_module($id_user, 'services')): ?>
-                <a href="<?= getModuleUrl('services') ?>" class="quick-btn">
+                <a href="services.php" class="quick-btn">
                     <i class="fas fa-cogs"></i>
                     Servicios
                 </a>
-                <?php endif; ?>
                 
                 <?php if ($is_superadmin): ?>
-                <a href="<?= getModuleUrl('companies') ?>" class="quick-btn">
+                <a href="admin/companies.php" class="quick-btn">
                     <i class="fas fa-building"></i>
                     Empresas
                 </a>
                 <?php endif; ?>
                 
                 <?php if ($is_superadmin): ?>
-                <a href="<?= getModuleUrl('audit') ?>" class="quick-btn">
+                <a href="admin/audit_logs.php" class="quick-btn">
                     <i class="fas fa-shield-alt"></i>
                     Auditoría
                 </a>
