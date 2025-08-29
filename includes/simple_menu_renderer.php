@@ -226,6 +226,17 @@ class SimpleMenuRenderer {
 function render_simple_menu($userId, $type = 'vertical', $options = []) {
     global $pdo;
     
+    // Si no hay conexión PDO, crear una
+    if (!$pdo) {
+        require_once __DIR__ . '/../db/connection.php';
+        try {
+            $pdo = new PDO("mysql:host=$hostname;dbname=$database;charset=utf8", $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            return "<div class='alert alert-danger'>Error de conexión a la base de datos</div>";
+        }
+    }
+    
     $renderer = new SimpleMenuRenderer($pdo);
     
     switch ($type) {
@@ -241,12 +252,37 @@ function render_simple_menu($userId, $type = 'vertical', $options = []) {
 
 function can_access_module($userId, $moduleKey) {
     global $pdo;
+    
+    // Si no hay conexión PDO, crear una
+    if (!$pdo) {
+        require_once __DIR__ . '/../db/connection.php';
+        try {
+            $pdo = new PDO("mysql:host=$hostname;dbname=$database;charset=utf8", $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
     $renderer = new SimpleMenuRenderer($pdo);
     return $renderer->canAccessModule($userId, $moduleKey);
 }
 
 function can_edit_module($userId, $moduleKey) {
     global $pdo;
+    
+    // Si no hay conexión PDO, crear una
+    if (!$pdo) {
+        require_once __DIR__ . '/../db/connection.php';
+        try {
+            $pdo = new PDO("mysql:host=$hostname;dbname=$database;charset=utf8", $username, $password);
+            $renderer = new SimpleMenuRenderer($pdo);
+            return $renderer->canEditModule($userId, $moduleKey);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
     $renderer = new SimpleMenuRenderer($pdo);
     return $renderer->canEditModule($userId, $moduleKey);
 }
