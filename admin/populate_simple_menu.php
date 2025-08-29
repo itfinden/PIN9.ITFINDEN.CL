@@ -14,17 +14,17 @@ try {
     
     // 1. Insertar módulos del sistema
     $modules = [
-        ['dashboard', 'Dashboard', 'fas fa-tachometer-alt', '/content.php', 'Panel principal del sistema', 1],
-        ['calendar', 'Calendario', 'fas fa-calendar-alt', '/calendar.php', 'Gestión de eventos y calendarios', 2],
-        ['projects', 'Proyectos', 'fas fa-project-diagram', '/projects.php', 'Gestión de proyectos y tareas', 3],
-        ['tickets', 'Tickets', 'fas fa-ticket-alt', '/tickets.php', 'Sistema de tickets de soporte', 4],
-        ['today', 'Hoy', 'fas fa-clock', '/today.php', 'Tareas y eventos del día', 5],
-        ['services', 'Servicios', 'fas fa-cogs', '/services.php', 'Gestión de servicios', 6],
-        ['companies', 'Empresas', 'fas fa-building', '/admin/companies.php', 'Administración de empresas', 7],
-        ['users', 'Usuarios', 'fas fa-users', '/admin/company_users.php', 'Gestión de usuarios', 8],
-        ['billing', 'Facturación', 'fas fa-credit-card', '/admin/billing_config.php', 'Configuración de facturación', 9],
-        ['audit', 'Auditoría', 'fas fa-shield-alt', '/admin/audit_logs.php', 'Logs de auditoría', 10],
-        ['settings', 'Configuración', 'fas fa-cog', '/admin/company-settings.php', 'Configuración del sistema', 11]
+        ['dashboard', 'Dashboard', 'fas fa-tachometer-alt', 'http://localhost/content.php', 'Panel principal del sistema', 1],
+        ['calendar', 'Calendario', 'fas fa-calendar-alt', 'http://localhost/calendar.php', 'Gestión de eventos y calendarios', 2],
+        ['projects', 'Proyectos', 'fas fa-project-diagram', 'http://localhost/projects.php', 'Gestión de proyectos y tareas', 3],
+        ['tickets', 'Tickets', 'fas fa-ticket-alt', 'http://localhost/tickets.php', 'Sistema de tickets de soporte', 4],
+        ['today', 'Hoy', 'fas fa-clock', 'http://localhost/today.php', 'Tareas y eventos del día', 5],
+        ['services', 'Servicios', 'fas fa-cogs', 'http://localhost/services.php', 'Gestión de servicios', 6],
+        ['companies', 'Empresas', 'fas fa-building', 'http://localhost/admin/companies.php', 'Administración de empresas', 7],
+        ['users', 'Usuarios', 'fas fa-users', 'http://localhost/admin/company_users.php', 'Gestión de usuarios', 8],
+        ['billing', 'Facturación', 'fas fa-credit-card', 'http://localhost/admin/billing_config.php', 'Configuración de facturación', 9],
+        ['audit', 'Auditoría', 'fas fa-shield-alt', 'http://localhost/admin/audit_logs.php', 'Logs de auditoría', 10],
+        ['settings', 'Configuración', 'fas fa-cog', 'http://localhost/admin/company-settings.php', 'Configuración del sistema', 11]
     ];
     
     $stmt = $pdo->prepare("INSERT IGNORE INTO system_modules_simple (module_key, module_name, icon, url, description, menu_order) VALUES (?, ?, ?, ?, ?, ?)");
