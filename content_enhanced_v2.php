@@ -13,7 +13,7 @@ require_once "db/functions.php";
 require_once "security/check_access.php";
 
 // Verificar permiso para ver el dashboard
-verificarPermisoVista($_SESSION["id_user"], 51); // view_dashboard
+verificarPermisoVista($_SESSION["id_user"], 9); // view_dashboard
 
 // Obtener información del usuario y su empresa
 $id_user = $_SESSION["id_user"];
@@ -151,6 +151,6 @@ if (!isset($_SESSION["user"])) {
 // Preparar el tema antes de incluir la vista
 $theme_attributes = applyThemeToHTML();
 
-// Ahora incluir la vista mejorada
-require "views/content_enhanced.view.php";
+// Incluir la vista mejorada que mantiene el slidepanel
+require "views/content_enhanced_v2.view.php";
 ?>
