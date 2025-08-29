@@ -1,7 +1,6 @@
 <?php
 /**
- * Poblar Sistema Simple de Menús
- * Con módulos y roles existentes
+ * Script para limpiar y repoblar el sistema simple con URLs relativas
  */
 
 require_once __DIR__ . '/../db/connection.php';
@@ -10,9 +9,49 @@ try {
     $pdo = new PDO("mysql:host=$hostname;dbname=$database;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    echo "🚀 Poblando Sistema Simple de Menús...\n\n";
+    echo "🧹 Limpiando y repoblando sistema simple...\n\n";
     
-    // 1. Insertar módulos del sistema
+    // 1. Limpiar tablas existentes
+    echo "🗑️ Limpiando tablas existentes...\n";
+    
+    $pdo->exec("DELETE FROM module_role_permissions_simple");
+    $pdo->exec("DELETE FROM system_modules_simple");
+    $pdo->exec("DELETE FROM system_roles_simple");
+    
+    echo "✅ Tablas limpiadas\n\n";
+    
+    // 2. Resetear auto-increment
+    echo "🔄 Reseteando contadores...\n";
+    
+    $pdo->exec("ALTER TABLE system_modules_simple AUTO_INCREMENT = 1");
+    $pdo->exec("ALTER TABLE system_roles_simple AUTO_INCREMENT = 1");
+    $pdo->exec("ALTER TABLE module_role_permissions_simple AUTO_INCREMENT = 1");
+    
+    echo "✅ Contadores reseteados\n\n";
+    
+    // 3. Insertar roles del sistema
+    echo "👥 Insertando roles...\n";
+    
+    $roles = [
+        ['superadmin', 'Super Administrador', 'Acceso completo a todo el sistema', 1],
+        ['admin', 'Administrador', 'Administración de empresa y usuarios', 2],
+        ['manager', 'Gerente', 'Gestión de proyectos y tickets', 3],
+        ['user', 'Usuario', 'Acceso básico a módulos asignados', 4],
+        ['guest', 'Invitado', 'Acceso limitado de solo lectura', 5]
+    ];
+    
+    $stmt = $pdo->prepare("INSERT INTO system_roles_simple (role_key, role_name, description, is_active) VALUES (?, ?, ?, ?)");
+    
+    foreach ($roles as $role) {
+        $stmt->execute($role);
+        echo "   ✅ Rol: {$role[1]}\n";
+    }
+    
+    echo "\n";
+    
+    // 4. Insertar módulos con URLs relativas
+    echo "📱 Insertando módulos con URLs relativas...\n";
+    
     $modules = [
         ['dashboard', 'Dashboard', 'fas fa-tachometer-alt', '/content.php', 'Panel principal del sistema', 1],
         ['calendar', 'Calendario', 'fas fa-calendar-alt', '/calendar.php', 'Gestión de eventos y calendarios', 2],
@@ -27,30 +66,18 @@ try {
         ['settings', 'Configuración', 'fas fa-cog', '/admin/company-settings.php', 'Configuración del sistema', 11]
     ];
     
-    $stmt = $pdo->prepare("INSERT IGNORE INTO system_modules_simple (module_key, module_name, icon, url, description, menu_order) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO system_modules_simple (module_key, module_name, icon, url, description, menu_order) VALUES (?, ?, ?, ?, ?, ?)");
     
     foreach ($modules as $module) {
         $stmt->execute($module);
+        echo "   ✅ {$module[1]}: {$module[3]}\n";
     }
-    echo "✅ Módulos del sistema insertados\n";
     
-    // 2. Insertar roles del sistema
-    $roles = [
-        ['superadmin', 'Super Administrador', 'Acceso completo a todo el sistema', 1],
-        ['admin', 'Administrador', 'Administración de empresa y usuarios', 2],
-        ['manager', 'Gerente', 'Gestión de proyectos y tickets', 3],
-        ['user', 'Usuario', 'Acceso básico a módulos asignados', 4],
-        ['guest', 'Invitado', 'Acceso limitado de solo lectura', 5]
-    ];
+    echo "\n";
     
-    $stmt = $pdo->prepare("INSERT IGNORE INTO system_roles_simple (role_key, role_name, description, is_active) VALUES (?, ?, ?, ?)");
+    // 5. Configurar permisos por módulo y rol
+    echo "🔐 Configurando permisos...\n";
     
-    foreach ($roles as $role) {
-        $stmt->execute($role);
-    }
-    echo "✅ Roles del sistema insertados\n";
-    
-    // 3. Configurar permisos por módulo y rol
     $permissions = [
         // SUPERADMIN - Acceso a todo
         ['dashboard', 'superadmin', 1, 1, 1, 1],
@@ -96,18 +123,20 @@ try {
         ['projects', 'guest', 1, 0, 0, 3]
     ];
     
-    $stmt = $pdo->prepare("INSERT IGNORE INTO module_role_permissions_simple (module_key, role_key, can_access, can_edit, can_delete, menu_order) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO module_role_permissions_simple (module_key, role_key, can_access, can_edit, can_delete, menu_order) VALUES (?, ?, ?, ?, ?, ?)");
     
     foreach ($permissions as $perm) {
         $stmt->execute($perm);
     }
-    echo "✅ Permisos configurados\n";
     
-    echo "\n🎉 Sistema Simple poblado exitosamente!\n";
+    echo "   ✅ " . count($permissions) . " permisos configurados\n";
+    
+    echo "\n🎉 Sistema simple limpiado y repoblado exitosamente!\n";
     echo "📊 Resumen:\n";
-    echo "   - " . count($modules) . " módulos configurados\n";
     echo "   - " . count($roles) . " roles definidos\n";
+    echo "   - " . count($modules) . " módulos configurados\n";
     echo "   - " . count($permissions) . " permisos configurados\n";
+    echo "   - URLs relativas (sin hardcodeo)\n";
     
 } catch (PDOException $e) {
     die("❌ Error: " . $e->getMessage());

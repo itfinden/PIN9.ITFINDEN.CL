@@ -70,8 +70,11 @@ class SimpleMenuRenderer {
             $isActive = ($currentUrl === $module['url']) ? ' active' : '';
             $icon = $module['icon'] ? "<i class=\"{$module['icon']}\"></i> " : '';
             
+            // Construir URL completa usando la configuración
+            $fullUrl = $this->buildFullUrl($module['url']);
+            
             $html .= "  <li class=\"$itemClass\">\n";
-            $html .= "    <a class=\"$linkClass$isActive\" href=\"{$module['url']}\" title=\"{$module['description']}\">\n";
+            $html .= "    <a class=\"$linkClass$isActive\" href=\"$fullUrl\" title=\"{$module['description']}\">\n";
             $html .= "      $icon{$module['module_name']}\n";
             $html .= "    </a>\n";
             $html .= "  </li>\n";
@@ -100,8 +103,11 @@ class SimpleMenuRenderer {
             $isActive = ($currentUrl === $module['url']) ? ' active' : '';
             $icon = $module['icon'] ? "<i class=\"{$module['icon']}\"></i> " : '';
             
+            // Construir URL completa usando la configuración
+            $fullUrl = $this->buildFullUrl($module['url']);
+            
             $html .= "  <li class=\"$itemClass\">\n";
-            $html .= "    <a class=\"$linkClass$isActive\" href=\"{$module['url']}\" title=\"{$module['description']}\">\n";
+            $html .= "    <a class=\"$linkClass$isActive\" href=\"$fullUrl\" title=\"{$module['description']}\">\n";
             $html .= "      $icon{$module['module_name']}\n";
             $html .= "    </a>\n";
             $html .= "  </li>\n";
@@ -129,13 +135,16 @@ class SimpleMenuRenderer {
             $isActive = ($currentUrl === $module['url']) ? ' border-primary' : '';
             $icon = $module['icon'] ? "<i class=\"{$module['icon']} fa-2x mb-2\"></i>" : '';
             
+            // Construir URL completa usando la configuración
+            $fullUrl = $this->buildFullUrl($module['url']);
+            
             $html .= "  <div class=\"$cardClass\">\n";
             $html .= "    <div class=\"card h-100$isActive\">\n";
             $html .= "      <div class=\"card-body text-center\">\n";
             $html .= "        <div class=\"text-primary mb-2\">$icon</div>\n";
-            $html .= "        <h6 class=\"card-title\">{$module['module_name']}</h6>\n";
+            $html .= "        <div class=\"card-title\">{$module['module_name']}</div>\n";
             $html .= "        <p class=\"card-text small\">{$module['description']}</p>\n";
-            $html .= "        <a href=\"{$module['url']}\" class=\"btn btn-outline-primary btn-sm\">Acceder</a>\n";
+            $html .= "        <a href=\"$fullUrl\" class=\"btn btn-outline-primary btn-sm\">Acceder</a>\n";
             $html .= "      </div>\n";
             $html .= "    </div>\n";
             $html .= "  </div>\n";
@@ -164,6 +173,32 @@ class SimpleMenuRenderer {
         } catch (PDOException $e) {
             return false;
         }
+    }
+    
+    /**
+     * Construir URL completa usando la configuración
+     */
+    private function buildFullUrl($relativeUrl) {
+        // Si ya es una URL completa, devolverla tal como está
+        if (filter_var($relativeUrl, FILTER_VALIDATE_URL)) {
+            return $relativeUrl;
+        }
+        
+        // Si es relativa, construir la URL completa
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'];
+        
+        // Obtener el path base del proyecto
+        $scriptPath = $_SERVER['SCRIPT_NAME'];
+        $basePath = dirname($scriptPath);
+        
+        // Si estamos en la raíz, usar solo el host
+        if ($basePath === '/') {
+            return $protocol . '://' . $host . $relativeUrl;
+        }
+        
+        // Si no, incluir el path base
+        return $protocol . '://' . $host . $basePath . $relativeUrl;
     }
     
     /**
