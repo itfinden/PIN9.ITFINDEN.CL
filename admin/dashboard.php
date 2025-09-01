@@ -537,6 +537,11 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
                                 <a class="dropdown-item" href="audit_logs.php">
                                     <i class="fas fa-clipboard-list"></i> Ver Logs
                                 </a>
+                                <?php if ($is_superadmin): ?>
+                                <a class="dropdown-item" href="content_editor.php">
+                                    <i class="fas fa-edit"></i> Editor de Contenido
+                                </a>
+                                <?php endif; ?>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="../Modules/BOTWhatsapp/manage.php">
                                     <i class="fab fa-whatsapp"></i> BOT WhatsApp

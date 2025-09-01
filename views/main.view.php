@@ -6,9 +6,14 @@ echo applyThemeToHTML();
 <?php
 require_once __DIR__ . '/../lang/JsonLanguage.php';
 require_once __DIR__ . '/../db/connection.php';
+require_once __DIR__ . '/../db/content_manager.php';
 
 $lang = JsonLanguage::autoDetect();
 $current_lang = $_SESSION['lang'] ?? $lang->getLanguage() ?? 'es';
+
+// Inicializar gestor de contenido
+$contentManager = new ContentManager($pdo);
+$mainContent = $contentManager->getContentBySections($current_lang);
 
 // Verificar que la conexión esté disponible
 if (!isset($pdo)) {
@@ -307,17 +312,17 @@ function getFeatureIcon($feature) {
 <!-- ----------------------- MAIN CONTENT --------------------------------------- -->
 <div class="row m-0 p-0">
 	<div class="col-6 p-5">
-		<div class="container mx-5 mt-3">
-			<h2 class="display-4"> <small>Make your life <span class="text-primary">memorable</span></small> </h2>
-			<p class="lead">Keep your life organized. We are the solution that you need.</p>
-		</div>
-		<div class="container mx-5 mr-5 mt-3 d-inline-block">
-			<h4 class="text-primary pr-5"><i class="fas fa-rocket pr-3"></i>TAKE OFF YOUR BUSSINESS</h3>
-			<p class="text-muted pr-5">Keep all your projects in one place. We offer you a simple Kanban board where you will be able to add as many projects and tasks as you want.</p>
-			<h4 class="text-primary pr-5"><i class="far fa-calendar-check pr-3"></i>FORGET ABOUT FORGETTING</h3>
-			<p class="text-muted pr-5">Always late? Let us take your agenda for you. We offer you a completely scalable calendar where you can schedule all your events and see them easily. </p>
-				
-		</div>
+		<?php if (isset($mainContent['hero'])): ?>
+			<?php echo $contentManager->renderSection('hero', $current_lang, 'hero'); ?>
+		<?php endif; ?>
+		
+		<?php if (isset($mainContent['business_takeoff'])): ?>
+			<?php echo $contentManager->renderSection('business_takeoff', $current_lang, 'feature'); ?>
+		<?php endif; ?>
+		
+		<?php if (isset($mainContent['calendar_feature'])): ?>
+			<?php echo $contentManager->renderSection('calendar_feature', $current_lang, 'feature'); ?>
+		<?php endif; ?>
 		<div class="container d-flex justify-content-center mt-4">
 			<a href="register.php" class="btn btn-sign-up">GET STARTED <i class="fas fa-arrow-circle-right pl-2"></i></a>
 		</div>
