@@ -9,7 +9,7 @@ $lang = Language::autoDetect();
 	<?php $title= "PIN9"; ?>
 	
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 <!-- BOOTSTRAP-->
@@ -261,6 +261,239 @@ body[data-theme="dark"] .illustration-placeholder {
     background: linear-gradient(135deg, #4dabf7 0%, #74c0fc 100%) !important;
     color: var(--text-light) !important;
 }
+
+/* ==================== ESTILOS RESPONSIVOS ==================== */
+
+/* Responsive para tablets (768px - 991px) */
+@media (max-width: 991.98px) {
+    .container .row {
+        flex-direction: column;
+    }
+    
+    .col-6 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+    
+    .registration-illustration {
+        min-height: 250px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .registration-illustration img {
+        max-width: 80% !important;
+        height: auto !important;
+        margin: 0 auto !important;
+        display: block !important;
+    }
+    
+    .registration-illustration .pl-5 {
+        padding-left: 0 !important;
+    }
+    
+    .h1.fw-bold {
+        font-size: 2rem !important;
+        margin: 2rem 0 !important;
+    }
+    
+    .form .px-5 {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+    
+    .input-group {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .btn-primary {
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 0 auto !important;
+        display: block !important;
+    }
+}
+
+/* Responsive para móviles (576px - 767px) */
+@media (max-width: 767.98px) {
+    .container {
+        padding: 1rem !important;
+    }
+    
+    .p-5 {
+        padding: 1rem !important;
+    }
+    
+    .registration-illustration {
+        min-height: 200px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .registration-illustration img {
+        max-width: 90% !important;
+        height: auto !important;
+    }
+    
+    .h1.fw-bold {
+        font-size: 1.75rem !important;
+        margin: 1.5rem 0 !important;
+    }
+    
+    .form .px-5 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    .input-group {
+        margin-bottom: 1rem !important;
+    }
+    
+    .input-group-text {
+        font-size: 0.875rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    .form-control {
+        font-size: 0.875rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    .btn-primary {
+        width: 100% !important;
+        max-width: 250px !important;
+        padding: 0.75rem 1.5rem !important;
+        font-size: 1rem !important;
+    }
+    
+    .fallback-illustration {
+        padding: 1rem !important;
+    }
+    
+    .illustration-placeholder {
+        padding: 2rem 1.5rem !important;
+    }
+    
+    .illustration-placeholder i {
+        font-size: 3rem !important;
+    }
+    
+    .illustration-placeholder h3 {
+        font-size: 1.25rem !important;
+    }
+    
+    .illustration-placeholder p {
+        font-size: 0.875rem !important;
+    }
+}
+
+/* Responsive para móviles pequeños (menos de 576px) */
+@media (max-width: 575.98px) {
+    .container {
+        padding: 0.5rem !important;
+    }
+    
+    .p-5 {
+        padding: 0.75rem !important;
+    }
+    
+    .registration-illustration {
+        min-height: 180px;
+        margin-bottom: 1rem;
+    }
+    
+    .registration-illustration img {
+        max-width: 95% !important;
+    }
+    
+    .h1.fw-bold {
+        font-size: 1.5rem !important;
+        margin: 1rem 0 !important;
+    }
+    
+    .form .px-5 {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    
+    .input-group {
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .input-group-text {
+        font-size: 0.8rem !important;
+        padding: 0.375rem 0.5rem !important;
+    }
+    
+    .form-control {
+        font-size: 0.8rem !important;
+        padding: 0.375rem 0.5rem !important;
+    }
+    
+    .btn-primary {
+        width: 100% !important;
+        max-width: 200px !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.875rem !important;
+    }
+    
+    .fallback-illustration {
+        padding: 0.75rem !important;
+    }
+    
+    .illustration-placeholder {
+        padding: 1.5rem 1rem !important;
+        border-radius: 15px !important;
+    }
+    
+    .illustration-placeholder i {
+        font-size: 2.5rem !important;
+    }
+    
+    .illustration-placeholder h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    .illustration-placeholder p {
+        font-size: 0.8rem !important;
+    }
+}
+
+/* Mejoras de accesibilidad y usabilidad */
+@media (prefers-reduced-motion: reduce) {
+    .registration-illustration img,
+    .illustration-placeholder,
+    .input-group,
+    .btn-primary {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Soporte para modo oscuro del sistema */
+@media (prefers-color-scheme: dark) {
+    .illustration-placeholder {
+        background: linear-gradient(135deg, #4dabf7 0%, #74c0fc 100%) !important;
+        color: white !important;
+    }
+}
+
+/* Orientación landscape en móviles */
+@media (max-width: 767.98px) and (orientation: landscape) {
+    .registration-illustration {
+        min-height: 150px;
+        margin-bottom: 1rem;
+    }
+    
+    .h1.fw-bold {
+        font-size: 1.5rem !important;
+        margin: 1rem 0 !important;
+    }
+    
+    .container .row {
+        align-items: center;
+    }
+}
 </style>
 
 <title><?php $title ?></title>
@@ -276,8 +509,8 @@ body[data-theme="dark"] .illustration-placeholder {
 
 <!-- ----------------------- MAIN CONTENT --------------------------------------- -->
 <div class="container">
-	<div class="row m-0 p-0">
-		<div class="col-6 p-5">
+	<div class="row m-0 p-0 justify-content-center align-items-center">
+		<div class="col-lg-6 col-md-12 col-sm-12 p-5">
 			<div class="registration-illustration">
 				<img class="img-fluid pl-5" src="img/register-illustration.svg" alt="PIN9 Registration Illustration" style="max-width: 100%; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
 				<div class="fallback-illustration" style="display: none; text-align: center; padding: 2rem;">
@@ -289,7 +522,7 @@ body[data-theme="dark"] .illustration-placeholder {
 				</div>
 			</div>
 		</div>	
-		<div class="col-6 p-5 justify-content-center">
+		<div class="col-lg-6 col-md-12 col-sm-12 p-5 justify-content-center">
 			<p class="text-center h1 fw-bold m-5">SIGN UP</p>
 			<form class="px-5" name="signup" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
 				<div class="mb-4">					
