@@ -222,6 +222,45 @@ input:checked + .theme-slider:before {
 body[data-theme="dark"] * {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+
+/* Estilos para la ilustración de registro */
+.registration-illustration {
+    position: relative;
+    min-height: 300px;
+}
+
+.registration-illustration img {
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.registration-illustration img:hover {
+    transform: scale(1.02);
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+}
+
+.fallback-illustration {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.illustration-placeholder {
+    transition: all 0.3s ease;
+}
+
+.illustration-placeholder:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos específicos para tema oscuro */
+body[data-theme="dark"] .illustration-placeholder {
+    background: linear-gradient(135deg, #4dabf7 0%, #74c0fc 100%) !important;
+    color: var(--text-light) !important;
+}
 </style>
 
 <title><?php $title ?></title>
@@ -239,7 +278,16 @@ body[data-theme="dark"] * {
 <div class="container">
 	<div class="row m-0 p-0">
 		<div class="col-6 p-5">
-			<img class="img-fluid pl-5" src="img/2.jpg" alt="project_management">		
+			<div class="registration-illustration">
+				<img class="img-fluid pl-5" src="img/register-illustration.svg" alt="PIN9 Registration Illustration" style="max-width: 100%; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+				<div class="fallback-illustration" style="display: none; text-align: center; padding: 2rem;">
+					<div class="illustration-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 3rem; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+						<i class="fas fa-user-plus" style="font-size: 4rem; margin-bottom: 1rem; display: block;"></i>
+						<h3 style="margin-bottom: 1rem;">Welcome to PIN9</h3>
+						<p style="opacity: 0.9; margin-bottom: 0;">Create your account and start managing your projects</p>
+					</div>
+				</div>
+			</div>
 		</div>	
 		<div class="col-6 p-5 justify-content-center">
 			<p class="text-center h1 fw-bold m-5">SIGN UP</p>
