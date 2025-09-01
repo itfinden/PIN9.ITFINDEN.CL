@@ -10,9 +10,6 @@
  require_once __DIR__ . '/views/partials/slidepanel_menu.php';
  ?>
 
- </body>
- </html>
-
 <?php
 #Fin Footer
 ?>

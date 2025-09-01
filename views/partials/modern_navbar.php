@@ -265,6 +265,36 @@ if (!$user && $user_id) {
 
 <!-- Estilos CSS para el navbar moderno -->
 <style>
+/* CORRECCIÓN IMPORTANTE: Asegurar que el navbar tenga un fondo uniforme */
+.modern-navbar,
+.modern-navbar.navbar,
+.modern-navbar.navbar-light {
+  background: var(--bg-navbar) !important;
+  background-color: var(--bg-navbar) !important;
+  background-image: none !important;
+}
+
+/* Asegurar que todos los elementos hijos tengan fondo transparente */
+.modern-navbar *:not(.dropdown-menu) {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Estilos específicos para temas */
+[data-theme="dark"] .modern-navbar,
+[data-theme="dark"] .modern-navbar.navbar,
+[data-theme="dark"] .modern-navbar.navbar-light {
+  background: var(--bg-navbar) !important;
+  background-color: var(--bg-navbar) !important;
+}
+
+[data-theme="light"] .modern-navbar,
+[data-theme="light"] .modern-navbar.navbar,
+[data-theme="light"] .modern-navbar.navbar-light {
+  background: var(--bg-navbar) !important;
+  background-color: var(--bg-navbar) !important;
+}
+
 .modern-navbar {
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
@@ -636,6 +666,21 @@ input:checked + .theme-slider:before {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Estilos adicionales para dropdowns */
+.modern-navbar .dropdown-menu {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Estilos específicos para iconos del toggler */
+[data-theme="light"] .modern-navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+[data-theme="dark"] .modern-navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 </style>
 

@@ -3,6 +3,9 @@
 // Manejar cambio de idioma ANTES de cualquier output
 require_once __DIR__ . '/lang/language_handler.php';
 
+// Incluir el manejador de temas
+require_once __DIR__ . '/theme_handler.php';
+
 if (isset($_SESSION['user'])) {
 	header('Location: content.php');
 	die();
