@@ -9,9 +9,9 @@ require_once '../db/connection.php';
 require_once '../security/check_access.php';
 
 // Verificar que sea superadmin
-if (!isset($_SESSION['user']) || $_SESSION['user_role'] !== 'superadmin') {
-    header('Location: ../login.php');
-    die('Acceso denegado');
+if (!isset($_SESSION['is_superadmin']) || $_SESSION['is_superadmin'] != 1) {
+    header('Location: ../login.php?error=access_denied');
+    exit();
 }
 
 // Obtener idiomas disponibles
@@ -45,7 +45,7 @@ if ($_POST && isset($_POST['action'])) {
             
             $stmt_history->execute([
                 $_POST['content_id'],
-                $_SESSION['user_id'],
+                $_SESSION['id_user'],
                 json_encode([
                     'title' => $_POST['old_title'],
                     'subtitle' => $_POST['old_subtitle'],
