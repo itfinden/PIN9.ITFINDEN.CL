@@ -229,6 +229,42 @@ $stats = $stmt->fetch();
             font-weight: 500;
         }
         
+        .filters-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .filters-toggle-btn {
+            background: var(--secondary-color, #6c757d);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .filters-toggle-btn:hover {
+            background: var(--secondary-hover, #5a6268);
+            transform: translateY(-1px);
+        }
+        
+        .filters-container {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .filters-container.collapsed {
+            max-height: 0;
+            margin-bottom: 0;
+            opacity: 0;
+        }
+        
         .filters-section {
             background: var(--bg-secondary, #f8f9fa);
             border: 1px solid var(--border-color, #dee2e6);
@@ -553,7 +589,8 @@ $stats = $stmt->fetch();
                 font-size: 0.6rem;
             }
             
-            .stats-toggle-btn {
+            .stats-toggle-btn,
+            .filters-toggle-btn {
                 padding: 4px 8px;
                 font-size: 0.7rem;
             }
@@ -618,10 +655,9 @@ $stats = $stmt->fetch();
             </h1>
             
             <div class="stats-toggle">
-                <h6 style="margin: 0; color: var(--text-primary, #212529); font-weight: 600;">Resumen de Tickets</h6>
                 <button class="stats-toggle-btn" id="statsToggleBtn">
                     <i class="fas fa-chevron-up" id="statsToggleIcon"></i>
-                    <span id="statsToggleText">Ocultar</span>
+                    <span>Resumen de Tickets</span>
                 </button>
             </div>
             
@@ -663,8 +699,16 @@ $stats = $stmt->fetch();
         </div>
         
         <!-- Filtros -->
-        <div class="filters-section">
-            <form method="GET" class="row">
+        <div class="filters-toggle">
+            <button class="filters-toggle-btn" id="filtersToggleBtn">
+                <i class="fas fa-chevron-up" id="filtersToggleIcon"></i>
+                <span>Filtros de Búsqueda</span>
+            </button>
+        </div>
+        
+        <div class="filters-container" id="filtersContainer">
+            <div class="filters-section">
+                <form method="GET" class="row">
                 <div class="col-md-3 mb-3">
                     <label for="search" class="form-label">Buscar</label>
                     <input type="text" class="form-control" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Buscar tickets...">
@@ -723,7 +767,8 @@ $stats = $stmt->fetch();
                         <i class="fas fa-times mr-1"></i> Limpiar
                     </a>
                 </div>
-            </form>
+                </form>
+            </div>
         </div>
         
         <!-- Lista de tickets -->
@@ -862,37 +907,63 @@ document.querySelectorAll('#status, #priority, #category').forEach(select => {
     });
 });
 
-// Toggle de estadísticas
+// Toggle de estadísticas y filtros
 document.addEventListener('DOMContentLoaded', function() {
-    const toggleBtn = document.getElementById('statsToggleBtn');
-    const toggleIcon = document.getElementById('statsToggleIcon');
-    const toggleText = document.getElementById('statsToggleText');
+    // Toggle de estadísticas
+    const statsToggleBtn = document.getElementById('statsToggleBtn');
+    const statsToggleIcon = document.getElementById('statsToggleIcon');
     const statsContainer = document.getElementById('statsContainer');
     
-    // Verificar estado guardado en localStorage
-    const isCollapsed = localStorage.getItem('ticketsStatsCollapsed') === 'true';
+    // Verificar estado guardado en localStorage para estadísticas
+    const isStatsCollapsed = localStorage.getItem('ticketsStatsCollapsed') === 'true';
     
-    if (isCollapsed) {
+    if (isStatsCollapsed) {
         statsContainer.classList.add('collapsed');
-        toggleIcon.className = 'fas fa-chevron-down';
-        toggleText.textContent = 'Mostrar';
+        statsToggleIcon.className = 'fas fa-chevron-down';
     }
     
-    toggleBtn.addEventListener('click', function() {
+    statsToggleBtn.addEventListener('click', function() {
         const isCurrentlyCollapsed = statsContainer.classList.contains('collapsed');
         
         if (isCurrentlyCollapsed) {
             // Mostrar estadísticas
             statsContainer.classList.remove('collapsed');
-            toggleIcon.className = 'fas fa-chevron-up';
-            toggleText.textContent = 'Ocultar';
+            statsToggleIcon.className = 'fas fa-chevron-up';
             localStorage.setItem('ticketsStatsCollapsed', 'false');
         } else {
             // Ocultar estadísticas
             statsContainer.classList.add('collapsed');
-            toggleIcon.className = 'fas fa-chevron-down';
-            toggleText.textContent = 'Mostrar';
+            statsToggleIcon.className = 'fas fa-chevron-down';
             localStorage.setItem('ticketsStatsCollapsed', 'true');
+        }
+    });
+    
+    // Toggle de filtros
+    const filtersToggleBtn = document.getElementById('filtersToggleBtn');
+    const filtersToggleIcon = document.getElementById('filtersToggleIcon');
+    const filtersContainer = document.getElementById('filtersContainer');
+    
+    // Verificar estado guardado en localStorage para filtros
+    const isFiltersCollapsed = localStorage.getItem('ticketsFiltersCollapsed') === 'true';
+    
+    if (isFiltersCollapsed) {
+        filtersContainer.classList.add('collapsed');
+        filtersToggleIcon.className = 'fas fa-chevron-down';
+    }
+    
+    filtersToggleBtn.addEventListener('click', function() {
+        const isCurrentlyCollapsed = filtersContainer.classList.contains('collapsed');
+        
+        if (isCurrentlyCollapsed) {
+            // Mostrar filtros
+            filtersContainer.classList.remove('collapsed');
+            filtersToggleIcon.className = 'fas fa-chevron-up';
+            localStorage.setItem('ticketsFiltersCollapsed', 'false');
+        } else {
+            // Ocultar filtros
+            filtersContainer.classList.add('collapsed');
+            filtersToggleIcon.className = 'fas fa-chevron-down';
+            localStorage.setItem('ticketsFiltersCollapsed', 'true');
         }
     });
 });
