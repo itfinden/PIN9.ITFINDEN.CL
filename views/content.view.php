@@ -116,6 +116,14 @@
                     Administra fiestas, matrimonios y más. Crea eventos, subeventos e invitados.
                 </p>
             </a>
+            
+            <a href="tickets.php" class="action-card">
+                <i class="fas fa-ticket-alt action-icon"></i>
+                <h3 class="action-title">Tickets</h3>
+                <p class="action-description">
+                    Gestiona tickets y solicitudes. Crea, asigna y da seguimiento a tareas y problemas.
+                </p>
+            </a>
         </div>
         
         <!-- Acciones rápidas -->
