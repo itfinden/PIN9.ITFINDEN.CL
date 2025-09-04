@@ -444,6 +444,60 @@ $stats = $stmt->fetch();
             gap: 2px;
         }
         
+        .btn-create-ticket {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-create-ticket::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-create-ticket:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-create-ticket:hover::before {
+            left: 100%;
+        }
+        
+        .btn-create-ticket:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .btn-create-ticket i {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-create-ticket:hover i {
+            transform: rotate(90deg);
+        }
+        
         .btn-primary-ticket {
             background: var(--primary-color, #007bff);
             color: white;
@@ -595,6 +649,11 @@ $stats = $stmt->fetch();
                 font-size: 0.7rem;
             }
             
+            .btn-create-ticket {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+            
             .tickets-table-header,
             .ticket-row {
                 grid-template-columns: 2fr 1fr 1fr 80px;
@@ -637,6 +696,11 @@ $stats = $stmt->fetch();
             .btn-ticket {
                 padding: 1px 3px;
                 font-size: 0.6rem;
+            }
+            
+            .btn-create-ticket {
+                padding: 10px 20px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -695,8 +759,8 @@ $stats = $stmt->fetch();
             </div>
             
             <div class="text-center">
-                <a href="new_ticket.php" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--info-color) 100%); border: none; border-radius: 25px; padding: 12px 30px;">
-                    <i class="fas fa-plus mr-2"></i>
+                <a href="new_ticket.php" class="btn-create-ticket">
+                    <i class="fas fa-plus"></i>
                     Crear Nuevo Ticket
                 </a>
             </div>
