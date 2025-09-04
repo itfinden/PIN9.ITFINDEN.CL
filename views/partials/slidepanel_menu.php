@@ -1,375 +1,298 @@
 <?php
-/**
- * Slidepanel Menu - Sistema de Menús por Roles
- * Lee desde la base de datos según el rol del usuario
- */
-
-require_once __DIR__ . '/../../db/connection.php';
-require_once __DIR__ . '/../../db/functions.php';
-
-// Obtener información del usuario
-$user_id = $_SESSION['id_user'] ?? null;
-$user_role = $_SESSION['user_role'] ?? null;
-
-// Determinar el rol para el menú
-$menu_role = 'usuario'; // Por defecto
-
-if ($user_id) {
-    // Verificar si es superadmin
-    if (isset($_SESSION['is_superadmin']) && $_SESSION['is_superadmin'] == 1) {
-        $menu_role = 'superadmin';
-    } elseif ($user_role === 'admin') {
-        $menu_role = 'admin';
-    } else {
-        $menu_role = 'usuario';
-    }
-}
-
-try {
-    $pdo = new PDO("mysql:host=$hostname;dbname=$database;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Obtener menú según el rol
-    $stmt = $pdo->prepare("
-        SELECT rm.*, sf.functionality_name, sf.icon, sf.url, sf.description
-        FROM role_menus rm
-        JOIN system_functionalities sf ON rm.functionality_key = sf.functionality_key
-        WHERE rm.role_type = ? AND rm.is_visible = 1 AND sf.is_active = 1
-        ORDER BY rm.menu_order ASC
-    ");
-    $stmt->execute([$menu_role]);
-    $menu_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-} catch (PDOException $e) {
-    error_log("Error cargando menú del slidepanel: " . $e->getMessage());
-    $menu_items = [];
-}
+// Slidepanel Menu Original - Restaurado
+// Este archivo se incluye desde footer.php cuando $_SESSION['enable_slidepanel'] está activo
 ?>
 
-<!-- Slidepanel Menu -->
-<div class="slidepanel-menu">
-    <div class="menu-header">
-        <div class="user-info">
-            <div class="user-avatar">
-                <i class="fas fa-user-circle"></i>
-            </div>
-            <div class="user-details">
-                <div class="user-name"><?php echo htmlspecialchars($_SESSION['user'] ?? 'Usuario'); ?></div>
-                <div class="user-role-badge role-<?php echo $menu_role; ?>">
-                    <?php echo strtoupper($menu_role); ?>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="menu-content">
-        <nav class="menu-nav">
-            <?php if (empty($menu_items)): ?>
-                <div class="empty-menu">
-                    <i class="fas fa-info-circle"></i>
-                    <p>No hay elementos de menú disponibles</p>
-                </div>
-            <?php else: ?>
-                <?php foreach ($menu_items as $item): ?>
-                    <a href="<?php echo htmlspecialchars($item['url']); ?>" class="menu-item" data-functionality="<?php echo htmlspecialchars($item['functionality_key']); ?>">
-                        <div class="menu-item-icon">
-                            <i class="<?php echo htmlspecialchars($item['icon']); ?>"></i>
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-title">
-                                <?php echo htmlspecialchars($item['custom_title'] ?: $item['functionality_name']); ?>
-                            </div>
-                            <div class="menu-item-description">
-                                <?php echo htmlspecialchars($item['description']); ?>
-                            </div>
-                        </div>
-                        <div class="menu-item-arrow">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </nav>
-    </div>
-    
-    <div class="menu-footer">
-        <div class="menu-stats">
-            <div class="stat-item">
-                <i class="fas fa-bars"></i>
-                <span><?php echo count($menu_items); ?> elementos</span>
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-user-shield"></i>
-                <span><?php echo ucfirst($menu_role); ?></span>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Botón flotante para abrir el slidepanel -->
+<button id="sp-fab" class="sp-fab" aria-label="Abrir menú">
+  <i class="fas fa-bars"></i>
+</button>
 
+<!-- Panel lateral del slidepanel -->
+<aside id="sp-panel" class="sp-panel" aria-hidden="true">
+  <div class="sp-header">
+    <h6 class="sp-title mb-0"><i class="fas fa-compass mr-1"></i> Menú</h6>
+    <button id="sp-close" class="sp-close" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="sp-content">
+    <div class="sp-section-title">Navegación</div>
+    <a class="sp-item" href="/content.php"><i class="fas fa-home"></i> Inicio</a>
+    <a class="sp-item" href="/calendar.php"><i class="fas fa-calendar-alt"></i> Calendario</a>
+    <a class="sp-item" href="/evento_dashboard.php"><i class="fas fa-glass-cheers"></i> Eventos</a>
+    <a class="sp-item" href="/projects.php"><i class="fas fa-project-diagram"></i> Proyectos</a>
+
+    <div class="sp-section-title">Cuenta</div>
+    <a class="sp-item" href="/content.php"><i class="fas fa-user"></i> Perfil</a>
+    <a class="sp-item" href="/logout.php"><i class="fas fa-sign-out-alt"></i> Salir</a>
+
+    <div class="sp-section-title">Acciones rápidas</div>
+    <a class="sp-item" href="/evento_nuevo.php"><i class="fas fa-plus"></i> Nuevo Evento</a>
+    <a class="sp-item" href="/today.php"><i class="fas fa-bolt"></i> Hoy</a>
+  </div>
+</aside>
+
+<!-- Estilos CSS para el slidepanel -->
 <style>
-.slidepanel-menu {
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid var(--border-color);
-    box-shadow: 2px 0 10px var(--shadow-light);
+/* Botón flotante */
+.sp-fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color, #007bff) 0%, var(--primary-hover, #0056b3) 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
 }
 
-.menu-header {
-    padding: 20px;
-    border-bottom: 1px solid var(--border-color);
-    background: var(--bg-secondary);
+.sp-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(0, 123, 255, 0.4);
 }
 
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+/* Panel lateral */
+.sp-panel {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 350px;
+  height: 100vh;
+  background: var(--bg-primary, #ffffff);
+  box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+  z-index: 1001;
+  transition: right 0.3s ease-out;
+  overflow-y: auto;
+  color: var(--text-primary, #212529);
 }
 
-.user-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-color), var(--info-color));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
+.sp-panel.sp-open {
+  right: 0;
 }
 
-.user-details {
-    flex: 1;
+/* Header del panel */
+.sp-header {
+  background: linear-gradient(135deg, var(--primary-color, #007bff) 0%, var(--primary-hover, #0056b3) 100%);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color, #dee2e6);
 }
 
-.user-name {
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-    color: var(--text-primary);
+.sp-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-.user-role-badge {
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.sp-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease-out;
 }
 
-.role-superadmin {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-    color: white;
+.sp-close:hover {
+  background-color: rgba(255,255,255,0.2);
 }
 
-.role-admin {
-    background: linear-gradient(45deg, #4ecdc4, #44a08d);
-    color: white;
+/* Contenido del panel */
+.sp-content {
+  padding: 20px;
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #212529);
 }
 
-.role-usuario {
-    background: linear-gradient(45deg, #a8e6cf, #7fcdcd);
-    color: #333;
+.sp-section-title {
+  font-weight: 600;
+  color: var(--text-primary, #333);
+  margin: 20px 0 10px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--primary-color, #007bff);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.menu-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px 0;
+.sp-section-title:first-child {
+  margin-top: 0;
 }
 
-.menu-nav {
-    display: flex;
-    flex-direction: column;
+.sp-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  margin: 5px 0;
+  text-decoration: none;
+  color: var(--text-primary, #333);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
 }
 
-.menu-item {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-    border-left: 3px solid transparent;
-    position: relative;
+.sp-item:hover {
+  background: var(--bg-secondary, #f8f9fa);
+  color: var(--text-primary, #333);
+  text-decoration: none;
+  border-left-color: var(--primary-color, #007bff);
+  transform: translateX(5px);
 }
 
-.menu-item:hover {
-    background: var(--bg-secondary);
-    border-left-color: var(--primary-color);
-    color: var(--text-primary);
-    text-decoration: none;
-    transform: translateX(5px);
+.sp-item i {
+  margin-right: 12px;
+  width: 20px;
+  text-align: center;
+  color: var(--primary-color, #007bff);
 }
 
-.menu-item:active {
-    background: var(--primary-color);
-    color: white;
+/* Overlay para cerrar el panel */
+.panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
 }
 
-.menu-item-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    background: var(--bg-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    transition: all 0.3s ease;
-}
-
-.menu-item:hover .menu-item-icon {
-    background: var(--primary-color);
-    color: white;
-    transform: scale(1.1);
-}
-
-.menu-item-icon i {
-    font-size: 1.2rem;
-}
-
-.menu-item-content {
-    flex: 1;
-}
-
-.menu-item-title {
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 3px;
-}
-
-.menu-item-description {
-    font-size: 0.85rem;
-    opacity: 0.7;
-    line-height: 1.3;
-}
-
-.menu-item-arrow {
-    opacity: 0;
-    transition: all 0.3s ease;
-    color: var(--text-muted);
-}
-
-.menu-item:hover .menu-item-arrow {
-    opacity: 1;
-    transform: translateX(5px);
-}
-
-.empty-menu {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--text-muted);
-}
-
-.empty-menu i {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    opacity: 0.5;
-}
-
-.empty-menu p {
-    font-size: 1.1rem;
-    margin: 0;
-}
-
-.menu-footer {
-    padding: 20px;
-    border-top: 1px solid var(--border-color);
-    background: var(--bg-secondary);
-}
-
-.menu-stats {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.stat-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-
-.stat-item i {
-    font-size: 1rem;
-    color: var(--primary-color);
+.panel-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .slidepanel-menu {
-        width: 100%;
-    }
-    
-    .menu-header {
-        padding: 15px;
-    }
-    
-    .user-info {
-        gap: 10px;
-    }
-    
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-    }
-    
-    .user-name {
-        font-size: 1rem;
-    }
-    
-    .menu-item {
-        padding: 12px 15px;
-    }
-    
-    .menu-item-icon {
-        width: 35px;
-        height: 35px;
-        margin-right: 12px;
-    }
-    
-    .menu-item-icon i {
-        font-size: 1rem;
-    }
-    
-    .menu-item-title {
-        font-size: 0.95rem;
-    }
-    
-    .menu-item-description {
-        font-size: 0.8rem;
-    }
+  .sp-panel {
+    width: 100%;
+    right: -100%;
+  }
+  
+  .sp-fab {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 1rem;
+  }
+  
+  .sp-header {
+    padding: 15px;
+  }
+  
+  .sp-content {
+    padding: 15px;
+  }
+  
+  .sp-item {
+    padding: 10px 12px;
+  }
 }
 
-/* Dark mode adjustments */
-[data-theme="dark"] .slidepanel-menu {
-    background: var(--bg-primary-dark);
-    color: var(--text-primary-dark);
+/* Dark mode */
+[data-theme="dark"] .sp-panel {
+  background: var(--bg-primary-dark, #1a1a1a);
+  color: var(--text-primary-dark, #ffffff);
 }
 
-[data-theme="dark"] .menu-header {
-    background: var(--bg-secondary-dark);
-    border-bottom-color: var(--border-color-dark);
+[data-theme="dark"] .sp-content {
+  background: var(--bg-primary-dark, #1a1a1a);
+  color: var(--text-primary-dark, #ffffff);
 }
 
-[data-theme="dark"] .menu-item:hover {
-    background: var(--bg-secondary-dark);
-}
-
-[data-theme="dark"] .menu-item-icon {
-    background: var(--bg-secondary-dark);
-}
-
-[data-theme="dark"] .menu-footer {
-    background: var(--bg-secondary-dark);
-    border-top-color: var(--border-color-dark);
+[data-theme="dark"] .sp-item:hover {
+  background: var(--bg-secondary-dark, #2d2d2d);
 }
 </style>
+
+<!-- JavaScript para el slidepanel -->
+<script>
+(function(){
+  function qs(sel){return document.querySelector(sel)}
+  
+  // Esperar a que el DOM esté completamente cargado
+  function initSlidepanel() {
+    var btn = qs('#sp-fab');
+    var panel = qs('#sp-panel');
+    
+    console.log('Slidepanel init - btn:', !!btn, 'panel:', !!panel);
+    
+    if(!btn || !panel) {
+      console.log('Slidepanel: Elementos no encontrados');
+      return;
+    }
+    
+    function toggle(){ 
+      console.log('Toggle slidepanel - antes:', panel.classList.contains('sp-open'));
+      panel.classList.toggle('sp-open');
+      console.log('Toggle slidepanel - después:', panel.classList.contains('sp-open'));
+    }
+    
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Botón slidepanel clickeado');
+      toggle();
+    });
+    
+    var closeBtn = qs('#sp-close');
+    if(closeBtn){ 
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Botón cerrar clickeado');
+        toggle();
+      });
+    }
+    
+    // Cerrar con Escape
+    document.addEventListener('keydown', function(e){ 
+      if(e.key === 'Escape' && panel.classList.contains('sp-open')) {
+        console.log('Cerrando slidepanel con Escape');
+        toggle(); 
+      }
+    });
+    
+    // Cerrar al hacer clic fuera del panel
+    document.addEventListener('click', function(e) {
+      if(panel.classList.contains('sp-open') && 
+         !panel.contains(e.target) && 
+         !btn.contains(e.target)) {
+        console.log('Cerrando slidepanel - clic fuera');
+        toggle();
+      }
+    });
+    
+    console.log('Slidepanel inicializado correctamente');
+  }
+  
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSlidepanel);
+  } else {
+    initSlidepanel();
+  }
+})();
+</script>
