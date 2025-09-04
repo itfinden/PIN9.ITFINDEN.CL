@@ -67,13 +67,13 @@ if (isset($_POST['action']) && $_POST['action'] === 'add') {
             throw new Exception('Nombre y color son requeridos');
         }
         
+        // Si se marca como por defecto, primero quitar el por defecto actual
+        if ($is_default) {
+            $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND is_default=1')->execute([$id_company_new]);
+        }
+        
         $stmt = $connection->prepare('INSERT INTO calendar_companies (id_company, calendar_name, colour, is_default, is_active) VALUES (?, ?, ?, ?, 1)');
         $stmt->execute([$id_company_new, $calendar_name, $colour, $is_default]);
-        
-        if ($is_default) {
-            // Solo uno por empresa
-            $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND id_calendar_companies!=?')->execute([$id_company_new, $connection->lastInsertId()]);
-        }
         
         header('Location: calendars.php?success=1'); 
         exit;
@@ -91,19 +91,20 @@ if (isset($_POST['action']) && $_POST['action'] === 'edit' && isset($_POST['id_c
         $calendar_name = trim($_POST['calendar_name']);
         $colour = trim($_POST['colour']);
         $is_default = isset($_POST['is_default']) ? 1 : 0;
+        $id_company_edit = (int)$_POST['id_company'];
         
         // Validaciones básicas
         if (empty($calendar_name) || empty($colour)) {
             throw new Exception('Nombre y color son requeridos');
         }
         
+        // Si se marca como por defecto, primero quitar el por defecto actual de la empresa
+        if ($is_default) {
+            $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND is_default=1')->execute([$id_company_edit]);
+        }
+        
         $stmt = $connection->prepare('UPDATE calendar_companies SET calendar_name=?, colour=?, is_default=? WHERE id_calendar_companies=?');
         $stmt->execute([$calendar_name, $colour, $is_default, $id_cal]);
-        
-        if ($is_default) {
-            $id_company_edit = (int)$_POST['id_company'];
-            $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND id_calendar_companies!=?')->execute([$id_company_edit, $id_cal]);
-        }
         
         header('Location: calendars.php?success=1'); 
         exit;
