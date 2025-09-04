@@ -251,104 +251,128 @@ $stats = $stmt->fetch();
             margin-bottom: 15px;
         }
         
+        .tickets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
         .ticket-card {
             background: var(--bg-primary, #ffffff);
             border: 1px solid var(--border-color, #dee2e6);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            padding: 15px;
             box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.1));
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 120px;
         }
         
         .ticket-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--shadow-medium, rgba(0,0,0,0.15));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow-medium, rgba(0,0,0,0.15));
         }
         
         .ticket-card.urgent {
-            border-left: 5px solid #e74c3c;
+            border-left: 4px solid #e74c3c;
             background: var(--bg-warning-light, #fff5f5);
+        }
+        
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
         }
         
         .ticket-title {
             color: var(--text-primary, #212529);
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin: 0;
+            line-height: 1.3;
+            flex: 1;
+            margin-right: 10px;
         }
         
         .ticket-number {
             color: var(--text-muted, #6c757d);
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             font-weight: 500;
+            margin-top: 2px;
         }
         
         .urgent-badge {
             background: #e74c3c;
             color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.6rem;
             font-weight: 700;
             text-transform: uppercase;
+            white-space: nowrap;
         }
         
         .ticket-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 6px;
+            margin: 8px 0;
         }
         
         .ticket-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
         }
         
         .ticket-description {
             color: var(--text-primary, #212529);
-            line-height: 1.6;
-            margin: 15px 0;
-            padding: 15px;
+            line-height: 1.4;
+            margin: 8px 0;
+            padding: 8px;
             background: var(--bg-secondary, #f8f9fa);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color, #007bff);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary-color, #007bff);
+            font-size: 0.85rem;
+            flex: 1;
         }
         
         .ticket-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
-            padding-top: 15px;
+            margin-top: auto;
+            padding-top: 8px;
             border-top: 1px solid var(--border-color, #dee2e6);
         }
         
         .ticket-info {
             color: var(--text-muted, #6c757d);
+            font-size: 0.75rem;
         }
         
         .ticket-actions {
             display: flex;
-            gap: 10px;
+            gap: 6px;
         }
         
         .btn-ticket {
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 4px 8px;
+            border-radius: 4px;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             font-weight: 500;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
         }
         
         .btn-primary-ticket {
@@ -451,14 +475,36 @@ $stats = $stmt->fetch();
                 gap: 15px;
             }
             
+            .tickets-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .ticket-card {
+                min-height: 100px;
+                padding: 12px;
+            }
+            
             .ticket-footer {
                 flex-direction: column;
-                gap: 15px;
+                gap: 8px;
                 align-items: stretch;
             }
             
             .ticket-actions {
                 justify-content: center;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .tickets-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .tickets-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
         }
     </style>
@@ -588,19 +634,18 @@ $stats = $stmt->fetch();
                     </a>
                 </div>
             <?php else: ?>
-                <?php foreach ($tickets as $ticket): ?>
-                    <div class="ticket-card <?php echo $ticket['is_urgent'] ? 'urgent' : ''; ?>">
-                        <div class="ticket-header">
-                            <div class="flex-grow-1">
-                                <h3 class="ticket-title">
-                                    <?php if ($ticket['is_urgent']): ?>
-                                        <span class="urgent-badge mr-2">URGENTE</span>
-                                    <?php endif; ?>
+                <div class="tickets-grid">
+                    <?php foreach ($tickets as $ticket): ?>
+                        <div class="ticket-card <?php echo $ticket['is_urgent'] ? 'urgent' : ''; ?>">
+                            <div class="ticket-header">
+                                <div class="ticket-title">
                                     <?php echo htmlspecialchars($ticket['title']); ?>
-                                </h3>
-                                <div class="ticket-number"><?php echo htmlspecialchars($ticket['ticket_number']); ?></div>
+                                </div>
+                                <?php if ($ticket['is_urgent']): ?>
+                                    <span class="urgent-badge">URGENTE</span>
+                                <?php endif; ?>
                             </div>
-                        </div>
+                            <div class="ticket-number"><?php echo htmlspecialchars($ticket['ticket_number']); ?></div>
                         
                         <div class="ticket-meta">
                             <span class="ticket-badge" style="background-color: <?php echo $ticket['status_color']; ?>; color: white;">
@@ -669,8 +714,9 @@ $stats = $stmt->fetch();
                                 </a>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             <?php endif; ?>
         </div>
     </div>
