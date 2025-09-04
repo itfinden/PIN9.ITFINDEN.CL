@@ -459,8 +459,26 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
 
     .responsive-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+    }
+
+    .responsive-grid .main-content {
+        padding: 15px;
+    }
+
+    .responsive-grid .section-title {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .responsive-grid .stat-number {
+        font-size: 1.4rem;
+        margin-bottom: 2px;
+    }
+
+    .responsive-grid small {
+        font-size: 0.7rem;
     }
 
     @media (max-width: 768px) {
