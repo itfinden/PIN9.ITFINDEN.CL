@@ -23,6 +23,58 @@ $lang = JsonLanguage::autoDetect();
         z-index: 9999 !important;
     }
     
+    /* Soporte tema: tarjetas y listas respetan variables */
+    .card,
+    .card-header,
+    .list-group-item,
+    .scroll-area,
+    .scroll-area-sm,
+    .ps-content {
+        background: var(--bg-primary, #ffffff) !important;
+        color: var(--text-primary, #212529) !important;
+        border-color: var(--border-color, #dee2e6) !important;
+    }
+
+    /* Columnas y contenedores */
+    .col-3 .card,
+    .col-9 .card,
+    .card-hover-shadow-2x {
+        background: var(--bg-primary, #ffffff) !important;
+        color: var(--text-primary, #212529) !important;
+        box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.1));
+    }
+
+    /* List group dentro de tarjetas */
+    .list-group-item {
+        background: var(--bg-secondary, #f8f9fa) !important;
+        color: var(--text-primary, #212529) !important;
+    }
+
+    /* Encabezados de tarjetas respetan tema */
+    .card-header-tab.card-header {
+        background: var(--bg-secondary, #f8f9fa) !important;
+        color: var(--text-primary, #212529) !important;
+        border-bottom: 1px solid var(--border-color, #dee2e6) !important;
+    }
+
+    /* Indicadores y badges mantienen contraste */
+    .todo-indicator {
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* Fondos de área de scroll */
+    .scroll-area,
+    .scroll-area-sm {
+        background: var(--bg-primary, #ffffff) !important;
+    }
+
+    /* En modo oscuro, aclarar divisores sutiles */
+    [data-theme="dark"] .list-group-item,
+    [data-theme="dark"] .card-header-tab.card-header {
+        background: var(--bg-secondary, #2a2f36) !important;
+        border-color: var(--border-color, #404040) !important;
+    }
+
     .modal-dialog {
         max-width: 600px;
         margin: 1.75rem auto;
@@ -99,12 +151,16 @@ $lang = JsonLanguage::autoDetect();
         border-radius: 8px;
         margin: 10px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        background: var(--bg-secondary, #f8f9fa) !important;
+        color: var(--text-primary, #212529) !important;
     }
     
     #inline-task-form .form-control {
         border-radius: 6px;
         border: 1px solid #ced4da;
         transition: border-color 0.2s ease-out;
+        background: var(--bg-primary, #ffffff) !important;
+        color: var(--text-primary, #212529) !important;
     }
     
     #inline-task-form .form-control:focus {
@@ -140,11 +196,12 @@ $lang = JsonLanguage::autoDetect();
         right: -400px;
         width: 400px;
         height: 100vh;
-        background: white;
+        background: var(--bg-primary, #ffffff);
         box-shadow: -5px 0 15px rgba(0,0,0,0.3);
         z-index: 10001;
         transition: right 0.2s ease-out;
         overflow-y: auto;
+        color: var(--text-primary, #212529);
     }
     
     .slide-panel.active {
@@ -152,13 +209,13 @@ $lang = JsonLanguage::autoDetect();
     }
     
     .slide-panel-header {
-        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        background: linear-gradient(135deg, var(--primary-color, #007bff) 0%, var(--primary-hover, #0056b3) 100%);
         color: white;
         padding: 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #dee2e6;
+        border-bottom: 1px solid var(--border-color, #dee2e6);
     }
     
     .slide-panel-header h4 {
@@ -189,6 +246,8 @@ $lang = JsonLanguage::autoDetect();
     
     .slide-panel-content {
         padding: 20px;
+        background: var(--bg-primary, #ffffff);
+        color: var(--text-primary, #212529);
     }
     
     .slide-panel-content .form-group {
@@ -197,16 +256,18 @@ $lang = JsonLanguage::autoDetect();
     
     .slide-panel-content .form-label {
         font-weight: 600;
-        color: #333;
+        color: var(--text-primary, #333);
         margin-bottom: 8px;
         display: block;
     }
     
     .slide-panel-content .form-control {
         border-radius: 8px;
-        border: 2px solid #e9ecef;
+        border: 2px solid var(--border-color, #e9ecef);
         padding: 12px;
         transition: border-color 0.2s ease-out;
+        background: var(--bg-secondary, #f8f9fa);
+        color: var(--text-primary, #212529);
     }
     
     .slide-panel-content .form-control:focus {
@@ -222,25 +283,28 @@ $lang = JsonLanguage::autoDetect();
     
     .status-options .form-check {
         padding: 10px;
-        border: 1px solid #e9ecef;
+        border: 1px solid var(--border-color, #e9ecef);
         border-radius: 8px;
         transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+        background: var(--bg-primary, #ffffff);
+        color: var(--text-primary, #212529);
     }
     
     .status-options .form-check:hover {
-        background-color: #f8f9fa;
+        background-color: var(--bg-hover, #f8f9fa);
         border-color: #007bff;
     }
     
     .form-actions {
         position: sticky;
         bottom: 0;
-        background: white;
+        background: var(--bg-primary, #ffffff);
         padding: 20px 0;
-        border-top: 1px solid #dee2e6;
+        border-top: 1px solid var(--border-color, #dee2e6);
         display: flex;
         gap: 10px;
         justify-content: flex-end;
+        color: var(--text-primary, #212529);
     }
     
     .form-actions .btn {
