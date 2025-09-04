@@ -541,6 +541,9 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
                                 <a class="dropdown-item" href="content_editor.php">
                                     <i class="fas fa-edit"></i> Editor de Contenido
                                 </a>
+                                <a class="dropdown-item" href="menu_creator.php">
+                                    <i class="fas fa-bars"></i> Creador de Menús
+                                </a>
                                 <?php endif; ?>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="../Modules/BOTWhatsapp/manage.php">
