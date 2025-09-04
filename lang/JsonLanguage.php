@@ -25,12 +25,17 @@ class JsonLanguage {
         $file = __DIR__ . "/{$this->lang}.json";
         
         // Intentar cargar el idioma solicitado
-        if (file_exists($file)) {
-            $content = file_get_contents($file);
-            $this->translations = json_decode($content, true);
-            
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                error_log("Error parsing JSON for language {$this->lang}: " . json_last_error_msg());
+        if (file_exists($file) && is_readable($file)) {
+            $content = $this->safeFileRead($file);
+            if ($content !== false) {
+                $this->translations = json_decode($content, true);
+                
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    error_log("Error parsing JSON for language {$this->lang}: " . json_last_error_msg());
+                    $this->translations = [];
+                }
+            } else {
+                error_log("Failed to read language file: {$file}");
                 $this->translations = [];
             }
         }
@@ -47,15 +52,68 @@ class JsonLanguage {
     private function loadFallback() {
         if ($this->lang !== $this->fallback) {
             $fallbackFile = __DIR__ . "/{$this->fallback}.json";
-            if (file_exists($fallbackFile)) {
-                $content = file_get_contents($fallbackFile);
-                $this->translations = json_decode($content, true);
-                
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    error_log("Error parsing fallback JSON: " . json_last_error_msg());
+            if (file_exists($fallbackFile) && is_readable($fallbackFile)) {
+                $content = $this->safeFileRead($fallbackFile);
+                if ($content !== false) {
+                    $this->translations = json_decode($content, true);
+                    
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        error_log("Error parsing fallback JSON: " . json_last_error_msg());
+                        $this->translations = [];
+                    }
+                } else {
+                    error_log("Failed to read fallback language file: {$fallbackFile}");
                     $this->translations = [];
                 }
             }
+        }
+    }
+    
+    /**
+     * Leer archivo de manera segura para evitar deadlocks
+     * @param string $file Ruta del archivo
+     * @return string|false Contenido del archivo o false si falla
+     */
+    private function safeFileRead($file) {
+        $maxAttempts = 3;
+        $attempt = 0;
+        
+        while ($attempt < $maxAttempts) {
+            try {
+                // Intentar abrir el archivo con bloqueo compartido
+                $handle = fopen($file, 'r');
+                if ($handle === false) {
+                    $attempt++;
+                    usleep(100000); // Esperar 100ms antes del siguiente intento
+                    continue;
+                }
+                
+                // Intentar obtener bloqueo compartido (no bloqueante)
+                if (flock($handle, LOCK_SH | LOCK_NB)) {
+                    $content = stream_get_contents($handle);
+                    flock($handle, LOCK_UN);
+                    fclose($handle);
+                    return $content;
+                } else {
+                    fclose($handle);
+                    $attempt++;
+                    usleep(100000); // Esperar 100ms antes del siguiente intento
+                    continue;
+                }
+            } catch (Exception $e) {
+                error_log("Exception reading file {$file}: " . $e->getMessage());
+                $attempt++;
+                usleep(100000);
+                continue;
+            }
+        }
+        
+        // Si todos los intentos fallaron, usar file_get_contents como último recurso
+        try {
+            return file_get_contents($file);
+        } catch (Exception $e) {
+            error_log("Final attempt failed for file {$file}: " . $e->getMessage());
+            return false;
         }
     }
     
