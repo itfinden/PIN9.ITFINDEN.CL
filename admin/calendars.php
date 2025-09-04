@@ -186,12 +186,89 @@ $calendars = $connection->query('SELECT cc.*, c.company_name FROM calendar_compa
     }
     
     .calendar-color {
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         display: inline-block;
         margin-right: 10px;
         border: 2px solid var(--border-color);
+        box-shadow: 0 2px 4px var(--shadow-light);
+        transition: all var(--transition-speed) var(--transition-ease);
+    }
+    
+    .calendar-color:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px var(--shadow-medium);
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    /* Color Picker Styles */
+    .color-picker-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .color-preview {
+        width: 38px;
+        height: 38px;
+        border-radius: 6px;
+        border: 2px solid var(--border-color);
+        box-shadow: 0 1px 3px var(--shadow-light);
+        cursor: pointer;
+        display: inline-block;
+        transition: all var(--transition-speed) var(--transition-ease);
+    }
+    
+    .color-preview:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 8px var(--shadow-medium);
+    }
+    
+    input[type="color"].form-control {
+        opacity: 0;
+        width: 38px;
+        height: 38px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        cursor: pointer;
+    }
+    
+    .color-picker-label {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .color-value {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+    
+    .badge {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        border-radius: 12px;
+    }
+    
+    .badge-success {
+        background-color: var(--success-color, #28a745);
+        color: white;
+    }
+    
+    .badge-secondary {
+        background-color: var(--secondary-color, #6c757d);
+        color: white;
+    }
+    
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+        border-radius: 15px;
     }
     
     /* Responsive */
@@ -203,6 +280,53 @@ $calendars = $connection->query('SELECT cc.*, c.company_name FROM calendar_compa
         
         .admin-calendars-title {
             font-size: 1.5rem;
+        }
+        
+        .form-inline {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+            margin-right: 0;
+        }
+        
+        .table-responsive {
+            font-size: 0.9rem;
+        }
+        
+        .btn-sm {
+            padding: 3px 6px;
+            font-size: 0.7rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .admin-calendars-container {
+            padding: 15px;
+            margin: 5px;
+        }
+        
+        .admin-calendars-title {
+            font-size: 1.3rem;
+            flex-direction: column;
+            text-align: center;
+            gap: 10px;
+        }
+        
+        .table-responsive {
+            font-size: 0.8rem;
+        }
+        
+        .color-preview {
+            width: 30px;
+            height: 30px;
+        }
+        
+        input[type="color"].form-control {
+            width: 30px;
+            height: 30px;
         }
     }
     </style>
@@ -236,46 +360,11 @@ $calendars = $connection->query('SELECT cc.*, c.company_name FROM calendar_compa
                 <div class="color-picker-wrapper">
                     <label class="color-picker-label">
                         <span class="color-preview" id="colorPreview" style="background: #0275d8;"></span>
-                        <input type="color" name="colour" class="form-control" id="colour" value="#0275d8" onchange="document.getElementById('colorPreview').style.background=this.value; document.getElementById('colorValue').textContent=this.value;">
+                        <input type="color" name="colour" class="form-control" id="colour" value="#0275d8">
                     </label>
-                    <span id="colorValue" style="font-size:13px; color:#555;">#0275d8</span>
+                    <span id="colorValue" class="color-value">#0275d8</span>
                 </div>
             </div>
-            <style>
-            .color-picker-wrapper {
-              display: flex;
-              align-items: center;
-              gap: 8px;
-            }
-            .color-preview {
-              width: 38px;
-              height: 38px;
-              border-radius: 6px;
-              border: 2px solid #ccc;
-              box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-              cursor: pointer;
-              display: inline-block;
-            }
-            input[type="color"].form-control {
-              opacity: 0;
-              width: 38px;
-              height: 38px;
-              position: absolute;
-              left: 0;
-              top: 0;
-              cursor: pointer;
-            }
-            .color-picker-label {
-              position: relative;
-              display: inline-block;
-            }
-            </style>
-            <script>
-            document.getElementById('colour').addEventListener('input', function() {
-              document.getElementById('colorPreview').style.background = this.value;
-              document.getElementById('colorValue').textContent = this.value;
-            });
-            </script>
             <!-- === FIN COLOR PICKER PROFESIONAL === -->
             <div class="form-group mr-2">
                 <label class="mr-2">Por defecto</label>
@@ -303,7 +392,10 @@ $calendars = $connection->query('SELECT cc.*, c.company_name FROM calendar_compa
                     <td><?= $cal['id_calendar_companies'] ?></td>
                     <td><?= htmlspecialchars($cal['company_name']) ?></td>
                     <td><?= htmlspecialchars($cal['calendar_name']) ?></td>
-                    <td><span style="background:<?= htmlspecialchars($cal['colour']) ?>;padding:0 10px;">&nbsp;</span> <?= htmlspecialchars($cal['colour']) ?></td>
+                    <td>
+                        <div class="calendar-color" style="background-color: <?= htmlspecialchars($cal['colour']) ?>;"></div>
+                        <span class="color-value"><?= htmlspecialchars($cal['colour']) ?></span>
+                    </td>
                     <td><?= $cal['is_default'] ? '<span class="badge badge-success">Sí</span>' : '' ?></td>
                     <td><?= $cal['is_active'] ? '<span class="badge badge-success">Sí</span>' : '<span class="badge badge-secondary">No</span>' ?></td>
                     <td>
@@ -327,46 +419,11 @@ $calendars = $connection->query('SELECT cc.*, c.company_name FROM calendar_compa
                                 <div class="color-picker-wrapper">
                                     <label class="color-picker-label">
                                         <span class="color-preview" id="colorPreviewEdit<?= $cal['id_calendar_companies'] ?>" style="background: <?= htmlspecialchars($cal['colour']) ?>;"></span>
-                                        <input type="color" name="colour" class="form-control" id="colourEdit<?= $cal['id_calendar_companies'] ?>" value="<?= htmlspecialchars($cal['colour']) ?>" onchange="document.getElementById('colorPreviewEdit<?= $cal['id_calendar_companies'] ?>').style.background=this.value; document.getElementById('colorValueEdit<?= $cal['id_calendar_companies'] ?>').textContent=this.value;">
+                                        <input type="color" name="colour" class="form-control" id="colourEdit<?= $cal['id_calendar_companies'] ?>" value="<?= htmlspecialchars($cal['colour']) ?>">
                                     </label>
-                                    <span id="colorValueEdit<?= $cal['id_calendar_companies'] ?>" style="font-size:13px; color:#555;"><?= htmlspecialchars($cal['colour']) ?></span>
+                                    <span id="colorValueEdit<?= $cal['id_calendar_companies'] ?>" class="color-value"><?= htmlspecialchars($cal['colour']) ?></span>
                                 </div>
                             </div>
-                            <style>
-                            .color-picker-wrapper {
-                              display: flex;
-                              align-items: center;
-                              gap: 8px;
-                            }
-                            .color-preview {
-                              width: 38px;
-                              height: 38px;
-                              border-radius: 6px;
-                              border: 2px solid #ccc;
-                              box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-                              cursor: pointer;
-                              display: inline-block;
-                            }
-                            input[type="color"].form-control {
-                              opacity: 0;
-                              width: 38px;
-                              height: 38px;
-                              position: absolute;
-                              left: 0;
-                              top: 0;
-                              cursor: pointer;
-                            }
-                            .color-picker-label {
-                              position: relative;
-                              display: inline-block;
-                            }
-                            </style>
-                            <script>
-                            document.getElementById('colourEdit<?= $cal['id_calendar_companies'] ?>').addEventListener('input', function() {
-                              document.getElementById('colorPreviewEdit<?= $cal['id_calendar_companies'] ?>').style.background = this.value;
-                              document.getElementById('colorValueEdit<?= $cal['id_calendar_companies'] ?>').textContent = this.value;
-                            });
-                            </script>
                             <!-- === FIN COLOR PICKER PROFESIONAL (EDICIÓN) === -->
                             <div class="form-group mr-2">
                                 <label class="mr-2">Por defecto</label>
@@ -395,6 +452,43 @@ $(document).ready(function() {
         const themeSwitcher = new ThemeSwitcher();
         themeSwitcher.init();
     }
+    
+    // Inicializar color pickers
+    function initColorPickers() {
+        // Color picker principal (crear)
+        const colorInput = document.getElementById('colour');
+        const colorPreview = document.getElementById('colorPreview');
+        const colorValue = document.getElementById('colorValue');
+        
+        if (colorInput && colorPreview && colorValue) {
+            colorInput.addEventListener('input', function() {
+                colorPreview.style.background = this.value;
+                colorValue.textContent = this.value;
+            });
+        }
+        
+        // Color pickers de edición
+        document.querySelectorAll('input[id^="colourEdit"]').forEach(function(input) {
+            const id = input.id.replace('colourEdit', '');
+            const preview = document.getElementById('colorPreviewEdit' + id);
+            const value = document.getElementById('colorValueEdit' + id);
+            
+            if (preview && value) {
+                input.addEventListener('input', function() {
+                    preview.style.background = this.value;
+                    value.textContent = this.value;
+                });
+            }
+        });
+    }
+    
+    // Inicializar cuando el DOM esté listo
+    initColorPickers();
+    
+    // Re-inicializar después de cambios dinámicos (como collapse)
+    $(document).on('shown.bs.collapse', function() {
+        initColorPickers();
+    });
 });
 </script>
 </body>
