@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" <?php require_once __DIR__ . '/../theme_handler.php'; echo applyThemeToHTML(); ?>>
 <?php
 require_once __DIR__ . '/../lang/Languaje.php';
 $lang = Language::autoDetect();
@@ -9,7 +9,6 @@ $id_company = $_SESSION['id_company'];
 <head>
     <?php $title= "Calendar"; ?>
     <?php require 'head.php'; ?>
-    <?php require_once __DIR__ . '/partials/modern_navbar.php'; ?>
 
     <!-- FullCalendar v6.x -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
@@ -291,9 +290,7 @@ $id_company = $_SESSION['id_company'];
 </head>
 
 <body class="bg">
-<?php require 'header.php'; ?>
-
-
+<?php require_once __DIR__ . '/partials/modern_navbar.php'; ?>
 
 <!-- aqui estaba antes el codigo -->
 <!-- Page Content -->
@@ -382,7 +379,7 @@ $id_company = $_SESSION['id_company'];
     <div class="slide-panel-content">
         <div class="text-center" style="padding: 50px 20px;">
             
-
+            
             
             <!-- Ini Calendario -->
             <?php
@@ -445,9 +442,9 @@ if ($is_superadmin) {
 
 // Debug temporal
 echo "<!-- DEBUG: Calendarios obtenidos directamente -->";
-echo "<!-- DEBUG: Count \$calendars: " . count($calendars) . " -->";
-echo "<!-- DEBUG: \$is_superadmin: " . ($is_superadmin ? 'TRUE' : 'FALSE') . " -->";
-echo "<!-- DEBUG: \$id_user: " . $id_user . " -->";
+echo "<!-- DEBUG: Count $calendars: " . count($calendars) . " -->";
+echo "<!-- DEBUG: $is_superadmin: " . ($is_superadmin ? 'TRUE' : 'FALSE') . " -->";
+echo "<!-- DEBUG: $id_user: " . $id_user . " -->";
 ?>
                <!-- <div class="container mt-3 mb-2">-->
                   <div class="calendar-container">

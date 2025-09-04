@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" <?php 
+require_once __DIR__ . '/../theme_handler.php';
+echo applyThemeToHTML();
+?>>
 <?php
 require_once __DIR__ . '/../lang/Languaje.php';
 $lang = Language::autoDetect();
@@ -16,7 +19,6 @@ $lang = Language::autoDetect();
 <body class="bg">
 
 <?php require_once __DIR__ . '/partials/modern_navbar.php'; ?>
-<?php require 'header.php'; ?>
 
 <div class="row d-flex m-4 mt-2 justify-content-center">
    <h2 class="col-12 text-center mb-4 text-primary"><?php echo $lang->get('HAPPENING_TODAY'); ?></h2>
@@ -34,7 +36,7 @@ $lang = Language::autoDetect();
                         <div class="ps-content">
                             <ul class=" list-group list-group-flush">
                                 
-                                <?php if (isset($events_start)) {	                                   
+                                <?php if (isset($events_start)) {                                   
                                     foreach ($events_start as $es): 
                                     ?>                         
                                     <li class="list-group-item pe-auto">        
@@ -70,7 +72,7 @@ $lang = Language::autoDetect();
                         <div class="ps-content">
                             <ul class=" list-group list-group-flush">
                                 
-                                <?php if (isset($events_end)) {	                                   
+                                <?php if (isset($events_end)) {                                   
                                     foreach ($events_end as $ee): 
                                     ?>                         
                                     <li class="list-group-item pe-auto">        
@@ -110,7 +112,7 @@ $lang = Language::autoDetect();
                         <div class="ps-content">
                             <ul class=" list-group list-group-flush">
                                 
-                                <?php if (isset($projects_start)) {	                                   
+                                <?php if (isset($projects_start)) {                                   
                                     foreach ($projects_start as $ps): 
                                     ?>                         
                                     <li class="list-group-item pe-auto">        
@@ -145,7 +147,7 @@ $lang = Language::autoDetect();
                         <div class="ps-content">
                             <ul class=" list-group list-group-flush">
                                 
-                                <?php if (isset($projects_end)) {	                                   
+                                <?php if (isset($projects_end)) {                                   
                                     foreach ($projects_end as $pe): 
                                     ?>                         
                                     <li class="list-group-item pe-auto">        
@@ -182,7 +184,7 @@ $lang = Language::autoDetect();
                         <div class="ps-content">
                             <ul class=" list-group list-group-flush">
                                 
-                                <?php if (isset($tasks)) {	                                   
+                                <?php if (isset($tasks)) {                                   
                                     foreach ($tasks as $t): 
                                     ?>                         
                                     <li class="list-group-item pe-auto">        

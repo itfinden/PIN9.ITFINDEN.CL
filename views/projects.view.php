@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo $current_lang; ?>">
+<html lang="<?php echo $current_lang; ?>" <?php require_once __DIR__ . '/../theme_handler.php'; echo applyThemeToHTML(); ?>>
 <?php
 require_once __DIR__ . '/../lang/JsonLanguage.php';
 $lang = JsonLanguage::autoDetect();
@@ -296,7 +296,6 @@ $lang = JsonLanguage::autoDetect();
 
 <body class="bg">
 <?php require_once __DIR__ . '/partials/modern_navbar.php'; ?>
-<?php require 'header.php'; ?>
 
 <div class="row d-flex m-0 p-0 mt-4">
 
@@ -406,7 +405,7 @@ $lang = JsonLanguage::autoDetect();
                                                                     <div class="widget-content-wrapper">
                                                                         <a class="col-8 nav-link text-primary p-0" data-toggle="collapse" data-target="#collapse-todo-<?php echo $i; ?>" aria-expanded="true">
                                                                             <div class="widget-content-left p-2 pl-3">
-                                                                                <div class="widget-heading d-flex">                                                                                   
+                                                                                <div class="widget-heading d-flex">                                                                                    
                                                                                 <?php echo $s['task_name'];?>                                                                                                                                                             
                                                                                     <span class="accicon"><i class="fa fa-angle-down rotate-icon pl-2"></i></span>
                                                                                 </div>                                                                                  
@@ -469,7 +468,7 @@ $lang = JsonLanguage::autoDetect();
                                                                     <div class="widget-content-wrapper">
                                                                         <a class="col-8 nav-link text-primary p-0" data-toggle="collapse" data-target="#collapse-ip-<?php echo $i; ?>" aria-expanded="true">
                                                                             <div class="widget-content-left p-2 pl-3">
-                                                                                <div class="widget-heading d-flex">                                                                                   
+                                                                                <div class="widget-heading d-flex">                                                                                    
                                                                                 <?php echo $s['task_name'];?>                                                                                                                                                             
                                                                                     <span class="accicon"><i class="fa fa-angle-down rotate-icon pl-2"></i></span>
                                                                                 </div>                                                                                  
@@ -536,7 +535,7 @@ $lang = JsonLanguage::autoDetect();
                                                                     <div class="widget-content-wrapper">
                                                                         <a class="col-8 nav-link text-primary p-0" data-toggle="collapse" data-target="#collapse-c-<?php echo $i; ?>" aria-expanded="true">
                                                                             <div class="widget-content-left p-2 pl-3">
-                                                                                <div class="widget-heading d-flex">                                                                                   
+                                                                                <div class="widget-heading d-flex">                                                                                    
                                                                                 <?php echo $s['task_name'];?>                                                                                                                                                             
                                                                                     <span class="accicon"><i class="fa fa-angle-down rotate-icon pl-2"></i></span>
                                                                                 </div>                                                                                  
@@ -608,9 +607,9 @@ $lang = JsonLanguage::autoDetect();
                 <label class="form-label"><strong>Prioridad</strong></label>
                 <select name="task_colour" class="form-control">
                     <option value="">Seleccionar prioridad</option>
-                    <option style="color:#5cb85c" value="#5cb85c">🟢 Baja</option>						  
+                    <option style="color:#5cb85c" value="#5cb85c">🟢 Baja</option>					  
                     <option style="color:#f0ad4e" value="#f0ad4e">🟡 Media</option>
-                    <option style="color:#d9534f" value="#d9534f">🔴 Alta</option>													  
+                    <option style="color:#d9534f" value="#d9534f">🔴 Alta</option>						  
                 </select>
             </div>
             
@@ -840,7 +839,7 @@ $lang = JsonLanguage::autoDetect();
             $(this).data('bs.modal').options.keyboard = false;
         });
         
-
+        
         
         // Panel de editar tarea
         $('.edit-task-btn').on('click', function() {
