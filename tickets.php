@@ -251,57 +251,68 @@ $stats = $stmt->fetch();
             margin-bottom: 15px;
         }
         
-        .tickets-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .ticket-card {
+        .tickets-table {
             background: var(--bg-primary, #ffffff);
             border: 1px solid var(--border-color, #dee2e6);
             border-radius: 8px;
-            padding: 15px;
+            overflow: hidden;
             box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.1));
+        }
+        
+        .tickets-table-header {
+            background: var(--bg-secondary, #f8f9fa);
+            border-bottom: 1px solid var(--border-color, #dee2e6);
+            padding: 15px 20px;
+            font-weight: 600;
+            color: var(--text-primary, #212529);
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 120px;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .ticket-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 120px;
+            gap: 15px;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color, #dee2e6);
             transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            min-height: 120px;
+            min-height: 60px;
         }
         
-        .ticket-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--shadow-medium, rgba(0,0,0,0.15));
+        .ticket-row:hover {
+            background: var(--bg-hover, #f8f9fa);
         }
         
-        .ticket-card.urgent {
+        .ticket-row.urgent {
             border-left: 4px solid #e74c3c;
             background: var(--bg-warning-light, #fff5f5);
         }
         
-        .ticket-header {
+        .ticket-row:last-child {
+            border-bottom: none;
+        }
+        
+        .ticket-title-cell {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
+            flex-direction: column;
+            gap: 4px;
         }
         
         .ticket-title {
             color: var(--text-primary, #212529);
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             margin: 0;
             line-height: 1.3;
-            flex: 1;
-            margin-right: 10px;
         }
         
         .ticket-number {
             color: var(--text-muted, #6c757d);
             font-size: 0.75rem;
             font-weight: 500;
-            margin-top: 2px;
         }
         
         .urgent-badge {
@@ -313,66 +324,54 @@ $stats = $stmt->fetch();
             font-weight: 700;
             text-transform: uppercase;
             white-space: nowrap;
-        }
-        
-        .ticket-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin: 8px 0;
+            display: inline-block;
+            margin-top: 2px;
         }
         
         .ticket-badge {
-            padding: 3px 8px;
+            padding: 4px 8px;
             border-radius: 12px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
+            white-space: nowrap;
         }
         
-        .ticket-description {
+        .ticket-description-cell {
             color: var(--text-primary, #212529);
-            line-height: 1.4;
-            margin: 8px 0;
-            padding: 8px;
-            background: var(--bg-secondary, #f8f9fa);
-            border-radius: 6px;
-            border-left: 3px solid var(--primary-color, #007bff);
-            font-size: 0.85rem;
-            flex: 1;
+            font-size: 0.8rem;
+            line-height: 1.3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
-        .ticket-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-            padding-top: 8px;
-            border-top: 1px solid var(--border-color, #dee2e6);
-        }
-        
-        .ticket-info {
+        .ticket-info-cell {
             color: var(--text-muted, #6c757d);
             font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
         
-        .ticket-actions {
+        .ticket-actions-cell {
             display: flex;
             gap: 6px;
+            justify-content: center;
         }
         
         .btn-ticket {
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 3px 6px;
+            border-radius: 3px;
             text-decoration: none;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 500;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 3px;
+            gap: 2px;
         }
         
         .btn-primary-ticket {
@@ -439,22 +438,27 @@ $stats = $stmt->fetch();
             border-color: var(--border-color-dark, #404040);
         }
         
-        [data-theme="dark"] .ticket-card {
+        [data-theme="dark"] .tickets-table {
             background: var(--bg-primary-dark, #1a1a1a);
             border-color: var(--border-color-dark, #404040);
         }
         
-        [data-theme="dark"] .ticket-card.urgent {
-            background: var(--bg-warning-dark, #2d1b1b);
-        }
-        
-        [data-theme="dark"] .ticket-description {
+        [data-theme="dark"] .tickets-table-header {
             background: var(--bg-secondary-dark, #2a2f36);
+            border-bottom-color: var(--border-color-dark, #404040);
             color: var(--text-primary-dark, #ffffff);
         }
         
-        [data-theme="dark"] .ticket-footer {
-            border-top-color: var(--border-color-dark, #404040);
+        [data-theme="dark"] .ticket-row {
+            border-bottom-color: var(--border-color-dark, #404040);
+        }
+        
+        [data-theme="dark"] .ticket-row:hover {
+            background: var(--bg-hover-dark, #3a3f46);
+        }
+        
+        [data-theme="dark"] .ticket-row.urgent {
+            background: var(--bg-warning-dark, #2d1b1b);
         }
         
         [data-theme="dark"] .btn-secondary-ticket {
@@ -469,42 +473,78 @@ $stats = $stmt->fetch();
         }
         
         /* Responsive */
+        @media (max-width: 1200px) {
+            .tickets-table-header,
+            .ticket-row {
+                grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 100px;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .tickets-table-header,
+            .ticket-row {
+                grid-template-columns: 2fr 1fr 1fr 1fr 1fr 80px;
+                gap: 8px;
+            }
+            
+            .ticket-description-cell {
+                display: none;
+            }
+            
+            .tickets-table-header div:nth-child(5) {
+                display: none;
+            }
+        }
+        
         @media (max-width: 768px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
             
-            .tickets-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
+            .tickets-table-header,
+            .ticket-row {
+                grid-template-columns: 2fr 1fr 1fr 80px;
+                gap: 6px;
+                padding: 8px 12px;
             }
             
-            .ticket-card {
-                min-height: 100px;
-                padding: 12px;
+            .ticket-info-cell {
+                display: none;
             }
             
-            .ticket-footer {
-                flex-direction: column;
-                gap: 8px;
-                align-items: stretch;
+            .tickets-table-header div:nth-child(6) {
+                display: none;
             }
             
-            .ticket-actions {
-                justify-content: center;
+            .ticket-badge {
+                font-size: 0.7rem;
+                padding: 2px 6px;
+            }
+            
+            .btn-ticket {
+                padding: 2px 4px;
+                font-size: 0.65rem;
             }
         }
         
-        @media (max-width: 1200px) {
-            .tickets-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        @media (max-width: 576px) {
+            .tickets-table-header,
+            .ticket-row {
+                grid-template-columns: 2fr 1fr 60px;
+                gap: 4px;
+                padding: 6px 8px;
             }
-        }
-        
-        @media (max-width: 992px) {
-            .tickets-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            
+            .ticket-badge {
+                font-size: 0.65rem;
+                padding: 1px 4px;
+            }
+            
+            .btn-ticket {
+                padding: 1px 3px;
+                font-size: 0.6rem;
             }
         }
     </style>
@@ -634,62 +674,60 @@ $stats = $stmt->fetch();
                     </a>
                 </div>
             <?php else: ?>
-                <div class="tickets-grid">
+                <div class="tickets-table">
+                    <div class="tickets-table-header">
+                        <div>Título</div>
+                        <div>Estado</div>
+                        <div>Prioridad</div>
+                        <div>Categoría</div>
+                        <div>Descripción</div>
+                        <div>Información</div>
+                        <div>Acciones</div>
+                    </div>
                     <?php foreach ($tickets as $ticket): ?>
-                        <div class="ticket-card <?php echo $ticket['is_urgent'] ? 'urgent' : ''; ?>">
-                            <div class="ticket-header">
+                        <div class="ticket-row <?php echo $ticket['is_urgent'] ? 'urgent' : ''; ?>">
+                            <div class="ticket-title-cell">
                                 <div class="ticket-title">
                                     <?php echo htmlspecialchars($ticket['title']); ?>
                                 </div>
+                                <div class="ticket-number"><?php echo htmlspecialchars($ticket['ticket_number']); ?></div>
                                 <?php if ($ticket['is_urgent']): ?>
                                     <span class="urgent-badge">URGENTE</span>
                                 <?php endif; ?>
                             </div>
-                            <div class="ticket-number"><?php echo htmlspecialchars($ticket['ticket_number']); ?></div>
-                        
-                        <div class="ticket-meta">
-                            <span class="ticket-badge" style="background-color: <?php echo $ticket['status_color']; ?>; color: white;">
-                                <i class="<?php echo $ticket['status_icon']; ?>"></i>
-                                <?php echo htmlspecialchars($ticket['status_name']); ?>
-                            </span>
-                            <span class="ticket-badge" style="background-color: <?php echo $ticket['priority_color']; ?>; color: white;">
-                                <i class="<?php echo $ticket['priority_icon']; ?>"></i>
-                                <?php echo htmlspecialchars($ticket['priority_name']); ?>
-                            </span>
-                            <span class="ticket-badge" style="background-color: <?php echo $ticket['category_color']; ?>; color: white;">
-                                <i class="<?php echo $ticket['category_icon']; ?>"></i>
-                                <?php echo htmlspecialchars($ticket['category_name']); ?>
-                            </span>
-                            <span class="ticket-badge" style="background-color: #f8f9fa; color: #6c757d;">
-                                <i class="fas fa-comments"></i>
-                                <?php echo $ticket['comment_count']; ?> comentarios
-                            </span>
-                            <?php if ($is_superadmin): ?>
-                            <span class="ticket-badge" style="background-color: #e3f2fd; color: #1976d2;">
-                                <i class="fas fa-building"></i>
-                                <?php echo htmlspecialchars($ticket['company_name'] ?? 'Sin empresa'); ?>
-                            </span>
-                            <?php endif; ?>
-                            <?php if ($ticket['attachment_count'] > 0): ?>
-                                <span class="ticket-badge" style="background-color: #f8f9fa; color: #6c757d;">
-                                    <i class="fas fa-paperclip"></i>
-                                    <?php echo $ticket['attachment_count']; ?> adjuntos
+                            
+                            <div>
+                                <span class="ticket-badge" style="background-color: <?php echo $ticket['status_color']; ?>; color: white;">
+                                    <i class="<?php echo $ticket['status_icon']; ?>"></i>
+                                    <?php echo htmlspecialchars($ticket['status_name']); ?>
                                 </span>
-                            <?php endif; ?>
-                        </div>
-                        
-                        <div class="ticket-description">
-                            <?php 
-                            $description = strip_tags($ticket['description']);
-                            echo htmlspecialchars(substr($description, 0, 200)) . (strlen($description) > 200 ? '...' : ''); 
-                            ?>
-                        </div>
-                        
-                        <div class="ticket-footer">
-                            <div class="ticket-info">
-                                <small class="text-muted">
-                                    <i class="fas fa-user mr-1"></i>
-                                    Creado por <?php 
+                            </div>
+                            
+                            <div>
+                                <span class="ticket-badge" style="background-color: <?php echo $ticket['priority_color']; ?>; color: white;">
+                                    <i class="<?php echo $ticket['priority_icon']; ?>"></i>
+                                    <?php echo htmlspecialchars($ticket['priority_name']); ?>
+                                </span>
+                            </div>
+                            
+                            <div>
+                                <span class="ticket-badge" style="background-color: <?php echo $ticket['category_color']; ?>; color: white;">
+                                    <i class="<?php echo $ticket['category_icon']; ?>"></i>
+                                    <?php echo htmlspecialchars($ticket['category_name']); ?>
+                                </span>
+                            </div>
+                            
+                            <div class="ticket-description-cell">
+                                <?php 
+                                $description = strip_tags($ticket['description']);
+                                echo htmlspecialchars(substr($description, 0, 50)) . (strlen($description) > 50 ? '...' : ''); 
+                                ?>
+                            </div>
+                            
+                            <div class="ticket-info-cell">
+                                <div>
+                                    <i class="fas fa-user"></i>
+                                    <?php 
                                     $creator_name = '';
                                     if (!empty($ticket['creator_first_name']) || !empty($ticket['creator_last_name'])) {
                                         $creator_name = trim($ticket['creator_first_name'] . ' ' . $ticket['creator_last_name']);
@@ -698,12 +736,20 @@ $stats = $stmt->fetch();
                                     }
                                     echo htmlspecialchars($creator_name); 
                                     ?>
-                                    <i class="fas fa-calendar ml-3 mr-1"></i>
-                                    <?php echo date('d/m/Y H:i', strtotime($ticket['created_at'])); ?>
-                                </small>
+                                </div>
+                                <div>
+                                    <i class="fas fa-calendar"></i>
+                                    <?php echo date('d/m/Y', strtotime($ticket['created_at'])); ?>
+                                </div>
+                                <?php if ($ticket['comment_count'] > 0): ?>
+                                <div>
+                                    <i class="fas fa-comments"></i>
+                                    <?php echo $ticket['comment_count']; ?>
+                                </div>
+                                <?php endif; ?>
                             </div>
                             
-                            <div class="ticket-actions">
+                            <div class="ticket-actions-cell">
                                 <a href="view_ticket.php?id=<?php echo $ticket['id_ticket']; ?>" class="btn-ticket btn-primary-ticket">
                                     <i class="fas fa-eye"></i>
                                     Ver
@@ -713,7 +759,6 @@ $stats = $stmt->fetch();
                                     Editar
                                 </a>
                             </div>
-                        </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
