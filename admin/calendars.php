@@ -42,6 +42,66 @@ $id_user = $_SESSION['id_user'];
 $id_rol = $_SESSION['id_rol'] ?? null;
 $id_company = $_SESSION['id_company'] ?? null;
 
+// Función para limpiar calendarios duplicados por defecto
+function limpiarCalendariosDuplicados($connection) {
+    // Obtener todas las empresas
+    $companies = $connection->query('SELECT id_company FROM companies')->fetchAll();
+    
+    foreach ($companies as $company) {
+        $id_company = $company['id_company'];
+        
+        // Contar calendarios por defecto para esta empresa
+        $stmt = $connection->prepare('SELECT COUNT(*) as count FROM calendar_companies WHERE id_company = ? AND is_default = 1 AND is_active = 1');
+        $stmt->execute([$id_company]);
+        $count = $stmt->fetch()['count'];
+        
+        // Si hay más de uno, dejar solo el más reciente
+        if ($count > 1) {
+            // Obtener el ID del calendario más reciente
+            $stmt = $connection->prepare('SELECT id_calendar_companies FROM calendar_companies WHERE id_company = ? AND is_default = 1 AND is_active = 1 ORDER BY created_at DESC LIMIT 1');
+            $stmt->execute([$id_company]);
+            $latest_id = $stmt->fetch()['id_calendar_companies'];
+            
+            // Quitar is_default de todos excepto el más reciente
+            $stmt = $connection->prepare('UPDATE calendar_companies SET is_default = 0 WHERE id_company = ? AND is_default = 1 AND id_calendar_companies != ?');
+            $stmt->execute([$id_company, $latest_id]);
+        }
+    }
+}
+
+// Limpiar calendarios duplicados al cargar la página
+limpiarCalendariosDuplicados($connection);
+
+// Función para asegurar que cada empresa tenga al menos un calendario por defecto
+function asegurarCalendarioPorDefecto($connection) {
+    // Obtener todas las empresas
+    $companies = $connection->query('SELECT id_company FROM companies')->fetchAll();
+    
+    foreach ($companies as $company) {
+        $id_company = $company['id_company'];
+        
+        // Verificar si hay algún calendario por defecto para esta empresa
+        $stmt = $connection->prepare('SELECT COUNT(*) as count FROM calendar_companies WHERE id_company = ? AND is_default = 1 AND is_active = 1');
+        $stmt->execute([$id_company]);
+        $count = $stmt->fetch()['count'];
+        
+        // Si no hay ninguno, marcar el más reciente como por defecto
+        if ($count == 0) {
+            $stmt = $connection->prepare('SELECT id_calendar_companies FROM calendar_companies WHERE id_company = ? AND is_active = 1 ORDER BY created_at DESC LIMIT 1');
+            $stmt->execute([$id_company]);
+            $result = $stmt->fetch();
+            
+            if ($result) {
+                $stmt = $connection->prepare('UPDATE calendar_companies SET is_default = 1 WHERE id_calendar_companies = ?');
+                $stmt->execute([$result['id_calendar_companies']]);
+            }
+        }
+    }
+}
+
+// Asegurar que cada empresa tenga al menos un calendario por defecto
+asegurarCalendarioPorDefecto($connection);
+
 // Determinar empresas visibles
 if ($id_rol == 2) {
     // Admin empresa: solo su empresa
@@ -67,7 +127,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'add') {
             throw new Exception('Nombre y color son requeridos');
         }
         
-        // Si se marca como por defecto, primero quitar el por defecto actual
+        // Si se marca como por defecto, quitar el por defecto actual de la empresa
         if ($is_default) {
             $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND is_default=1')->execute([$id_company_new]);
         }
@@ -98,7 +158,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'edit' && isset($_POST['id_c
             throw new Exception('Nombre y color son requeridos');
         }
         
-        // Si se marca como por defecto, primero quitar el por defecto actual de la empresa
+        // Si se marca como por defecto, quitar el por defecto actual de la empresa
         if ($is_default) {
             $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND is_default=1')->execute([$id_company_edit]);
         }
