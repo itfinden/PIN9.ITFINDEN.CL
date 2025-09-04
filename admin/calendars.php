@@ -18,6 +18,11 @@ if (isset($_GET['lang'])) {
 require_once __DIR__ . '/../db/functions.php';
 require_once __DIR__ . '/../lang/Languaje.php';
 
+// Debug: Verificar que las funciones estén disponibles
+if (!function_exists('limpiarString')) {
+    error_log('ERROR: Función limpiarString no encontrada');
+}
+
 // Verificar que el usuario esté logueado
 if (!isset($_SESSION['id_user'])) {
     header('Location: ../login.php');
@@ -50,32 +55,62 @@ if ($id_rol == 2) {
 
 // Alta calendario
 if (isset($_POST['action']) && $_POST['action'] === 'add') {
-    $id_company_new = (int)$_POST['id_company'];
-    $calendar_name = limpiarString($_POST['calendar_name']);
-    $colour = limpiarString($_POST['colour']);
-    $is_default = isset($_POST['is_default']) ? 1 : 0;
-    $stmt = $connection->prepare('INSERT INTO calendar_companies (id_company, calendar_name, colour, is_default, is_active) VALUES (?, ?, ?, ?, 1)');
-    $stmt->execute([$id_company_new, $calendar_name, $colour, $is_default]);
-    if ($is_default) {
-        // Solo uno por empresa
-        $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND id_calendar_companies!=?')->execute([$id_company_new, $connection->lastInsertId()]);
+    try {
+        $id_company_new = (int)$_POST['id_company'];
+        $calendar_name = trim($_POST['calendar_name']);
+        $colour = trim($_POST['colour']);
+        $is_default = isset($_POST['is_default']) ? 1 : 0;
+        
+        // Validaciones básicas
+        if (empty($calendar_name) || empty($colour)) {
+            throw new Exception('Nombre y color son requeridos');
+        }
+        
+        $stmt = $connection->prepare('INSERT INTO calendar_companies (id_company, calendar_name, colour, is_default, is_active) VALUES (?, ?, ?, ?, 1)');
+        $stmt->execute([$id_company_new, $calendar_name, $colour, $is_default]);
+        
+        if ($is_default) {
+            // Solo uno por empresa
+            $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND id_calendar_companies!=?')->execute([$id_company_new, $connection->lastInsertId()]);
+        }
+        
+        header('Location: calendars.php?success=1'); 
+        exit;
+    } catch (Exception $e) {
+        error_log('Error al crear calendario: ' . $e->getMessage());
+        header('Location: calendars.php?error=' . urlencode($e->getMessage())); 
+        exit;
     }
-    header('Location: calendars.php'); exit;
 }
 
 // Edición calendario
 if (isset($_POST['action']) && $_POST['action'] === 'edit' && isset($_POST['id_calendar_companies'])) {
-    $id_cal = (int)$_POST['id_calendar_companies'];
-    $calendar_name = limpiarString($_POST['calendar_name']);
-    $colour = limpiarString($_POST['colour']);
-    $is_default = isset($_POST['is_default']) ? 1 : 0;
-    $stmt = $connection->prepare('UPDATE calendar_companies SET calendar_name=?, colour=?, is_default=? WHERE id_calendar_companies=?');
-    $stmt->execute([$calendar_name, $colour, $is_default, $id_cal]);
-    if ($is_default) {
-        $id_company_edit = (int)$_POST['id_company'];
-        $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND id_calendar_companies!=?')->execute([$id_company_edit, $id_cal]);
+    try {
+        $id_cal = (int)$_POST['id_calendar_companies'];
+        $calendar_name = trim($_POST['calendar_name']);
+        $colour = trim($_POST['colour']);
+        $is_default = isset($_POST['is_default']) ? 1 : 0;
+        
+        // Validaciones básicas
+        if (empty($calendar_name) || empty($colour)) {
+            throw new Exception('Nombre y color son requeridos');
+        }
+        
+        $stmt = $connection->prepare('UPDATE calendar_companies SET calendar_name=?, colour=?, is_default=? WHERE id_calendar_companies=?');
+        $stmt->execute([$calendar_name, $colour, $is_default, $id_cal]);
+        
+        if ($is_default) {
+            $id_company_edit = (int)$_POST['id_company'];
+            $connection->prepare('UPDATE calendar_companies SET is_default=0 WHERE id_company=? AND id_calendar_companies!=?')->execute([$id_company_edit, $id_cal]);
+        }
+        
+        header('Location: calendars.php?success=1'); 
+        exit;
+    } catch (Exception $e) {
+        error_log('Error al editar calendario: ' . $e->getMessage());
+        header('Location: calendars.php?error=' . urlencode($e->getMessage())); 
+        exit;
     }
-    header('Location: calendars.php'); exit;
 }
 
 // Baja lógica
@@ -271,6 +306,34 @@ $calendars = $connection->query('SELECT cc.*, c.company_name FROM calendar_compa
         border-radius: 15px;
     }
     
+    .alert {
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 2px 8px var(--shadow-light);
+        margin-bottom: 20px;
+    }
+    
+    .alert-success {
+        background-color: var(--success-color, #d4edda);
+        color: var(--success-text, #155724);
+        border-left: 4px solid var(--success-color, #28a745);
+    }
+    
+    .alert-danger {
+        background-color: var(--danger-color, #f8d7da);
+        color: var(--danger-text, #721c24);
+        border-left: 4px solid var(--danger-color, #dc3545);
+    }
+    
+    .alert .close {
+        color: inherit;
+        opacity: 0.7;
+    }
+    
+    .alert .close:hover {
+        opacity: 1;
+    }
+    
     /* Responsive */
     @media (max-width: 768px) {
         .admin-calendars-container {
@@ -338,6 +401,26 @@ $calendars = $connection->query('SELECT cc.*, c.company_name FROM calendar_compa
 <div class="container mt-4">
     <div class="admin-calendars-container">
         <h2 class="admin-calendars-title"><i class="fas fa-calendar-alt mr-2"></i>Calendarios de Empresa</h2>
+        
+        <?php if (isset($_GET['success']) && $_GET['success'] == '1'): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle mr-2"></i>
+                <strong>¡Éxito!</strong> Calendario guardado correctamente.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
+        
+        <?php if (isset($_GET['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <strong>Error:</strong> <?= htmlspecialchars($_GET['error']) ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
     <button class="btn btn-success mb-3" data-toggle="collapse" data-target="#addForm"><i class="fas fa-plus mr-1"></i>Nuevo Calendario</button>
     <div id="addForm" class="collapse mb-4">
         <form method="POST" class="form-inline">
