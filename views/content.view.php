@@ -73,7 +73,7 @@
             </div>
         </div>
         
-        <!-- Acciones principales -->
+        <!-- Acciones principales - Primera fila (3 tarjetas) -->
         <div class="main-actions">
             <a href="today.php" class="action-card">
                 <i class="fas fa-calendar-day action-icon"></i>
@@ -98,6 +98,17 @@
                     Visualiza y programa eventos. Mantén una vista completa de tu agenda.
                 </p>
             </a>
+        </div>
+
+        <!-- Acciones principales - Segunda fila (2 tarjetas) -->
+        <div class="main-actions">
+            <a href="tickets.php" class="action-card">
+                <i class="fas fa-ticket-alt action-icon"></i>
+                <h3 class="action-title">Tickets</h3>
+                <p class="action-description">
+                    Gestiona tickets y solicitudes. Crea, asigna y da seguimiento a tareas y problemas.
+                </p>
+            </a>
 
             <a href="/evento_dashboard.php" class="action-card">
                 <i class="fas fa-glass-cheers action-icon"></i>
@@ -106,12 +117,35 @@
                     Administra fiestas, matrimonios y más. Crea eventos, subeventos e invitados.
                 </p>
             </a>
-            
-            <a href="tickets.php" class="action-card">
-                <i class="fas fa-ticket-alt action-icon"></i>
-                <h3 class="action-title">Tickets</h3>
+        </div>
+
+        <!-- Configuración según rol -->
+        <div class="main-actions">
+            <?php if ($is_superadmin): ?>
+            <a href="admin/dashboard.php" class="action-card">
+                <i class="fas fa-shield-alt action-icon"></i>
+                <h3 class="action-title">Panel Admin</h3>
                 <p class="action-description">
-                    Gestiona tickets y solicitudes. Crea, asigna y da seguimiento a tareas y problemas.
+                    Acceso completo al panel de administración global. Gestiona empresas, usuarios y configuraciones del sistema.
+                </p>
+            </a>
+            <?php endif; ?>
+
+            <?php if ($is_company_admin || $is_superadmin): ?>
+            <a href="company-settings.php" class="action-card">
+                <i class="fas fa-cog action-icon"></i>
+                <h3 class="action-title">Configuración Empresa</h3>
+                <p class="action-description">
+                    Configura los parámetros de tu empresa, usuarios, permisos y configuraciones generales.
+                </p>
+            </a>
+            <?php endif; ?>
+
+            <a href="profile.php" class="action-card">
+                <i class="fas fa-user-cog action-icon"></i>
+                <h3 class="action-title">Mi Perfil</h3>
+                <p class="action-description">
+                    Gestiona tu información personal, contraseña, preferencias y configuraciones de usuario.
                 </p>
             </a>
         </div>
