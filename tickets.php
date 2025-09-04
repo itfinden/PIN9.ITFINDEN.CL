@@ -160,8 +160,9 @@ $stats = $stmt->fetch();
         
         .stats-toggle {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            gap: 15px;
             margin-bottom: 15px;
         }
         
@@ -229,11 +230,6 @@ $stats = $stmt->fetch();
             font-weight: 500;
         }
         
-        .filters-toggle {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
         
         .filters-toggle-btn {
             background: var(--secondary-color, #6c757d);
@@ -589,6 +585,10 @@ $stats = $stmt->fetch();
                 font-size: 0.6rem;
             }
             
+            .stats-toggle {
+                gap: 8px;
+            }
+            
             .stats-toggle-btn,
             .filters-toggle-btn {
                 padding: 4px 8px;
@@ -659,6 +659,10 @@ $stats = $stmt->fetch();
                     <i class="fas fa-chevron-up" id="statsToggleIcon"></i>
                     <span>Resumen de Tickets</span>
                 </button>
+                <button class="filters-toggle-btn" id="filtersToggleBtn">
+                    <i class="fas fa-chevron-up" id="filtersToggleIcon"></i>
+                    <span>Filtros de Búsqueda</span>
+                </button>
             </div>
             
             <div class="stats-container" id="statsContainer">
@@ -699,13 +703,6 @@ $stats = $stmt->fetch();
         </div>
         
         <!-- Filtros -->
-        <div class="filters-toggle">
-            <button class="filters-toggle-btn" id="filtersToggleBtn">
-                <i class="fas fa-chevron-up" id="filtersToggleIcon"></i>
-                <span>Filtros de Búsqueda</span>
-            </button>
-        </div>
-        
         <div class="filters-container" id="filtersContainer">
             <div class="filters-section">
                 <form method="GET" class="row">
