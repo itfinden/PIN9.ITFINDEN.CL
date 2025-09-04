@@ -1,298 +1,618 @@
 <?php
-// Slidepanel Menu Original - Restaurado
-// Este archivo se incluye desde footer.php cuando $_SESSION['enable_slidepanel'] está activo
-?>
+// Reusable Slidepanel Menu partial
+// Usage: include after main content, before </body>
+// Activation: set $_SESSION['enable_slidepanel']=1 or add query ?menu=slidepanel
 
-<!-- Botón flotante para abrir el slidepanel -->
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$enabled = !empty($_SESSION['enable_slidepanel']) || (isset($_GET['menu']) && $_GET['menu'] === 'slidepanel');
+
+if (!$enabled) {
+    return;
+}
+
+// Get user info for role-based menu
+$user_id = $_SESSION['id_user'] ?? null;
+$is_superadmin = !empty($_SESSION['is_superadmin']);
+$id_rol = (int)($_SESSION['id_rol'] ?? 0);
+$is_admin = $id_rol === 2 || $is_superadmin;
+$username = $_SESSION['user'] ?? 'Usuario';
+$company_name = $_SESSION['company_name'] ?? ($_SESSION['name_company'] ?? '');
+
+// Get professional menu items from database
+$professional_menu_items = [];
+if ($user_id) {
+    require_once __DIR__ . '/../../db/functions.php';
+    $database = new Database();
+    $connection = $database->connection();
+    
+    $sql = "SELECT p.Titulo, p.url, p.icon, p.section, p.menu_order
+            FROM GET_ACCESS ga
+            JOIN permissions p ON ga.id_permission = p.id_permission
+            WHERE ga.id_user = :id_user AND p.show_in_menu = 1 AND p.url IS NOT NULL AND p.url != ''
+            ORDER BY p.section, p.menu_order, p.Titulo";
+    $stmt = $connection->prepare($sql);
+    $stmt->execute([':id_user' => $user_id]);
+    $professional_menu_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Group by section
+    $menu_by_section = [];
+    foreach ($professional_menu_items as $item) {
+        $section = $item['section'] ?: 'General';
+        $menu_by_section[$section][] = $item;
+    }
+}
+?>
+<link rel="stylesheet" href="/Modules/Menu/assets/menu.css">
+
+<button id="home-fab" class="action-fab home-fab" aria-label="Ir al inicio" onclick="window.location.href='/content.php'">
+  <i class="fas fa-home"></i>
+</button>
+
+<button id="calendar-fab" class="action-fab calendar-fab" aria-label="Calendario" onclick="window.location.href='/calendar.php'">
+  <i class="fas fa-calendar-alt"></i>
+</button>
+
+<button id="tickets-fab" class="action-fab tickets-fab" aria-label="Tickets" onclick="window.location.href='/tickets.php'">
+  <i class="fas fa-ticket-alt"></i>
+</button>
+
+<button id="projects-fab" class="action-fab projects-fab" aria-label="Proyectos" onclick="window.location.href='/projects.php'">
+  <i class="fas fa-project-diagram"></i>
+</button>
+
+<button id="events-fab" class="action-fab events-fab" aria-label="Eventos" onclick="window.location.href='/evento_dashboard.php'">
+  <i class="fas fa-glass-cheers"></i>
+</button>
+
 <button id="sp-fab" class="sp-fab" aria-label="Abrir menú">
   <i class="fas fa-bars"></i>
 </button>
 
-<!-- Panel lateral del slidepanel -->
 <aside id="sp-panel" class="sp-panel" aria-hidden="true">
   <div class="sp-header">
     <h6 class="sp-title mb-0"><i class="fas fa-compass mr-1"></i> Menú</h6>
-    <button id="sp-close" class="sp-close" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+    <div class="sp-header-controls">
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">
+        <i class="fas fa-sun" id="theme-icon"></i>
+      </button>
+      <!-- Close Button -->
+      <button id="sp-close" class="sp-close" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+    </div>
   </div>
   <div class="sp-content">
+    <!-- User Info -->
+    <div class="sp-section-title">Usuario</div>
+    <div class="sp-item" style="pointer-events: none; padding: 8px 16px;">
+      <i class="fas fa-user"></i> <?php echo htmlspecialchars($username); ?>
+      <?php if ($company_name): ?>
+        <br><small style="color: var(--text-muted); margin-left: 20px;"><i class="fas fa-building"></i> <?php echo htmlspecialchars($company_name); ?></small>
+      <?php endif; ?>
+    </div>
+    
+    <!-- Tree Menu Structure -->
     <div class="sp-section-title">Navegación</div>
-    <a class="sp-item" href="/content.php"><i class="fas fa-home"></i> Inicio</a>
-    <a class="sp-item" href="/calendar.php"><i class="fas fa-calendar-alt"></i> Calendario</a>
-    <a class="sp-item" href="/evento_dashboard.php"><i class="fas fa-glass-cheers"></i> Eventos</a>
-    <a class="sp-item" href="/projects.php"><i class="fas fa-project-diagram"></i> Proyectos</a>
-
+    <div class="tree-menu">
+      <div class="tree-item">
+        <div class="tree-header" onclick="toggleTree('nav')">
+          <i class="fas fa-chevron-right tree-arrow" id="nav-arrow"></i>
+          <i class="fas fa-home"></i> Principal
+        </div>
+        <div class="tree-content" id="nav-content" style="display: none;">
+          <a class="sp-item" href="/content.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+          <a class="sp-item" href="/calendar.php"><i class="fas fa-calendar-alt"></i> Calendario</a>
+          <a class="sp-item" href="/today.php"><i class="fas fa-bolt"></i> Hoy</a>
+        </div>
+      </div>
+      
+      <div class="tree-item">
+        <div class="tree-header" onclick="toggleTree('events')">
+          <i class="fas fa-chevron-right tree-arrow" id="events-arrow"></i>
+          <i class="fas fa-glass-cheers"></i> Eventos
+        </div>
+        <div class="tree-content" id="events-content" style="display: none;">
+          <a class="sp-item" href="/evento_dashboard.php"><i class="fas fa-th-large"></i> Dashboard</a>
+          <a class="sp-item" href="/evento_nuevo.php"><i class="fas fa-plus"></i> Nuevo Evento</a>
+        </div>
+      </div>
+      
+      <div class="tree-item">
+        <div class="tree-header" onclick="toggleTree('projects')">
+          <i class="fas fa-chevron-right tree-arrow" id="projects-arrow"></i>
+          <i class="fas fa-project-diagram"></i> Proyectos
+        </div>
+        <div class="tree-content" id="projects-content" style="display: none;">
+          <a class="sp-item" href="/projects.php"><i class="fas fa-list"></i> Lista</a>
+          <a class="sp-item" href="/new_ticket.php"><i class="fas fa-ticket-alt"></i> Nuevo Ticket</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Panel de Administración - Tree -->
+    <?php if (!empty($professional_menu_items)): ?>
+    <div class="sp-section-title">Administración</div>
+    <div class="tree-menu">
+      <?php foreach ($menu_by_section as $section => $items): ?>
+      <div class="tree-item">
+        <div class="tree-header" onclick="toggleTree('<?php echo str_replace(' ', '-', $section); ?>')">
+          <i class="fas fa-chevron-right tree-arrow" id="<?php echo str_replace(' ', '-', $section); ?>-arrow"></i>
+          <i class="fas fa-folder"></i> <?php echo htmlspecialchars($section); ?>
+        </div>
+        <div class="tree-content" id="<?php echo str_replace(' ', '-', $section); ?>-content" style="display: none;">
+          <?php foreach ($items as $item): ?>
+            <a class="sp-item" href="<?php echo htmlspecialchars($item['url']); ?>" 
+               title="<?php echo htmlspecialchars($item['Titulo']); ?>">
+              <i class="<?php echo htmlspecialchars($item['icon'] ?: 'fas fa-link'); ?>"></i>
+              <?php echo htmlspecialchars($item['Titulo']); ?>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      </div>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+    
+    <!-- Admin Menu - Tree -->
+    <?php if ($is_admin): ?>
+    <div class="sp-section-title">Admin</div>
+    <div class="tree-menu">
+      <?php if ($is_superadmin): ?>
+      <div class="tree-item">
+        <div class="tree-header" onclick="toggleTree('superadmin')">
+          <i class="fas fa-chevron-right tree-arrow" id="superadmin-arrow"></i>
+          <i class="fas fa-crown"></i> Superadmin
+        </div>
+        <div class="tree-content" id="superadmin-content" style="display: none;">
+          <a class="sp-item" href="/admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+          <a class="sp-item" href="/admin/companies.php"><i class="fas fa-building"></i> Empresas</a>
+          <a class="sp-item" href="/admin/calendars.php"><i class="fas fa-calendar-alt"></i> Calendarios</a>
+          <a class="sp-item" href="/admin/users.php"><i class="fas fa-users"></i> Usuarios</a>
+        </div>
+      </div>
+      <?php else: ?>
+      <div class="tree-item">
+        <div class="tree-header" onclick="toggleTree('admin')">
+          <i class="fas fa-chevron-right tree-arrow" id="admin-arrow"></i>
+          <i class="fas fa-cog"></i> Admin
+        </div>
+        <div class="tree-content" id="admin-content" style="display: none;">
+          <a class="sp-item" href="/admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+          <a class="sp-item" href="/admin/company-users.php"><i class="fas fa-users"></i> Usuarios</a>
+          <a class="sp-item" href="/admin/company-settings.php"><i class="fas fa-cog"></i> Config</a>
+          <a class="sp-item" href="/Modules/BOTWhatsapp/manage.php"><i class="fab fa-whatsapp"></i> BOT WhatsApp</a>
+        </div>
+      </div>
+      <?php endif; ?>
+    </div>
+    <?php endif; ?>
+    
+    <!-- Account -->
     <div class="sp-section-title">Cuenta</div>
-    <a class="sp-item" href="/content.php"><i class="fas fa-user"></i> Perfil</a>
+    <a class="sp-item" href="/profile.php"><i class="fas fa-user-edit"></i> Editar Perfil</a>
     <a class="sp-item" href="/logout.php"><i class="fas fa-sign-out-alt"></i> Salir</a>
-
-    <div class="sp-section-title">Acciones rápidas</div>
-    <a class="sp-item" href="/evento_nuevo.php"><i class="fas fa-plus"></i> Nuevo Evento</a>
-    <a class="sp-item" href="/today.php"><i class="fas fa-bolt"></i> Hoy</a>
   </div>
 </aside>
 
-<!-- Estilos CSS para el slidepanel -->
 <style>
-/* Botón flotante */
-.sp-fab {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color, #007bff) 0%, var(--primary-hover, #0056b3) 100%);
-  color: white;
-  border: none;
-  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
-  cursor: pointer;
-  z-index: 1000;
-  transition: all 0.3s ease;
+/* Tree Menu - Theme Aware */
+.tree-menu {
+  margin: 0 16px;
+}
+
+.tree-item {
+  margin-bottom: 6px;
+}
+
+.tree-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-}
-
-.sp-fab:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 25px rgba(0, 123, 255, 0.4);
-}
-
-/* Panel lateral */
-.sp-panel {
-  position: fixed;
-  top: 0;
-  right: -350px;
-  width: 350px;
-  height: 100vh;
-  background: var(--bg-primary, #ffffff);
-  box-shadow: -5px 0 15px rgba(0,0,0,0.3);
-  z-index: 1001;
-  transition: right 0.3s ease-out;
-  overflow-y: auto;
-  color: var(--text-primary, #212529);
-}
-
-.sp-panel.sp-open {
-  right: 0;
-}
-
-/* Header del panel */
-.sp-header {
-  background: linear-gradient(135deg, var(--primary-color, #007bff) 0%, var(--primary-hover, #0056b3) 100%);
-  color: white;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border-color, #dee2e6);
-}
-
-.sp-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.sp-close {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease-out;
-}
-
-.sp-close:hover {
-  background-color: rgba(255,255,255,0.2);
-}
-
-/* Contenido del panel */
-.sp-content {
-  padding: 20px;
-  background: var(--bg-primary, #ffffff);
-  color: var(--text-primary, #212529);
-}
-
-.sp-section-title {
-  font-weight: 600;
-  color: var(--text-primary, #333);
-  margin: 20px 0 10px 0;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--primary-color, #007bff);
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.sp-section-title:first-child {
-  margin-top: 0;
-}
-
-.sp-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 15px;
-  margin: 5px 0;
-  text-decoration: none;
-  color: var(--text-primary, #333);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  border-left: 3px solid transparent;
-}
-
-.sp-item:hover {
+  padding: 10px 12px;
   background: var(--bg-secondary, #f8f9fa);
-  color: var(--text-primary, #333);
-  text-decoration: none;
-  border-left-color: var(--primary-color, #007bff);
-  transform: translateX(5px);
+  border: 1px solid var(--border-color, #e9ecef);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary, #212529);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.sp-item i {
-  margin-right: 12px;
-  width: 20px;
+.tree-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--primary-color, #007bff);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.tree-header:hover {
+  background: var(--bg-hover, #e9ecef);
+  transform: translateX(3px);
+  box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.1));
+}
+
+.tree-header:hover::before {
+  transform: scaleY(1);
+}
+
+.tree-arrow {
+  margin-right: 10px;
+  font-size: 12px;
+  color: var(--text-muted, #6c757d);
+  transition: all 0.3s ease;
+  width: 16px;
   text-align: center;
+}
+
+.tree-arrow.expanded {
+  transform: rotate(90deg);
   color: var(--primary-color, #007bff);
 }
 
-/* Overlay para cerrar el panel */
-.panel-overlay {
-  position: fixed;
+.tree-content {
+  margin: 8px 0 8px 20px;
+  padding-left: 16px;
+  border-left: 2px solid var(--border-color, #e9ecef);
+  position: relative;
+}
+
+.tree-content::before {
+  content: '';
+  position: absolute;
+  left: -2px;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--primary-color, #007bff), transparent);
 }
 
-.panel-overlay.active {
-  opacity: 1;
-  visibility: visible;
+.tree-content .sp-item {
+  padding: 8px 12px;
+  font-size: 13px;
+  margin: 4px 0;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .sp-panel {
-    width: 100%;
-    right: -100%;
+.tree-content .sp-item:hover {
+  background: var(--bg-hover, #f8f9fa);
+  transform: translateX(5px);
+}
+
+.tree-content .sp-item::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  width: 8px;
+  height: 2px;
+  background: var(--border-color, #e9ecef);
+  transform: translateY(-50%);
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .tree-header {
+  background: var(--bg-secondary, #2a2f36);
+  border-color: var(--border-color, #404040);
+  color: var(--text-primary, #e5e7eb);
+}
+
+[data-theme="dark"] .tree-header:hover {
+  background: var(--bg-hover, #3a3f46);
+}
+
+[data-theme="dark"] .tree-content {
+  border-left-color: var(--border-color, #404040);
+}
+
+[data-theme="dark"] .tree-content .sp-item:hover {
+  background: var(--bg-hover, #3a3f46);
+}
+
+[data-theme="dark"] .tree-content .sp-item::before {
+  background: var(--border-color, #404040);
+}
+
+/* Animation for tree expansion */
+.tree-content {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .tree-header {
+    padding: 8px 10px;
+    font-size: 13px;
   }
   
-  .sp-fab {
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    font-size: 1rem;
+  .tree-content {
+    margin-left: 15px;
+    padding-left: 12px;
   }
   
-  .sp-header {
-    padding: 15px;
-  }
-  
-  .sp-content {
-    padding: 15px;
-  }
-  
-  .sp-item {
-    padding: 10px 12px;
+  .tree-content .sp-item {
+    padding: 6px 10px;
+    font-size: 12px;
   }
 }
 
-/* Dark mode */
-[data-theme="dark"] .sp-panel {
-  background: var(--bg-primary-dark, #1a1a1a);
-  color: var(--text-primary-dark, #ffffff);
+/* Header Controls */
+.sp-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-[data-theme="dark"] .sp-content {
-  background: var(--bg-primary-dark, #1a1a1a);
-  color: var(--text-primary-dark, #ffffff);
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text-primary, #212529);
+  font-size: 16px;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
 }
 
-[data-theme="dark"] .sp-item:hover {
-  background: var(--bg-secondary-dark, #2d2d2d);
+.theme-toggle:hover {
+  background: var(--bg-hover, #e9ecef);
+  transform: scale(1.1);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+[data-theme="dark"] .theme-toggle {
+  color: var(--text-primary, #e5e7eb);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background: var(--bg-hover, #3a3f46);
+}
+
+/* Home Button Styles */
+.home-fab {
+  position: fixed;
+  left: calc(50% - 210px);
+  bottom: 20px;
+  width: 56px;
+  height: 56px;
+  background: var(--primary-color, #007bff);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--shadow-light, rgba(0,0,0,0.15));
+  transition: all 0.3s ease;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+/* Action Button Styles */
+.action-fab {
+  position: fixed;
+  bottom: 20px;
+  width: 56px;
+  height: 56px;
+  background: var(--primary-color, #007bff);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--shadow-light, rgba(0,0,0,0.15));
+  transition: all 0.3s ease;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.action-fab:hover {
+  background: var(--primary-hover, #0056b3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow-medium, rgba(0,0,0,0.25));
+}
+
+.action-fab:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.15));
+}
+
+/* Position action buttons in center */
+.calendar-fab {
+  left: calc(50% - 140px);
+}
+
+.tickets-fab {
+  left: calc(50% - 70px);
+}
+
+.projects-fab {
+  left: calc(50%);
+}
+
+.events-fab {
+  left: calc(50% + 70px);
+}
+
+/* Dark mode overrides for action buttons */
+[data-theme="dark"] .action-fab {
+  background: var(--primary-color, #007bff);
+  box-shadow: 0 4px 12px var(--shadow-dark, rgba(0,0,0,0.3));
+}
+
+[data-theme="dark"] .action-fab:hover {
+  background: var(--primary-hover, #0056b3);
+  box-shadow: 0 6px 20px var(--shadow-dark, rgba(0,0,0,0.4));
+}
+
+/* Menu button on the right */
+.sp-fab {
+  right: 20px !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background: var(--primary-color, #007bff) !important;
+  color: white !important;
+}
+
+/* Ensure all buttons have the same color scheme */
+.home-fab,
+.action-fab,
+.sp-fab {
+  background: var(--primary-color, #007bff) !important;
+  color: white !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Hover effects for all buttons */
+.home-fab:hover,
+.action-fab:hover,
+.sp-fab:hover {
+  background: var(--primary-hover, #0056b3) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow-medium, rgba(0,0,0,0.25));
+}
+
+/* Active effects for all buttons */
+.home-fab:active,
+.action-fab:active,
+.sp-fab:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.15));
+}
+
+/* Dark mode overrides for all buttons */
+[data-theme="dark"] .home-fab,
+[data-theme="dark"] .action-fab,
+[data-theme="dark"] .sp-fab {
+  background: var(--primary-color, #007bff) !important;
+  color: white !important;
+}
+
+[data-theme="dark"] .home-fab:hover,
+[data-theme="dark"] .action-fab:hover,
+[data-theme="dark"] .sp-fab:hover {
+  background: var(--primary-hover, #0056b3) !important;
+  box-shadow: 0 6px 20px var(--shadow-dark, rgba(0,0,0,0.4));
 }
 </style>
 
-<!-- JavaScript para el slidepanel -->
+<script src="/Modules/Menu/assets/menu.js"></script>
 <script>
-(function(){
-  function qs(sel){return document.querySelector(sel)}
+function toggleTree(id) {
+  const content = document.getElementById(id + '-content');
+  const arrow = document.getElementById(id + '-arrow');
   
-  // Esperar a que el DOM esté completamente cargado
-  function initSlidepanel() {
-    var btn = qs('#sp-fab');
-    var panel = qs('#sp-panel');
-    
-    console.log('Slidepanel init - btn:', !!btn, 'panel:', !!panel);
-    
-    if(!btn || !panel) {
-      console.log('Slidepanel: Elementos no encontrados');
-      return;
-    }
-    
-    function toggle(){ 
-      console.log('Toggle slidepanel - antes:', panel.classList.contains('sp-open'));
-      panel.classList.toggle('sp-open');
-      console.log('Toggle slidepanel - después:', panel.classList.contains('sp-open'));
-    }
-    
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('Botón slidepanel clickeado');
-      toggle();
-    });
-    
-    var closeBtn = qs('#sp-close');
-    if(closeBtn){ 
-      closeBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Botón cerrar clickeado');
-        toggle();
-      });
-    }
-    
-    // Cerrar con Escape
-    document.addEventListener('keydown', function(e){ 
-      if(e.key === 'Escape' && panel.classList.contains('sp-open')) {
-        console.log('Cerrando slidepanel con Escape');
-        toggle(); 
-      }
-    });
-    
-    // Cerrar al hacer clic fuera del panel
-    document.addEventListener('click', function(e) {
-      if(panel.classList.contains('sp-open') && 
-         !panel.contains(e.target) && 
-         !btn.contains(e.target)) {
-        console.log('Cerrando slidepanel - clic fuera');
-        toggle();
-      }
-    });
-    
-    console.log('Slidepanel inicializado correctamente');
-  }
-  
-  // Inicializar cuando el DOM esté listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSlidepanel);
+  if (content.style.display === 'none') {
+    content.style.display = 'block';
+    arrow.classList.add('expanded');
   } else {
-    initSlidepanel();
+    content.style.display = 'none';
+    arrow.classList.remove('expanded');
   }
-})();
+}
+
+// Theme Toggle Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  
+  // Set initial icon based on current theme
+  function updateThemeIcon() {
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      themeIcon.className = 'fas fa-moon';
+      themeIcon.style.color = '#fbbf24'; // Yellow for moon
+    } else {
+      themeIcon.className = 'fas fa-sun';
+      themeIcon.style.color = '#f59e0b'; // Orange for sun
+    }
+  }
+  
+  // Toggle theme using existing system
+  function toggleTheme() {
+    // Get current theme from localStorage
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    // Update localStorage
+    localStorage.setItem('theme', newTheme);
+    
+    // Update body and html attributes
+    document.body.setAttribute('data-theme', newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    
+    // Update meta theme-color for mobile
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', newTheme === 'dark' ? '#1a1a1a' : '#ffffff');
+    }
+    
+    // Trigger theme change event
+    const event = new CustomEvent('themeChanged', { detail: { theme: newTheme } });
+    document.dispatchEvent(event);
+    
+    // Update icon
+    updateThemeIcon();
+    
+    // Force CSS refresh for immediate visual change
+    document.body.style.transition = 'none';
+    setTimeout(() => {
+      document.body.style.transition = '';
+    }, 10);
+  }
+  
+  // Initialize theme icon
+  updateThemeIcon();
+  
+  // Add click event
+  themeToggle.addEventListener('click', toggleTheme);
+  
+  // Listen for theme changes from other components
+  document.addEventListener('themeChanged', function(e) {
+    updateThemeIcon();
+  });
+  
+  // Also listen for storage changes (in case theme is changed from another tab)
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'theme') {
+      updateThemeIcon();
+    }
+  });
+});
 </script>
