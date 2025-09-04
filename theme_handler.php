@@ -25,7 +25,7 @@ function setTheme($theme) {
 }
 
 // Manejar solicitudes AJAX para cambiar tema
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && in_array($_POST['action'], ['set_theme', 'get_theme'])) {
     header('Content-Type: application/json');
     
     switch ($_POST['action']) {
@@ -41,9 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         case 'get_theme':
             echo json_encode(['theme' => getCurrentTheme()]);
             break;
-            
-        default:
-            echo json_encode(['success' => false, 'error' => 'Invalid action']);
     }
     exit;
 }
