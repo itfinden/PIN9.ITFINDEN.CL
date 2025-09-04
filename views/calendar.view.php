@@ -41,10 +41,9 @@ $id_company = $_SESSION['id_company'];
             gap: 10px;
             padding: 15px;
             margin-bottom: 20px;
-            /*background: #f8f9fa;*/
+            background: var(--bg-secondary, #f8f9fa);
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            /*max-height: 400px;*/
+            box-shadow: 0 2px 4px var(--shadow-light, rgba(0,0,0,0.1));
             width: 100%;
             height: 100%;
             overflow-y: auto;
@@ -58,17 +57,17 @@ $id_company = $_SESSION['id_company'];
             transition: all 0.3s ease;
             border: 2px solid transparent;
             position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.1));
         }
         
         .calendar-box:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px var(--shadow-medium, rgba(0,0,0,0.2));
         }
         
         .calendar-box.selected {
-            border-color: #fff;
-            box-shadow: 0 0 0 3px rgba(255,255,255,0.8), 0 4px 12px rgba(0,0,0,0.2);
+            border-color: var(--text-primary, #fff);
+            box-shadow: 0 0 0 3px var(--shadow-light, rgba(255,255,255,0.8)), 0 4px 12px var(--shadow-medium, rgba(0,0,0,0.2));
             transform: translateY(-2px);
         }
         
@@ -90,8 +89,8 @@ $id_company = $_SESSION['id_company'];
             right: 5px;
             font-size: 8px;
             padding: 2px 6px;
-            background: rgba(255,255,255,0.9);
-            color: #333;
+            background: var(--bg-primary, rgba(255,255,255,0.9));
+            color: var(--text-primary, #333);
         }
         
         /* Scroll vertical suave */
@@ -100,17 +99,17 @@ $id_company = $_SESSION['id_company'];
         }
         
         .calendar-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: var(--bg-secondary, #f1f1f1);
             border-radius: 3px;
         }
         
         .calendar-container::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
+            background: var(--border-color, #c1c1c1);
             border-radius: 3px;
         }
         
         .calendar-container::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
+            background: var(--text-muted, #a8a8a8);
         }
         
         /* Estilos para el slide panel con engranaje */
@@ -283,6 +282,92 @@ $id_company = $_SESSION['id_company'];
         [data-theme="dark"] .slide-panel-header {
             background: linear-gradient(135deg, var(--primary-color, #2563eb) 0%, var(--primary-hover, #1d4ed8) 100%) !important;
         }
+        
+        /* Estilos para el contenedor principal del calendario */
+        .calendar-container-main {
+            background: var(--bg-primary, #ffffff);
+            color: var(--text-primary, #212529);
+            border: 1px solid var(--border-color, #dee2e6);
+            box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.1));
+        }
+        
+        /* Estilos para elementos de texto */
+        .lead {
+            color: var(--text-primary, #212529);
+        }
+        
+        .text-muted {
+            color: var(--text-muted, #6c757d) !important;
+        }
+        
+        /* Estilos para FullCalendar */
+        .fc {
+            background: var(--bg-primary, #ffffff);
+            color: var(--text-primary, #212529);
+        }
+        
+        .fc-theme-standard .fc-scrollgrid {
+            border-color: var(--border-color, #dee2e6);
+        }
+        
+        .fc-theme-standard td, .fc-theme-standard th {
+            border-color: var(--border-color, #dee2e6);
+        }
+        
+        .fc-theme-standard .fc-list-day-cushion {
+            background: var(--bg-secondary, #f8f9fa);
+            color: var(--text-primary, #212529);
+        }
+        
+        .fc-theme-standard .fc-list-event:hover td {
+            background: var(--bg-hover, #e9ecef);
+        }
+        
+        /* Dark mode overrides para calendario */
+        [data-theme="dark"] .calendar-container-main {
+            background: var(--bg-primary-dark, #1a1a1a);
+            color: var(--text-primary-dark, #ffffff);
+            border-color: var(--border-color-dark, #404040);
+        }
+        
+        [data-theme="dark"] .calendar-container {
+            background: var(--bg-secondary-dark, #2a2f36);
+        }
+        
+        [data-theme="dark"] .fc {
+            background: var(--bg-primary-dark, #1a1a1a);
+            color: var(--text-primary-dark, #ffffff);
+        }
+        
+        [data-theme="dark"] .fc-theme-standard .fc-scrollgrid {
+            border-color: var(--border-color-dark, #404040);
+        }
+        
+        [data-theme="dark"] .fc-theme-standard td, .fc-theme-standard th {
+            border-color: var(--border-color-dark, #404040);
+        }
+        
+        [data-theme="dark"] .fc-theme-standard .fc-list-day-cushion {
+            background: var(--bg-secondary-dark, #2a2f36);
+            color: var(--text-primary-dark, #ffffff);
+        }
+        
+        [data-theme="dark"] .fc-theme-standard .fc-list-event:hover td {
+            background: var(--bg-hover-dark, #3a3f46);
+        }
+        
+        /* Debug panel styles */
+        .debug-panel {
+            background: var(--bg-primary, #ffffff) !important;
+            color: var(--text-primary, #333) !important;
+            border-color: var(--border-color, #ccc) !important;
+        }
+        
+        [data-theme="dark"] .debug-panel {
+            background: var(--bg-primary-dark, #1a1a1a) !important;
+            color: var(--text-primary-dark, #ffffff) !important;
+            border-color: var(--border-color-dark, #404040) !important;
+        }
     </style>
 
     <link rel="stylesheet" href="/Modules/Calendar/css/style.css">  
@@ -294,7 +379,7 @@ $id_company = $_SESSION['id_company'];
 
 <!-- aqui estaba antes el codigo -->
 <!-- Page Content -->
-<div class="container bg-light text-dark rounded mt-4">
+<div class="container calendar-container-main rounded mt-4">
     <div class="row m-0 p-0">
         <div class="col-lg-12 text-center">
             <p class="lead"></p>
@@ -616,7 +701,7 @@ echo "<!-- DEBUG: $id_user: " . $id_user . " -->";
         });
     </script>
 
-<div style="position:fixed;bottom:0;right:0;z-index:9999;font-size:9px;opacity:0.5;background:#fff;color:#333;padding:2px 6px;border:1px solid #ccc;border-radius:3px;max-width:350px;max-height:220px;overflow:auto;">
+<div class="debug-panel" style="position:fixed;bottom:0;right:0;z-index:9999;font-size:9px;opacity:0.5;padding:2px 6px;border:1px solid var(--border-color, #ccc);border-radius:3px;max-width:350px;max-height:220px;overflow:auto;">
 <b>SESSION:</b><br>
 <?php
 foreach ($_SESSION as $k => $v) {
