@@ -158,37 +158,74 @@ $stats = $stmt->fetch();
             font-size: 1.5rem;
         }
         
+        .stats-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stats-toggle-btn {
+            background: var(--primary-color, #007bff);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .stats-toggle-btn:hover {
+            background: var(--primary-hover, #0056b3);
+            transform: translateY(-1px);
+        }
+        
+        .stats-container {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .stats-container.collapsed {
+            max-height: 0;
+            margin-bottom: 0;
+            opacity: 0;
+        }
+        
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-bottom: 15px;
         }
         
         .stat-card {
             background: var(--bg-primary, #ffffff);
             border: 1px solid var(--border-color, #dee2e6);
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 6px;
+            padding: 8px;
             text-align: center;
-            box-shadow: 0 1px 4px var(--shadow-light, rgba(0,0,0,0.1));
+            box-shadow: 0 1px 3px var(--shadow-light, rgba(0,0,0,0.1));
             transition: all 0.3s ease;
         }
         
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--shadow-medium, rgba(0,0,0,0.15));
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px var(--shadow-medium, rgba(0,0,0,0.15));
         }
         
         .stat-number {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         
         .stat-label {
             color: var(--text-muted, #6c757d);
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 500;
         }
         
@@ -501,18 +538,23 @@ $stats = $stmt->fetch();
         @media (max-width: 768px) {
             .stats-grid {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 8px;
+                gap: 6px;
             }
             
             .stat-card {
-                padding: 8px;
+                padding: 6px;
             }
             
             .stat-number {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
             
             .stat-label {
+                font-size: 0.6rem;
+            }
+            
+            .stats-toggle-btn {
+                padding: 4px 8px;
                 font-size: 0.7rem;
             }
             
@@ -575,30 +617,40 @@ $stats = $stmt->fetch();
                 Sistema de Tickets 2025
             </h1>
             
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" style="color: #3498db;"><?php echo $stats['total']; ?></div>
-                    <div class="stat-label">Total de Tickets</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" style="color: #3498db;"><?php echo $stats['new_count']; ?></div>
-                    <div class="stat-label">Nuevos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" style="color: #e67e22;"><?php echo $stats['in_progress_count']; ?></div>
-                    <div class="stat-label">En Progreso</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" style="color: #9b59b6;"><?php echo $stats['waiting_count']; ?></div>
-                    <div class="stat-label">Esperando</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" style="color: #27ae60;"><?php echo $stats['resolved_count']; ?></div>
-                    <div class="stat-label">Resueltos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" style="color: #e74c3c;"><?php echo $stats['urgent_count']; ?></div>
-                    <div class="stat-label">Urgentes</div>
+            <div class="stats-toggle">
+                <h6 style="margin: 0; color: var(--text-primary, #212529); font-weight: 600;">Resumen de Tickets</h6>
+                <button class="stats-toggle-btn" id="statsToggleBtn">
+                    <i class="fas fa-chevron-up" id="statsToggleIcon"></i>
+                    <span id="statsToggleText">Ocultar</span>
+                </button>
+            </div>
+            
+            <div class="stats-container" id="statsContainer">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #3498db;"><?php echo $stats['total']; ?></div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #3498db;"><?php echo $stats['new_count']; ?></div>
+                        <div class="stat-label">Nuevos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #e67e22;"><?php echo $stats['in_progress_count']; ?></div>
+                        <div class="stat-label">Progreso</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #9b59b6;"><?php echo $stats['waiting_count']; ?></div>
+                        <div class="stat-label">Esperando</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #27ae60;"><?php echo $stats['resolved_count']; ?></div>
+                        <div class="stat-label">Resueltos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #e74c3c;"><?php echo $stats['urgent_count']; ?></div>
+                        <div class="stat-label">Urgentes</div>
+                    </div>
                 </div>
             </div>
             
@@ -807,6 +859,41 @@ document.addEventListener("DOMContentLoaded", function() {
 document.querySelectorAll('#status, #priority, #category').forEach(select => {
     select.addEventListener('change', function() {
         this.form.submit();
+    });
+});
+
+// Toggle de estadísticas
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('statsToggleBtn');
+    const toggleIcon = document.getElementById('statsToggleIcon');
+    const toggleText = document.getElementById('statsToggleText');
+    const statsContainer = document.getElementById('statsContainer');
+    
+    // Verificar estado guardado en localStorage
+    const isCollapsed = localStorage.getItem('ticketsStatsCollapsed') === 'true';
+    
+    if (isCollapsed) {
+        statsContainer.classList.add('collapsed');
+        toggleIcon.className = 'fas fa-chevron-down';
+        toggleText.textContent = 'Mostrar';
+    }
+    
+    toggleBtn.addEventListener('click', function() {
+        const isCurrentlyCollapsed = statsContainer.classList.contains('collapsed');
+        
+        if (isCurrentlyCollapsed) {
+            // Mostrar estadísticas
+            statsContainer.classList.remove('collapsed');
+            toggleIcon.className = 'fas fa-chevron-up';
+            toggleText.textContent = 'Ocultar';
+            localStorage.setItem('ticketsStatsCollapsed', 'false');
+        } else {
+            // Ocultar estadísticas
+            statsContainer.classList.add('collapsed');
+            toggleIcon.className = 'fas fa-chevron-down';
+            toggleText.textContent = 'Mostrar';
+            localStorage.setItem('ticketsStatsCollapsed', 'true');
+        }
     });
 });
 </script>
