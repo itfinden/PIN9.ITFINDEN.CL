@@ -144,60 +144,61 @@ $stats = $stmt->fetch();
         .tickets-header {
             background: var(--bg-secondary, #f8f9fa);
             border: 1px solid var(--border-color, #dee2e6);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px var(--shadow-light, rgba(0,0,0,0.1));
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.1));
         }
         
         .tickets-title {
             color: var(--text-primary, #212529);
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
+            font-size: 1.5rem;
         }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
         }
         
         .stat-card {
             background: var(--bg-primary, #ffffff);
             border: 1px solid var(--border-color, #dee2e6);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 8px;
+            padding: 12px;
             text-align: center;
-            box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.1));
+            box-shadow: 0 1px 4px var(--shadow-light, rgba(0,0,0,0.1));
             transition: all 0.3s ease;
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px var(--shadow-medium, rgba(0,0,0,0.15));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-medium, rgba(0,0,0,0.15));
         }
         
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
         
         .stat-label {
             color: var(--text-muted, #6c757d);
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             font-weight: 500;
         }
         
         .filters-section {
             background: var(--bg-secondary, #f8f9fa);
             border: 1px solid var(--border-color, #dee2e6);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px var(--shadow-light, rgba(0,0,0,0.1));
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 4px var(--shadow-light, rgba(0,0,0,0.1));
         }
         
         .form-label {
@@ -499,8 +500,20 @@ $stats = $stmt->fetch();
         
         @media (max-width: 768px) {
             .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .stat-card {
+                padding: 8px;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
             }
             
             .tickets-table-header,
