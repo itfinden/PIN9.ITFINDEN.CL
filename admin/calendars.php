@@ -53,6 +53,15 @@ if ($id_rol == 2) {
     $companies = $connection->query('SELECT id_company, company_name FROM companies')->fetchAll();
 }
 
+// Debug: Log POST data
+error_log('POST data: ' . print_r($_POST, true));
+
+// Si hay POST data, mostrar debug
+if (!empty($_POST)) {
+    error_log('Action received: ' . ($_POST['action'] ?? 'NO ACTION'));
+    error_log('All POST keys: ' . implode(', ', array_keys($_POST)));
+}
+
 // Alta calendario
 if (isset($_POST['action']) && $_POST['action'] === 'add') {
     try {
@@ -419,6 +428,16 @@ $calendars = $connection->query('SELECT cc.*, c.company_name FROM calendar_compa
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+            </div>
+        <?php endif; ?>
+        
+        <!-- Debug temporal -->
+        <?php if (!empty($_POST)): ?>
+            <div class="alert alert-info">
+                <strong>Debug POST:</strong><br>
+                Action: <?= htmlspecialchars($_POST['action'] ?? 'NO ACTION') ?><br>
+                Keys: <?= implode(', ', array_keys($_POST)) ?><br>
+                <small>Esto es solo para debug - eliminar después</small>
             </div>
         <?php endif; ?>
     <button class="btn btn-success mb-3" data-toggle="collapse" data-target="#addForm"><i class="fas fa-plus mr-1"></i>Nuevo Calendario</button>
