@@ -70,19 +70,6 @@
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <i class="fas fa-users stat-icon"></i>
-                    <div class="stat-number"><?= $equipos_activos ?></div>
-                    <div class="stat-label">
-                        <?php if ($is_superadmin): ?>
-                            Empresas Activas
-                        <?php elseif ($is_company_admin): ?>
-                            Miembros Equipo
-                        <?php else: ?>
-                            Equipos Activos
-                        <?php endif; ?>
-                    </div>
-                </div>
             </div>
         </div>
         
