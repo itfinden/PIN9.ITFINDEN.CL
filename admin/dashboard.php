@@ -196,41 +196,42 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
     .admin-dashboard {
         background: var(--bg-primary);
         min-height: 100vh;
-        padding: 20px 0;
+        padding: 15px 0;
     }
 
     .dashboard-header {
         background: var(--bg-card);
-        border-radius: 15px;
-        padding: 30px;
-        margin-bottom: 30px;
-        box-shadow: 0 10px 30px var(--shadow-light);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px var(--shadow-light);
         border: 1px solid var(--border-color);
     }
 
     .dashboard-title {
         color: var(--text-primary);
         font-weight: 700;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
+        font-size: 1.5rem;
     }
 
     .dashboard-subtitle {
         color: var(--text-muted);
-        font-size: 1.1rem;
+        font-size: 0.9rem;
     }
 
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
     }
 
     .stat-card {
         background: var(--bg-card);
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 8px 25px var(--shadow-light);
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 15px var(--shadow-light);
         border: 1px solid var(--border-color);
         transition: all var(--transition-speed) var(--transition-ease);
         position: relative;
@@ -253,45 +254,45 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
     }
 
     .stat-icon {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
+        font-size: 1.8rem;
+        margin-bottom: 8px;
         opacity: 0.8;
     }
 
     .stat-number {
-        font-size: 2.5rem;
+        font-size: 1.8rem;
         font-weight: 700;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
         color: var(--text-primary);
     }
 
     .stat-label {
         color: var(--text-muted);
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
     }
 
     .content-grid {
         display: grid;
         grid-template-columns: 2fr 1fr;
-        gap: 30px;
-        margin-bottom: 30px;
+        gap: 20px;
+        margin-bottom: 20px;
     }
 
     .main-content {
         background: var(--bg-card);
-        border-radius: 15px;
-        padding: 30px;
-        box-shadow: 0 8px 25px var(--shadow-light);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px var(--shadow-light);
         border: 1px solid var(--border-color);
     }
 
     .sidebar-content {
         background: var(--bg-card);
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 8px 25px var(--shadow-light);
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 15px var(--shadow-light);
         border: 1px solid var(--border-color);
         height: fit-content;
     }
@@ -299,10 +300,11 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
     .section-title {
         color: var(--text-primary);
         font-weight: 600;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
+        font-size: 1.1rem;
     }
 
     .section-title i {
@@ -320,15 +322,17 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
         background: var(--bg-secondary);
         color: var(--text-primary);
         border: none;
-        padding: 15px;
+        padding: 10px;
         font-weight: 600;
+        font-size: 0.9rem;
     }
 
     .table-custom td {
         border: none;
-        padding: 12px 15px;
+        padding: 8px 10px;
         color: var(--text-primary);
         border-bottom: 1px solid var(--border-color);
+        font-size: 0.85rem;
     }
 
     .table-custom tr:hover {
@@ -350,16 +354,16 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
 
     .quick-actions {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 15px;
-        margin-bottom: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+        margin-bottom: 20px;
     }
 
     .action-btn {
         background: var(--bg-secondary);
         border: 1px solid var(--border-color);
-        border-radius: 10px;
-        padding: 15px;
+        border-radius: 8px;
+        padding: 10px;
         text-align: center;
         text-decoration: none;
         color: var(--text-primary);
@@ -367,7 +371,8 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
+        gap: 5px;
+        font-size: 0.8rem;
     }
 
     .action-btn:hover {
@@ -378,28 +383,28 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
     }
 
     .action-btn i {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     .user-info {
         background: var(--bg-secondary);
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
         text-align: center;
     }
 
     .user-avatar {
-        width: 60px;
-        height: 60px;
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
         background: var(--primary-color);
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
-        margin: 0 auto 15px;
+        font-size: 1.2rem;
+        margin: 0 auto 10px;
     }
 
     .user-name {
@@ -416,8 +421,8 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
     .activity-item {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 0;
+        gap: 8px;
+        padding: 8px 0;
         border-bottom: 1px solid var(--border-color);
     }
 
@@ -426,13 +431,13 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
     }
 
     .activity-icon {
-        width: 35px;
-        height: 35px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: white;
     }
 
@@ -443,13 +448,13 @@ $is_superadmin = $_SESSION['is_superadmin'] ?? false;
     .activity-title {
         color: var(--text-primary);
         font-weight: 500;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         margin-bottom: 2px;
     }
 
     .activity-time {
         color: var(--text-muted);
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
 
     .responsive-grid {
