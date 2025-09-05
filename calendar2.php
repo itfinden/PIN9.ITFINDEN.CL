@@ -46,9 +46,9 @@ if (isset($_SESSION['user'])) {
         // FULLCALENDAR v6.x: Nueva API de inicialización
         var calendarEl = document.getElementById('calendar');
         window.id_calendar_active = window.id_calendar_active || ($('.calendar-box.selected').data('id') || null);
-        window.calendar = new FullCalendar.Calendar(calendarEl, {
+        // Configurar opciones del calendario
+        var calendarOptions = {
             timeZone: 'local',
-            locale: typeof calendarLang !== 'undefined' ? calendarLang : 'es',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
@@ -197,6 +197,16 @@ if (isset($_SESSION['user'])) {
                 });
             }
         });
+        
+        // Agregar configuración de idioma si está disponible
+        if (typeof window.fullCalendarSpanish !== 'undefined' && calendarLang === 'es') {
+            calendarOptions.locale = window.fullCalendarSpanish;
+        } else {
+            calendarOptions.locale = calendarLang || 'es';
+        }
+        
+        // Crear el calendario
+        window.calendar = new FullCalendar.Calendar(calendarEl, calendarOptions);
         
         // FULLCALENDAR v6.x: Renderizar el calendario
         window.calendar.render();

@@ -28,6 +28,37 @@ $id_company = $_SESSION['id_company'];
         echo strtolower($current_lang); 
       ?>';
       console.log('PHP Session lang:', '<?php echo isset($_SESSION['lang']) ? $_SESSION['lang'] : 'not set'; ?>');
+      
+      // Configuración manual de idioma español para FullCalendar
+      if (calendarLang === 'es') {
+        // Configuración de idioma español manual
+        window.fullCalendarSpanish = {
+          code: 'es',
+          week: {
+            dow: 1, // Monday is the first day of the week
+            doy: 4  // The week that contains Jan 4th is the first week of the year
+          },
+          buttonText: {
+            prev: 'Anterior',
+            next: 'Siguiente',
+            today: 'Hoy',
+            month: 'Mes',
+            week: 'Semana',
+            day: 'Día',
+            list: 'Lista'
+          },
+          allDayText: 'Todo el día',
+          moreLinkText: 'más',
+          noEventsText: 'No hay eventos para mostrar',
+          weekText: 'Sm',
+          allDay: 'Todo el día',
+          time: 'Hora',
+          event: 'Evento',
+          date: 'Fecha',
+          time: 'Hora',
+          list: 'Lista'
+        };
+      }
     </script>
  
     <style>
@@ -630,10 +661,6 @@ echo "<!-- DEBUG: $id_user: " . $id_user . " -->";
 
     <!-- FullCalendar v6.x -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
-    
-    <!-- FullCalendar Locales - Usando unpkg como alternativa -->
-    <script src='https://unpkg.com/fullcalendar@6.1.10/locales/es.global.min.js'></script>
-    <script src='https://unpkg.com/fullcalendar@6.1.10/locales/en.global.min.js'></script>
     
     <!-- Summernote JS (Rich Text Editor) -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
