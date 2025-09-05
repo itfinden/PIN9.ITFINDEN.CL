@@ -16,7 +16,7 @@ if ($id_user) {
 }
 ?>
 <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form class="form-horizontal" method="POST" action="events/actions/eventEdit.php" onsubmit="return validaForm(this);">
                 <div class="modal-header d-flex justify-content-between">
@@ -25,79 +25,80 @@ if ($id_user) {
                 </div>
 
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="title" class="col-sm-4 control-label">Title</label>
-                        <div class="col-sm-12">
-                            <input type="text" name="title" class="form-control" id="title" placeholder="Title" required>
-                        </div>
-                    </div>
+                    <div class="row">
+                        <!-- Columna Izquierda -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="title" class="control-label">Title</label>
+                                <input type="text" name="title" class="form-control" id="title" placeholder="Title" required>
+                            </div>
 
-                    <div class="form-group">
-                        <label for="description" class="col-sm-4 control-label">Description</label>
-                        <div class="col-sm-12">
-                            <textarea name="description" class="form-control" id="description" placeholder="Description"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="colour" class="col-sm-4 control-label">Colour</label>
-                        <div class="col-sm-12">
-                            <select name="colour" class="form-control" id="colour">
-                                <option value="">Pick a colour</option>
-                                <option style="color:#0275d8" value="#0275d8">&#9724; Blue</option>
-                                <option style="color:#5bc0de" value="#5bc0de">&#9724; Tile</option>
-                                <option style="color:#5cb85c" value="#5cb85c">&#9724; Green</option>                          
-                                <option style="color:#f0ad4e" value="#f0ad4e">&#9724; Orange</option>
-                                <option style="color:#d9534f" value="#d9534f">&#9724; Red</option>
-                                <option style="color:#292b2c" value="#292b2c">&#9724; Black</option>                          
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="start_date" class="col-sm-4 control-label">Start date</label>
-                        <div class="col-sm-12 mb-2">
-                            <input type="date" name="start_date" class="form-control" id="start_date" required>
-                        </div>
-                        <div class="col-sm-12">
-                            <select name="start_time" class="form-control" id="start_time" required>
-                                <?php
-                                for ($h = 0; $h < 24; $h++) {
-                                    foreach ([0, 30] as $m) {
-                                        $time = sprintf('%02d:%02d', $h, $m);
-                                        echo "<option value='$time'>$time</option>";
+                            <div class="form-group">
+                                <label for="start_date" class="control-label">Start date</label>
+                                <input type="date" name="start_date" class="form-control" id="start_date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="start_time" class="control-label">Start time</label>
+                                <select name="start_time" class="form-control" id="start_time" required>
+                                    <?php
+                                    for ($h = 0; $h < 24; $h++) {
+                                        foreach ([0, 30] as $m) {
+                                            $time = sprintf('%02d:%02d', $h, $m);
+                                            echo "<option value='$time'>$time</option>";
+                                        }
                                     }
-                                }
-                                ?>
-                            </select>
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Columna Derecha -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="colour" class="control-label">Colour</label>
+                                <select name="colour" class="form-control" id="colour">
+                                    <option value="">Pick a colour</option>
+                                    <option style="color:#0275d8" value="#0275d8">&#9724; Blue</option>
+                                    <option style="color:#5bc0de" value="#5bc0de">&#9724; Tile</option>
+                                    <option style="color:#5cb85c" value="#5cb85c">&#9724; Green</option>                          
+                                    <option style="color:#f0ad4e" value="#f0ad4e">&#9724; Orange</option>
+                                    <option style="color:#d9534f" value="#d9534f">&#9724; Red</option>
+                                    <option style="color:#292b2c" value="#292b2c">&#9724; Black</option>                          
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="end_date" class="control-label">End date</label>
+                                <input type="date" name="end_date" class="form-control" id="end_date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="end_time" class="control-label">End time</label>
+                                <select name="end_time" class="form-control" id="end_time" required>
+                                    <?php
+                                    for ($h = 0; $h < 24; $h++) {
+                                        foreach ([0, 30] as $m) {
+                                            $time = sprintf('%02d:%02d', $h, $m);
+                                            echo "<option value='$time'>$time</option>";
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                         </div>
                     </div>
-
+                    
+                    <!-- Description usando todo el ancho disponible -->
                     <div class="form-group">
-                        <label for="end_date" class="col-sm-4 control-label">End date</label>
-                        <div class="col-sm-12 mb-2">
-                            <input type="date" name="end_date" class="form-control" id="end_date" required>
-                        </div>
-                        <div class="col-sm-12">
-                            <select name="end_time" class="form-control" id="end_time" required>
-                                <?php
-                                for ($h = 0; $h < 24; $h++) {
-                                    foreach ([0, 30] as $m) {
-                                        $time = sprintf('%02d:%02d', $h, $m);
-                                        echo "<option value='$time'>$time</option>";
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
+                        <label for="description" class="control-label">Description</label>
+                        <textarea name="description" class="form-control" id="description" placeholder="Description" rows="4"></textarea>
                     </div>
                         
                     <!-- Delete the event -->
                     <div class="form-group"> 
-                        <div class="col-sm-offset-2 col-sm-12">
-                            <div class="checkbox">
-                                <label class="text-danger"><input type="checkbox" class="mr-2" name="delete">Delete</label>
-                            </div>
+                        <div class="checkbox">
+                            <label class="text-danger"><input type="checkbox" class="mr-2" name="delete">Delete</label>
                         </div>
                     </div>
                     
