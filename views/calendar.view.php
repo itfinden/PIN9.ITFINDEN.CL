@@ -75,6 +75,9 @@ $id_company = $_SESSION['id_company'];
     <!-- Summernote CSS (Rich Text Editor) -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
+    <!-- jQuery debe cargarse primero -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
     <!-- Tippy.js y Popper.js para tooltips avanzados -->
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -712,8 +715,6 @@ echo "<!-- DEBUG: $id_user: " . $id_user . " -->";
 <?php require 'footer.php'; ?>
 
     <!-- jQuery  -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
     <!-- Bootstrap Core JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
