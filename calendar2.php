@@ -37,6 +37,7 @@ if (isset($_SESSION['user'])) {
     $(document).ready(function() {
         // MULTILANG FULLCALENDAR DEBUG: Mostrar valor de calendarLang
         console.log('calendarLang:', typeof calendarLang !== 'undefined' ? calendarLang : 'undefined');
+        console.log('FullCalendar locales disponibles:', Object.keys(FullCalendar.globalLocales || {}));
         
         // DEBUG: Mostrar eventos cargados desde PHP
         var eventosDebug = <?php echo json_encode($events); ?>;
@@ -198,6 +199,10 @@ if (isset($_SESSION['user'])) {
         
         // FULLCALENDAR v6.x: Renderizar el calendario
         window.calendar.render();
+        
+        // DEBUG: Verificar que el locale se aplicó correctamente
+        console.log('Calendario renderizado con locale:', window.calendar.getOption('locale'));
+        console.log('Botones de la toolbar:', window.calendar.getOption('headerToolbar'));
             
         function edit(event){
             // FULLCALENDAR v6.x: Usar fechas nativas en lugar de moment
