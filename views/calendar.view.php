@@ -10,8 +10,67 @@ $id_company = $_SESSION['id_company'];
     <?php $title= "Calendar"; ?>
     <?php require 'head.php'; ?>
 
-    <!-- FullCalendar v6.x - Usando unpkg como alternativa -->
-    <link href='https://unpkg.com/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
+    <!-- FullCalendar v6.x - CSS local como fallback -->
+    <style>
+        /* FullCalendar CSS básico como fallback */
+        .fc {
+            direction: ltr;
+            text-align: left;
+        }
+        .fc table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        .fc th, .fc td {
+            border-style: solid;
+            border-width: 1px;
+            padding: 0;
+            vertical-align: top;
+        }
+        .fc th {
+            font-weight: bold;
+        }
+        .fc .fc-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1em;
+        }
+        .fc .fc-toolbar h2 {
+            margin: 0;
+        }
+        .fc .fc-button {
+            display: inline-block;
+            padding: 0.4em 0.6em;
+            margin: 0 0.2em;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .fc .fc-button:hover {
+            background: #e6e6e6;
+        }
+        .fc .fc-button:active {
+            background: #d4d4d4;
+        }
+        .fc .fc-button-primary {
+            background: #007cba;
+            border-color: #007cba;
+            color: #fff;
+        }
+        .fc .fc-button-primary:hover {
+            background: #005a87;
+        }
+        .fc .fc-today-button {
+            background: #28a745;
+            border-color: #28a745;
+            color: #fff;
+        }
+        .fc .fc-today-button:hover {
+            background: #218838;
+        }
+    </style>
     
     <!-- Summernote CSS (Rich Text Editor) -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
@@ -23,16 +82,10 @@ $id_company = $_SESSION['id_company'];
     
     <!-- MULTILANG FULLCALENDAR: Pasar idioma PHP a JS -->
     <script>
-      var calendarLang = '<?php 
-        $current_lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'es';
-        // Forzar español si no está configurado
-        if ($current_lang !== 'es' && $current_lang !== 'en') {
-          $current_lang = 'es';
-        }
-        echo strtolower($current_lang); 
-      ?>';
+      // Forzar español para el calendario
+      var calendarLang = 'es';
       console.log('PHP Session lang:', '<?php echo isset($_SESSION['lang']) ? $_SESSION['lang'] : 'not set'; ?>');
-      console.log('calendarLang final:', calendarLang);
+      console.log('calendarLang forzado a:', calendarLang);
       
       // Configuración manual de idioma español para FullCalendar
       if (calendarLang === 'es') {
