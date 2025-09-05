@@ -34,6 +34,45 @@ $id_company = $_SESSION['id_company'];
             padding: 20px;
         }
         
+        /* Estilos para modal de 2 columnas */
+        .modal-lg {
+            max-width: 800px;
+        }
+        
+        .modal-body .row {
+            margin: 0;
+        }
+        
+        .modal-body .col-md-6 {
+            padding: 0 10px;
+        }
+        
+        .modal-body .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .modal-body .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary, #333);
+        }
+        
+        .modal-body .form-control {
+            border-radius: 6px;
+            border: 1px solid var(--border-color, #ddd);
+            transition: border-color 0.3s ease;
+        }
+        
+        .modal-body .form-control:focus {
+            border-color: var(--primary-color, #007bff);
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        
+        .modal-body textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
         /* Estilos para las cajas de calendarios en columna */
         .calendar-container {
             display: flex;
