@@ -35,19 +35,6 @@ if ($id_user) {
                         </div>
 
                         <div class="form-group">
-                            <label for="colour" class="control-label">Colour</label>
-                            <select name="colour" class="form-control" id="colour">
-                                <option value="">Pick a colour</option>
-                                <option style="color:#0275d8" value="#0275d8">&#9724; Blue</option>
-                                <option style="color:#5bc0de" value="#5bc0de">&#9724; Tile</option>
-                                <option style="color:#5cb85c" value="#5cb85c">&#9724; Green</option>                          
-                                <option style="color:#f0ad4e" value="#f0ad4e">&#9724; Orange</option>
-                                <option style="color:#d9534f" value="#d9534f">&#9724; Red</option>
-                                <option style="color:#292b2c" value="#292b2c">&#9724; Black</option>                          
-                            </select>
-                        </div>
-
-                        <div class="form-group">
                             <label for="start_date" class="control-label">Start date</label>
                             <input type="date" name="start_date" class="form-control" id="start_date" required>
                         </div>
@@ -70,8 +57,16 @@ if ($id_user) {
                     <!-- Columna Derecha -->
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="description" class="control-label">Description</label>
-                            <textarea name="description" class="form-control" id="description" placeholder="Description" rows="4"></textarea>
+                            <label for="colour" class="control-label">Colour</label>
+                            <select name="colour" class="form-control" id="colour">
+                                <option value="">Pick a colour</option>
+                                <option style="color:#0275d8" value="#0275d8">&#9724; Blue</option>
+                                <option style="color:#5bc0de" value="#5bc0de">&#9724; Tile</option>
+                                <option style="color:#5cb85c" value="#5cb85c">&#9724; Green</option>                          
+                                <option style="color:#f0ad4e" value="#f0ad4e">&#9724; Orange</option>
+                                <option style="color:#d9534f" value="#d9534f">&#9724; Red</option>
+                                <option style="color:#292b2c" value="#292b2c">&#9724; Black</option>                          
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -93,6 +88,12 @@ if ($id_user) {
                             </select>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Description usando todo el ancho disponible -->
+                <div class="form-group">
+                    <label for="description" class="control-label">Description</label>
+                    <textarea name="description" class="form-control" id="description" placeholder="Description" rows="4"></textarea>
                 </div>
                 <!-- Campo oculto para id_calendar -->
                 <input type="hidden" name="id_calendar" id="modalAdd_id_calendar" value="<?= htmlspecialchars($_SESSION['id_calendar'] ?? 1) ?>">
