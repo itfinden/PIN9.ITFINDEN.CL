@@ -10,65 +10,129 @@ $id_company = $_SESSION['id_company'];
     <?php $title= "Calendar"; ?>
     <?php require 'head.php'; ?>
 
-    <!-- FullCalendar v6.x - CSS local como fallback -->
+    <!-- FullCalendar v6.x - CSS desde CDN confiable -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
+    
+    <!-- CSS adicional para asegurar visibilidad -->
     <style>
-        /* FullCalendar CSS básico como fallback */
+        /* Asegurar que el calendario sea visible */
+        #calendar {
+            width: 100%;
+            height: 600px;
+            background: var(--bg-primary, #ffffff);
+            border: 1px solid var(--border-color, #dee2e6);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        /* FullCalendar estilos adicionales */
         .fc {
             direction: ltr;
             text-align: left;
+            font-size: 14px;
         }
+        
         .fc table {
             border-collapse: collapse;
             border-spacing: 0;
         }
+        
         .fc th, .fc td {
             border-style: solid;
             border-width: 1px;
-            padding: 0;
+            padding: 8px;
             vertical-align: top;
         }
+        
         .fc th {
             font-weight: bold;
+            background: var(--bg-secondary, #f8f9fa);
         }
+        
         .fc .fc-toolbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1em;
+            flex-wrap: wrap;
         }
+        
         .fc .fc-toolbar h2 {
             margin: 0;
+            font-size: 1.5em;
+            color: var(--text-primary, #212529);
         }
+        
         .fc .fc-button {
             display: inline-block;
             padding: 0.4em 0.6em;
             margin: 0 0.2em;
-            border: 1px solid #ccc;
-            background: #f9f9f9;
+            border: 1px solid var(--border-color, #ccc);
+            background: var(--bg-secondary, #f9f9f9);
+            color: var(--text-primary, #212529);
             cursor: pointer;
-            border-radius: 3px;
+            border-radius: 4px;
+            font-size: 14px;
         }
+        
         .fc .fc-button:hover {
-            background: #e6e6e6;
+            background: var(--bg-hover, #e6e6e6);
         }
+        
         .fc .fc-button:active {
-            background: #d4d4d4;
+            background: var(--bg-active, #d4d4d4);
         }
+        
         .fc .fc-button-primary {
-            background: #007cba;
-            border-color: #007cba;
+            background: var(--primary-color, #007cba);
+            border-color: var(--primary-color, #007cba);
             color: #fff;
         }
+        
         .fc .fc-button-primary:hover {
-            background: #005a87;
+            background: var(--primary-hover, #005a87);
         }
+        
         .fc .fc-today-button {
-            background: #28a745;
-            border-color: #28a745;
+            background: var(--success-color, #28a745);
+            border-color: var(--success-color, #28a745);
             color: #fff;
         }
+        
         .fc .fc-today-button:hover {
-            background: #218838;
+            background: var(--success-hover, #218838);
+        }
+        
+        /* Estilos para eventos */
+        .fc-event {
+            background: var(--primary-color, #007cba);
+            border: 1px solid var(--primary-color, #007cba);
+            color: #fff;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        
+        .fc-event:hover {
+            background: var(--primary-hover, #005a87);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .fc .fc-toolbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .fc .fc-toolbar h2 {
+                font-size: 1.2em;
+            }
+            
+            .fc .fc-button {
+                font-size: 12px;
+                padding: 0.3em 0.5em;
+            }
         }
     </style>
     

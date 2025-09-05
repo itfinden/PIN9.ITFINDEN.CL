@@ -209,11 +209,14 @@ if (isset($_SESSION['user'])) {
         window.calendar = new FullCalendar.Calendar(calendarEl, calendarOptions);
         
         // FULLCALENDAR v6.x: Renderizar el calendario
+        console.log('Intentando renderizar calendario...');
         window.calendar.render();
+        console.log('Calendario renderizado exitosamente');
         
         // DEBUG: Verificar que el locale se aplicó correctamente
         console.log('Calendario renderizado con locale:', window.calendar.getOption('locale'));
         console.log('Botones de la toolbar:', window.calendar.getOption('headerToolbar'));
+        console.log('Elemento calendar encontrado:', document.getElementById('calendar'));
             
         function edit(event){
             // FULLCALENDAR v6.x: Usar fechas nativas en lugar de moment
