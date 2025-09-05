@@ -36,6 +36,7 @@ if (isset($_SESSION['user'])) {
 
     $(document).ready(function() {
         // MULTILANG FULLCALENDAR DEBUG: Mostrar valor de calendarLang
+        console.log('calendarLang:', typeof calendarLang !== 'undefined' ? calendarLang : 'undefined');
         
         // DEBUG: Mostrar eventos cargados desde PHP
         var eventosDebug = <?php echo json_encode($events); ?>;

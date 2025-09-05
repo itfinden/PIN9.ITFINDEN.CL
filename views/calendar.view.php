@@ -23,7 +23,7 @@ $id_company = $_SESSION['id_company'];
     
     <!-- MULTILANG FULLCALENDAR: Pasar idioma PHP a JS -->
     <script>
-      var calendarLang = '<?php echo isset($_SESSION['lang']) ? strtolower($_SESSION['lang']) : 'es'; ?>';
+      var calendarLang = '<?php echo isset($_SESSION['language']) ? strtolower($_SESSION['language']) : 'es'; ?>';
     </script>
  
     <style>
