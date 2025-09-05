@@ -7,6 +7,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Incluir el manejador de idioma
+require_once __DIR__ . '/../../lang/language_handler.php';
+
 $enabled = !empty($_SESSION['enable_slidepanel']) || (isset($_GET['menu']) && $_GET['menu'] === 'slidepanel');
 
 if (!$enabled) {
@@ -75,6 +78,13 @@ if ($user_id) {
   <div class="sp-header">
     <h6 class="sp-title mb-0"><i class="fas fa-compass mr-1"></i> Menú</h6>
     <div class="sp-header-controls">
+      <!-- Language Selector -->
+      <div class="language-selector">
+        <select id="language-select" class="language-select">
+          <option value="es" <?php echo ($current_lang === 'es') ? 'selected' : ''; ?>>🇪🇸 ES</option>
+          <option value="en" <?php echo ($current_lang === 'en') ? 'selected' : ''; ?>>🇺🇸 EN</option>
+        </select>
+      </div>
       <!-- Theme Toggle -->
       <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">
         <i class="fas fa-sun" id="theme-icon"></i>
@@ -364,6 +374,66 @@ if ($user_id) {
   gap: 8px;
 }
 
+/* Language Selector */
+.language-selector {
+  position: relative;
+}
+
+.language-select {
+  background: var(--bg-secondary, #f8f9fa);
+  border: 1px solid var(--border-color, #e9ecef);
+  border-radius: 6px;
+  color: var(--text-primary, #212529);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  background-size: 12px;
+  padding-right: 24px;
+  min-width: 60px;
+}
+
+.language-select:hover {
+  background: var(--bg-hover, #e9ecef);
+  border-color: var(--primary-color, #007bff);
+  transform: translateY(-1px);
+}
+
+.language-select:focus {
+  outline: none;
+  border-color: var(--primary-color, #007bff);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.language-select option {
+  background: var(--bg-card, #ffffff);
+  color: var(--text-primary, #212529);
+  padding: 8px;
+}
+
+/* Dark mode overrides for language selector */
+[data-theme="dark"] .language-select {
+  background: var(--bg-secondary, #2a2f36);
+  border-color: var(--border-color, #404040);
+  color: var(--text-primary, #e5e7eb);
+}
+
+[data-theme="dark"] .language-select:hover {
+  background: var(--bg-hover, #3a3f46);
+}
+
+[data-theme="dark"] .language-select option {
+  background: var(--bg-card, #1a1a1a);
+  color: var(--text-primary, #e5e7eb);
+}
+
 .theme-toggle {
   background: none;
   border: none;
@@ -547,10 +617,11 @@ function toggleTree(id) {
   }
 }
 
-// Theme Toggle Functionality
+// Theme Toggle and Language Selector Functionality
 document.addEventListener('DOMContentLoaded', function() {
   const themeToggle = document.getElementById('theme-toggle');
   const themeIcon = document.getElementById('theme-icon');
+  const languageSelect = document.getElementById('language-select');
   
   // Set initial icon based on current theme
   function updateThemeIcon() {
@@ -602,6 +673,16 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Add click event
   themeToggle.addEventListener('click', toggleTheme);
+  
+  // Language Selector Functionality
+  if (languageSelect) {
+    languageSelect.addEventListener('change', function() {
+      const selectedLang = this.value;
+      const currentUrl = new URL(window.location);
+      currentUrl.searchParams.set('lang', selectedLang);
+      window.location.href = currentUrl.toString();
+    });
+  }
   
   // Listen for theme changes from other components
   document.addEventListener('themeChanged', function(e) {
