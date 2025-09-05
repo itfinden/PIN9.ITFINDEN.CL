@@ -23,7 +23,11 @@ $id_company = $_SESSION['id_company'];
     
     <!-- MULTILANG FULLCALENDAR: Pasar idioma PHP a JS -->
     <script>
-      var calendarLang = '<?php echo isset($_SESSION['lang']) ? strtolower($_SESSION['lang']) : 'es'; ?>';
+      var calendarLang = '<?php 
+        $current_lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'es';
+        echo strtolower($current_lang); 
+      ?>';
+      console.log('PHP Session lang:', '<?php echo isset($_SESSION['lang']) ? $_SESSION['lang'] : 'not set'; ?>');
     </script>
  
     <style>
@@ -627,9 +631,9 @@ echo "<!-- DEBUG: $id_user: " . $id_user . " -->";
     <!-- FullCalendar v6.x -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     
-    <!-- FullCalendar Locales -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/locales/es.global.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/locales/en.global.min.js'></script>
+    <!-- FullCalendar Locales - Usando unpkg como alternativa -->
+    <script src='https://unpkg.com/fullcalendar@6.1.10/locales/es.global.min.js'></script>
+    <script src='https://unpkg.com/fullcalendar@6.1.10/locales/en.global.min.js'></script>
     
     <!-- Summernote JS (Rich Text Editor) -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>

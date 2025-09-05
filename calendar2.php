@@ -37,7 +37,8 @@ if (isset($_SESSION['user'])) {
     $(document).ready(function() {
         // MULTILANG FULLCALENDAR DEBUG: Mostrar valor de calendarLang
         console.log('calendarLang:', typeof calendarLang !== 'undefined' ? calendarLang : 'undefined');
-        console.log('FullCalendar locales disponibles:', Object.keys(FullCalendar.globalLocales || {}));
+        console.log('FullCalendar object:', typeof FullCalendar !== 'undefined' ? 'loaded' : 'not loaded');
+        console.log('FullCalendar locales disponibles:', typeof FullCalendar !== 'undefined' && FullCalendar.globalLocales ? Object.keys(FullCalendar.globalLocales) : 'no locales loaded');
         
         // DEBUG: Mostrar eventos cargados desde PHP
         var eventosDebug = <?php echo json_encode($events); ?>;
