@@ -10,8 +10,8 @@ $id_company = $_SESSION['id_company'];
     <?php $title= "Calendar"; ?>
     <?php require 'head.php'; ?>
 
-    <!-- FullCalendar v6.x -->
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
+    <!-- FullCalendar v6.x - Usando unpkg como alternativa -->
+    <link href='https://unpkg.com/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
     
     <!-- Summernote CSS (Rich Text Editor) -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
@@ -25,9 +25,14 @@ $id_company = $_SESSION['id_company'];
     <script>
       var calendarLang = '<?php 
         $current_lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'es';
+        // Forzar español si no está configurado
+        if ($current_lang !== 'es' && $current_lang !== 'en') {
+          $current_lang = 'es';
+        }
         echo strtolower($current_lang); 
       ?>';
       console.log('PHP Session lang:', '<?php echo isset($_SESSION['lang']) ? $_SESSION['lang'] : 'not set'; ?>');
+      console.log('calendarLang final:', calendarLang);
       
       // Configuración manual de idioma español para FullCalendar
       if (calendarLang === 'es') {
@@ -659,8 +664,8 @@ echo "<!-- DEBUG: $id_user: " . $id_user . " -->";
     <!-- Bootstrap Core JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    <!-- FullCalendar v6.x -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <!-- FullCalendar v6.x - Usando unpkg como alternativa -->
+    <script src='https://unpkg.com/fullcalendar@6.1.10/index.global.min.js'></script>
     
     <!-- Summernote JS (Rich Text Editor) -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
