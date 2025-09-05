@@ -10,138 +10,12 @@ $id_company = $_SESSION['id_company'];
     <?php $title= "Calendar"; ?>
     <?php require 'head.php'; ?>
 
-    <!-- FullCalendar v6.x - CSS desde CDN confiable -->
+    <!-- FullCalendar v6.x -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
-    
-    <!-- CSS adicional para asegurar visibilidad -->
-    <style>
-        /* Asegurar que el calendario sea visible */
-        #calendar {
-            width: 100%;
-            height: 600px;
-            background: var(--bg-primary, #ffffff);
-            border: 1px solid var(--border-color, #dee2e6);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        
-        /* FullCalendar estilos adicionales */
-        .fc {
-            direction: ltr;
-            text-align: left;
-            font-size: 14px;
-        }
-        
-        .fc table {
-            border-collapse: collapse;
-            border-spacing: 0;
-        }
-        
-        .fc th, .fc td {
-            border-style: solid;
-            border-width: 1px;
-            padding: 8px;
-            vertical-align: top;
-        }
-        
-        .fc th {
-            font-weight: bold;
-            background: var(--bg-secondary, #f8f9fa);
-        }
-        
-        .fc .fc-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1em;
-            flex-wrap: wrap;
-        }
-        
-        .fc .fc-toolbar h2 {
-            margin: 0;
-            font-size: 1.5em;
-            color: var(--text-primary, #212529);
-        }
-        
-        .fc .fc-button {
-            display: inline-block;
-            padding: 0.4em 0.6em;
-            margin: 0 0.2em;
-            border: 1px solid var(--border-color, #ccc);
-            background: var(--bg-secondary, #f9f9f9);
-            color: var(--text-primary, #212529);
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        .fc .fc-button:hover {
-            background: var(--bg-hover, #e6e6e6);
-        }
-        
-        .fc .fc-button:active {
-            background: var(--bg-active, #d4d4d4);
-        }
-        
-        .fc .fc-button-primary {
-            background: var(--primary-color, #007cba);
-            border-color: var(--primary-color, #007cba);
-            color: #fff;
-        }
-        
-        .fc .fc-button-primary:hover {
-            background: var(--primary-hover, #005a87);
-        }
-        
-        .fc .fc-today-button {
-            background: var(--success-color, #28a745);
-            border-color: var(--success-color, #28a745);
-            color: #fff;
-        }
-        
-        .fc .fc-today-button:hover {
-            background: var(--success-hover, #218838);
-        }
-        
-        /* Estilos para eventos */
-        .fc-event {
-            background: var(--primary-color, #007cba);
-            border: 1px solid var(--primary-color, #007cba);
-            color: #fff;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-size: 12px;
-        }
-        
-        .fc-event:hover {
-            background: var(--primary-hover, #005a87);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .fc .fc-toolbar {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .fc .fc-toolbar h2 {
-                font-size: 1.2em;
-            }
-            
-            .fc .fc-button {
-                font-size: 12px;
-                padding: 0.3em 0.5em;
-            }
-        }
-    </style>
     
     <!-- Summernote CSS (Rich Text Editor) -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
-    <!-- jQuery debe cargarse primero -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
     <!-- Tippy.js y Popper.js para tooltips avanzados -->
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -149,41 +23,7 @@ $id_company = $_SESSION['id_company'];
     
     <!-- MULTILANG FULLCALENDAR: Pasar idioma PHP a JS -->
     <script>
-      // Forzar español para el calendario
-      var calendarLang = 'es';
-      console.log('PHP Session lang:', '<?php echo isset($_SESSION['lang']) ? $_SESSION['lang'] : 'not set'; ?>');
-      console.log('calendarLang forzado a:', calendarLang);
-      
-      // Configuración manual de idioma español para FullCalendar
-      if (calendarLang === 'es') {
-        // Configuración de idioma español manual
-        window.fullCalendarSpanish = {
-          code: 'es',
-          week: {
-            dow: 1, // Monday is the first day of the week
-            doy: 4  // The week that contains Jan 4th is the first week of the year
-          },
-          buttonText: {
-            prev: 'Anterior',
-            next: 'Siguiente',
-            today: 'Hoy',
-            month: 'Mes',
-            week: 'Semana',
-            day: 'Día',
-            list: 'Lista'
-          },
-          allDayText: 'Todo el día',
-          moreLinkText: 'más',
-          noEventsText: 'No hay eventos para mostrar',
-          weekText: 'Sm',
-          allDay: 'Todo el día',
-          time: 'Hora',
-          event: 'Evento',
-          date: 'Fecha',
-          time: 'Hora',
-          list: 'Lista'
-        };
-      }
+      var calendarLang = '<?php echo isset($_SESSION['lang']) ? strtolower($_SESSION['lang']) : 'es'; ?>';
     </script>
  
     <style>
@@ -192,45 +32,6 @@ $id_company = $_SESSION['id_company'];
         }
         .modal-body {
             padding: 20px;
-        }
-        
-        /* Estilos para modal de 2 columnas */
-        .modal-lg {
-            max-width: 800px;
-        }
-        
-        .modal-body .row {
-            margin: 0;
-        }
-        
-        .modal-body .col-md-6 {
-            padding: 0 10px;
-        }
-        
-        .modal-body .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .modal-body .form-group label {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--text-primary, #333);
-        }
-        
-        .modal-body .form-control {
-            border-radius: 6px;
-            border: 1px solid var(--border-color, #ddd);
-            transition: border-color 0.3s ease;
-        }
-        
-        .modal-body .form-control:focus {
-            border-color: var(--primary-color, #007bff);
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-        
-        .modal-body textarea.form-control {
-            resize: vertical;
-            min-height: 80px;
         }
         
         /* Estilos para las cajas de calendarios en columna */
@@ -779,11 +580,13 @@ echo "<!-- DEBUG: $id_user: " . $id_user . " -->";
 <?php require 'footer.php'; ?>
 
     <!-- jQuery  -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <!-- Bootstrap Core JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    <!-- FullCalendar v6.x - Usando unpkg como alternativa -->
-    <script src='https://unpkg.com/fullcalendar@6.1.10/index.global.min.js'></script>
+    <!-- FullCalendar v6.x -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     
     <!-- Summernote JS (Rich Text Editor) -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>

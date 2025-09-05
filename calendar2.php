@@ -36,9 +36,6 @@ if (isset($_SESSION['user'])) {
 
     $(document).ready(function() {
         // MULTILANG FULLCALENDAR DEBUG: Mostrar valor de calendarLang
-        console.log('calendarLang:', typeof calendarLang !== 'undefined' ? calendarLang : 'undefined');
-        console.log('FullCalendar object:', typeof FullCalendar !== 'undefined' ? 'loaded' : 'not loaded');
-        console.log('FullCalendar locales disponibles:', typeof FullCalendar !== 'undefined' && FullCalendar.globalLocales ? Object.keys(FullCalendar.globalLocales) : 'no locales loaded');
         
         // DEBUG: Mostrar eventos cargados desde PHP
         var eventosDebug = <?php echo json_encode($events); ?>;
@@ -46,9 +43,9 @@ if (isset($_SESSION['user'])) {
         // FULLCALENDAR v6.x: Nueva API de inicialización
         var calendarEl = document.getElementById('calendar');
         window.id_calendar_active = window.id_calendar_active || ($('.calendar-box.selected').data('id') || null);
-        // Configurar opciones del calendario
-        var calendarOptions = {
+        window.calendar = new FullCalendar.Calendar(calendarEl, {
             timeZone: 'local',
+            locale: typeof calendarLang !== 'undefined' ? calendarLang : 'es',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
@@ -198,25 +195,8 @@ if (isset($_SESSION['user'])) {
             }
         });
         
-        // Agregar configuración de idioma si está disponible
-        if (typeof window.fullCalendarSpanish !== 'undefined' && calendarLang === 'es') {
-            calendarOptions.locale = window.fullCalendarSpanish;
-        } else {
-            calendarOptions.locale = calendarLang || 'es';
-        }
-        
-        // Crear el calendario
-        window.calendar = new FullCalendar.Calendar(calendarEl, calendarOptions);
-        
         // FULLCALENDAR v6.x: Renderizar el calendario
-        console.log('Intentando renderizar calendario...');
         window.calendar.render();
-        console.log('Calendario renderizado exitosamente');
-        
-        // DEBUG: Verificar que el locale se aplicó correctamente
-        console.log('Calendario renderizado con locale:', window.calendar.getOption('locale'));
-        console.log('Botones de la toolbar:', window.calendar.getOption('headerToolbar'));
-        console.log('Elemento calendar encontrado:', document.getElementById('calendar'));
             
         function edit(event){
             // FULLCALENDAR v6.x: Usar fechas nativas en lugar de moment
